@@ -26,7 +26,7 @@ class UserController extends Controller
 
     public function Register(Request $request){
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            // 'name' => 'required|string|max:255',
             'email' => 'required|email:rfc,dns',
             'password' => 'required|string|min:8',
             'phoneNumber' => 'required|string|max:16',
@@ -72,7 +72,7 @@ class UserController extends Controller
     private function RegisterTenantOwner(Request $request, Tenant $tenant){
         $roleId = $this->roleController->GetRoleId($request->roleCode);
         $user = User::create([
-            'name' => $request->name,
+            // 'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'phone_number' => $request->phoneNumber,

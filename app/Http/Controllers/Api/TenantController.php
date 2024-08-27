@@ -6,11 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Tenant;
-
+use Illuminate\Support\Facades\Validator;
 
 class TenantController extends Controller
 {
-    private function GenerateTenantCode(){
+    //#region Generate Tenant Code
+    private static function GenerateTenantCode(){
         $lastTenantCode = DB::table('tenants')
                             ->orderBy('tenant_code', 'desc')
                             ->first()
@@ -28,7 +29,9 @@ class TenantController extends Controller
 
         return $newTenantCode;
     }
+    //#endregion
 
+    //#region Insert Tenant
     public function CreateTenant(Request $request){
         $tenantCode = $this->GenerateTenantCode();
 
@@ -43,4 +46,6 @@ class TenantController extends Controller
 
         return $tenant;
     }
+    //#endregion
+
 }

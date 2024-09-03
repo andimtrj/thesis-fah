@@ -108,7 +108,7 @@
 
         {{-- Table Body --}}
         <tbody>
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-base">
             <th scope="row"
               class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
               1
@@ -147,7 +147,7 @@
               <a href="" class="bg-secondary px-5 py-2 text-white rounded-lg">View Details</a>
             </td>
           </tr>
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-base">
             <th scope="row"
               class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
               1
@@ -186,280 +186,7 @@
               <a href="" class="bg-secondary px-5 py-2 text-white rounded-lg">View Details</a>
             </td>
           </tr>
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <th scope="row"
-              class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-              1
-            </th>
-            <td class="px-4 py-3">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. In at non tempora.
-            </td>
-            <td class="px-4 py-3 text-center">
-              5
-            </td>
-
-            <td class="px-4 py-3 flex gap-4 items-center justify-center">
-              <a href="" class="border-2 w-fit p-1 rounded-lg">
-                <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                  width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M5 12h14m-7 7V5" />
-                </svg>
-              </a>
-              <a href="" class="border-2 w-fit p-1 rounded-lg">
-                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                  height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
-                </svg>
-              </a>
-              <a href="" class="border-2 w-fit p-1 rounded-lg">
-                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                  height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                </svg>
-              </a>
-            </td>
-            <td class="px-4 py-3 text-center">
-              <a href="" class="bg-secondary px-5 py-2 text-white rounded-lg">View Details</a>
-            </td>
-          </tr>
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <th scope="row"
-              class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-              1
-            </th>
-            <td class="px-4 py-3">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. In at non tempora.
-            </td>
-            <td class="px-4 py-3 text-center">
-              5
-            </td>
-
-            <td class="px-4 py-3 flex gap-4 items-center justify-center">
-              <a href="" class="border-2 w-fit p-1 rounded-lg">
-                <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                  width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M5 12h14m-7 7V5" />
-                </svg>
-              </a>
-              <a href="" class="border-2 w-fit p-1 rounded-lg">
-                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                  height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
-                </svg>
-              </a>
-              <a href="" class="border-2 w-fit p-1 rounded-lg">
-                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                  height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                </svg>
-              </a>
-            </td>
-            <td class="px-4 py-3 text-center">
-              <a href="" class="bg-secondary px-5 py-2 text-white rounded-lg">View Details</a>
-            </td>
-          </tr>
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <th scope="row"
-              class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-              1
-            </th>
-            <td class="px-4 py-3">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. In at non tempora.
-            </td>
-            <td class="px-4 py-3 text-center">
-              5
-            </td>
-
-            <td class="px-4 py-3 flex gap-4 items-center justify-center">
-              <a href="" class="border-2 w-fit p-1 rounded-lg">
-                <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                  width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M5 12h14m-7 7V5" />
-                </svg>
-              </a>
-              <a href="" class="border-2 w-fit p-1 rounded-lg">
-                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                  height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
-                </svg>
-              </a>
-              <a href="" class="border-2 w-fit p-1 rounded-lg">
-                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                  height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                </svg>
-              </a>
-            </td>
-            <td class="px-4 py-3 text-center">
-              <a href="" class="bg-secondary px-5 py-2 text-white rounded-lg">View Details</a>
-            </td>
-          </tr>
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <th scope="row"
-              class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-              1
-            </th>
-            <td class="px-4 py-3">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. In at non tempora.
-            </td>
-            <td class="px-4 py-3 text-center">
-              5
-            </td>
-
-            <td class="px-4 py-3 flex gap-4 items-center justify-center">
-              <a href="" class="border-2 w-fit p-1 rounded-lg">
-                <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                  width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M5 12h14m-7 7V5" />
-                </svg>
-              </a>
-              <a href="" class="border-2 w-fit p-1 rounded-lg">
-                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                  height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
-                </svg>
-              </a>
-              <a href="" class="border-2 w-fit p-1 rounded-lg">
-                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                  height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                </svg>
-              </a>
-            </td>
-            <td class="px-4 py-3 text-center">
-              <a href="" class="bg-secondary px-5 py-2 text-white rounded-lg">View Details</a>
-            </td>
-          </tr>
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <th scope="row"
-              class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-              1
-            </th>
-            <td class="px-4 py-3">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. In at non tempora.
-            </td>
-            <td class="px-4 py-3 text-center">
-              5
-            </td>
-
-            <td class="px-4 py-3 flex gap-4 items-center justify-center">
-              <a href="" class="border-2 w-fit p-1 rounded-lg">
-                <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                  width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M5 12h14m-7 7V5" />
-                </svg>
-              </a>
-              <a href="" class="border-2 w-fit p-1 rounded-lg">
-                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                  height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
-                </svg>
-              </a>
-              <a href="" class="border-2 w-fit p-1 rounded-lg">
-                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                  height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                </svg>
-              </a>
-            </td>
-            <td class="px-4 py-3 text-center">
-              <a href="" class="bg-secondary px-5 py-2 text-white rounded-lg">View Details</a>
-            </td>
-          </tr>
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <th scope="row"
-              class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-              1
-            </th>
-            <td class="px-4 py-3">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. In at non tempora.
-            </td>
-            <td class="px-4 py-3 text-center">
-              5
-            </td>
-
-            <td class="px-4 py-3 flex gap-4 items-center justify-center">
-              <a href="" class="border-2 w-fit p-1 rounded-lg">
-                <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                  width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M5 12h14m-7 7V5" />
-                </svg>
-              </a>
-              <a href="" class="border-2 w-fit p-1 rounded-lg">
-                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                  height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
-                </svg>
-              </a>
-              <a href="" class="border-2 w-fit p-1 rounded-lg">
-                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                  height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                </svg>
-              </a>
-            </td>
-            <td class="px-4 py-3 text-center">
-              <a href="" class="bg-secondary px-5 py-2 text-white rounded-lg">View Details</a>
-            </td>
-          </tr>
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <th scope="row"
-              class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-              1
-            </th>
-            <td class="px-4 py-3">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. In at non tempora.
-            </td>
-            <td class="px-4 py-3 text-center">
-              5
-            </td>
-
-            <td class="px-4 py-3 flex gap-4 items-center justify-center">
-              <a href="" class="border-2 w-fit p-1 rounded-lg">
-                <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                  width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M5 12h14m-7 7V5" />
-                </svg>
-              </a>
-              <a href="" class="border-2 w-fit p-1 rounded-lg">
-                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                  height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
-                </svg>
-              </a>
-              <a href="" class="border-2 w-fit p-1 rounded-lg">
-                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                  height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                </svg>
-              </a>
-            </td>
-            <td class="px-4 py-3 text-center">
-              <a href="" class="bg-secondary px-5 py-2 text-white rounded-lg">View Details</a>
-            </td>
-          </tr>
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-base">
             <th scope="row"
               class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
               1
@@ -500,6 +227,53 @@
           </tr>
         </tbody>
       </table>
+      {{-- Pagination --}}
+      <div class="bg-white px-5 py-2 flex items-center justify-between">
+        <div class="text-xs">
+          <span>Showing 1 to 10 of 100 Entries</span>
+        </div>
+
+        <div class="text-xs">
+          <div class="flex items-center">
+            <a href="" class="flex items-center mr-2">
+              <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="m15 19-7-7 7-7" />
+              </svg>
+              <span>Previous</span>
+            </a>
+
+            <div class="flex gap-1 text-cream">
+              <a href=""
+                class="border-2 border-primary bg-primary p-1 rounded-md w-8 h-8 flex justify-center items-center"> 1
+              </a>
+              <a href=""
+                class="border-2 border-primary text-abu p-1 rounded-md w-8 h-8 flex justify-center items-center"> 2
+              </a>
+              <a href=""
+                class="border-2 border-primary text-abu p-1 rounded-md w-8 h-8 flex justify-center items-center"> 3
+              </a>
+              <a href=""
+                class="border-2 border-primary text-abu p-1 rounded-md w-8 h-8 flex justify-center items-center"> ..
+              </a>
+              <a href=""
+                class="border-2 border-primary text-abu p-1 rounded-md w-8 h-8 flex justify-center items-center"> 32
+              </a>
+            </div>
+
+            <a href="" class="flex items-center ml-2"><span>Next</span>
+              <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="m9 5 7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </x-sidebar.sidebar>
 

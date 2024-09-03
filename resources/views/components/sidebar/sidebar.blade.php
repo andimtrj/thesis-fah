@@ -11,16 +11,15 @@
 <aside id="logo-sidebar"
   class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
   aria-label="Sidebar">
-  <div class="h-full px-3 py-4 overflow-y-auto flex flex-col justify-between bg-gray-50 dark:bg-gray-800">
+  <div class="h-full px-3 py-4 overflow-y-auto flex flex-col justify-between bg-primary shadow-xl text-cream">
     <!-- Logo Section -->
     <a href="https://flowbite.com/" class="flex items-center ps-2.5 mb-5">
-      <img src="https://flowbite.com/docs/images/logo.svg" class="h-6 me-3 sm:h-7" alt="Flowbite Logo" />
-      <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
+      <span class="self-center text-xl font-semibold whitespace-nowrap">Restaurant</span>
     </a>
 
     <!-- Sidebar Links Section -->
     <div class="flex-1">
-      <ul class="space-y-2 font-medium">
+      <ul class="space-y-2 font-normal">
         <x-sidebar.sidebar-link href="#" linkName="Branch">
           <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
             height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -42,7 +41,7 @@
 
     <!-- Logout Section -->
     <a href=""
-      class="flex items-center p-2 text-gray-500 hover:text-primary rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+      class="flex items-center p-2 rounded-lg group">
       <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
         height="24" fill="none" viewBox="0 0 24 24">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -53,6 +52,6 @@
   </div>
 </aside>
 
-<div class="p-4 sm:ml-64">
+<div class="p-4 sm:ml-64 bg-[#EFEDE7]">
     {{ $slot }}
 </div>

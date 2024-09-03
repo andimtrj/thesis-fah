@@ -18,3 +18,7 @@ Route::get('/login', function () {
 Route::get('/branch', function () {
     return view('branch');
 });
+
+Route::get('/landing', function () {
+    return view('landing');
+});

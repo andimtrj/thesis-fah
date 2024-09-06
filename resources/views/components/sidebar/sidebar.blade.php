@@ -20,7 +20,7 @@
     <!-- Sidebar Links Section -->
     <div class="flex-1">
       <ul class="space-y-2 font-normal">
-        <x-sidebar.sidebar-link href="#" linkName="Branch">
+        <x-sidebar.sidebar-link href="{{ route('branch') }}" linkName="Branch">
           <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
             height="24" fill="currentColor" viewBox="0 0 24 24">
             <path fill-rule="evenodd"
@@ -28,7 +28,7 @@
               clip-rule="evenodd" />
           </svg>
         </x-sidebar.sidebar-link>
-        <x-sidebar.sidebar-link href="#" linkName="Page 2">
+        <x-sidebar.sidebar-link href="{{ route('menu') }}" linkName="Menu">
           <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
             height="24" fill="currentColor" viewBox="0 0 24 24">
             <path fill-rule="evenodd"
@@ -41,7 +41,7 @@
 
     <!-- Logout Section -->
     <a href=""
-      class="flex items-center p-2 rounded-lg group">
+      class="flex items-center p-2 rounded-lg group hover:bg-secondary">
       <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
         height="24" fill="none" viewBox="0 0 24 24">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

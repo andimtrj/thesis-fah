@@ -14,19 +14,25 @@ use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\TenantController;
+use App\Http\Controllers\AuthController;
 
 class UserController extends Controller
 {
 
-    protected $tenantController;
-    protected $roleController;
-    protected $branchController;
+    private $tenantController;
+    private $roleController;
+    private $branchController;
+    private $authController;
 
-    public function __construct(TenantController $tenantController, RoleController $roleController, BranchController $branchController)
+    public function __construct(TenantController $tenantController
+                                , RoleController $roleController
+                                , BranchController $branchController
+                                , AuthController $authController)
     {
         $this->branchController = $branchController;
         $this->tenantController = $tenantController;
         $this->roleController = $roleController;
+        $this->authController = $authController;
     }
 //#region Register
     public function RegisterTenantOwner(Request $request){
@@ -47,7 +53,7 @@ class UserController extends Controller
 
         $request['emailVerifiedTime'] = date('Y-m-d H:i:s');
         if($validator->fails()){
-            return response()->json($validator->errors(), 400);
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         try{
@@ -66,19 +72,14 @@ class UserController extends Controller
                     'email_verified_at'=> $request->emailVerifiedTime
                 ]);
 
-                $token =  $user->createToken('auth_token')->plainTextToken;
 
-                $response = response()->json([
-                                'data' => $user,
-                                'access_token' => $token,
-                                'token_type' => 'Bearer'
-                            ], 200);
+                $this->authController->Authenticate($request);
             });
 
             return $response;
 
         }catch(\Exception $e){
-            return response()->json(['error' => 'An Error Ocurred during Tenant Owner Registration'], 500);
+            return redirect()->back()->withErrors($validator)->withInput();
         }
     }
 

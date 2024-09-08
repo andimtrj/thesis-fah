@@ -19,7 +19,7 @@ class AuthController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->errors(), 500);
+            return redirect('/login')->withErrors($validator)->withInput();
         }
 
         $credentials = $request->only('email', 'password');

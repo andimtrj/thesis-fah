@@ -1,6 +1,6 @@
 <li>
   <a href="{{ $href }}"
-    class="flex items-center p-2 text-gray-500 hover:text-primary rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+  class="flex items-center p-2 rounded-lg group hover:bg-secondary {{ request()->is(trim(parse_url($href, PHP_URL_PATH), '/')) ? 'bg-secondary text-white' : 'bg-primary text-white' }}">
     {{ $slot }}
     <span class="ms-3">{{ $linkName }}</span>
   </a>

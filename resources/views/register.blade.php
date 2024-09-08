@@ -2,7 +2,7 @@
   <div class="flex w-full h-screen bg-custom-gradient font-body">
     <x-decor.sidelog/>
 
-    <div class="w-full bg-abu shadow-2xl flex flex-col justify-center items-center">
+    <div class="w-full bg-white shadow-2xl flex flex-col justify-center items-center">
       <form class="w-[32vw]" action="/api/register" method="POST">
         @csrf
         {{-- First Form --}}
@@ -21,10 +21,10 @@
           </div>
           <div class="w-full flex justify-end">
             <button id="nextButton"
-              class="text-white bg-primary hover:bg-opacity-70 font-medium rounded-2xl w-full text-md px-5 py-2.5 text-center mb-5">Next</button>
+              class="text-white bg-primary hover:bg-secondary font-medium rounded-2xl w-full text-md px-5 py-2.5 text-center mb-5">Next</button>
           </div>
           <p class="text-center text-gray-500">Already have an account? <a href="/login"
-              class="underline text-primary">Login here</a></p>
+              class="underline text-blue-500">Login here</a></p>
         </div>
         {{-- First Form --}}
 
@@ -42,9 +42,9 @@
           </div>
           <div class="w-full flex justify-between">
             <button id="backButton"
-              class="text-white bg-primary hover:bg-opacity-70 font-medium rounded-2xl w-28 text-md px-5 py-2.5 text-center mb-5">Back</button>
+              class="text-white bg-primary hover:bg-secondary font-medium rounded-2xl w-28 text-md px-5 py-2.5 text-center mb-5">Back</button>
             <button type="submit"
-              class="text-white bg-primary hover:bg-opacity-70 font-medium rounded-2xl w-28 text-md px-5 py-2.5 text-center mb-5">Submit</button>
+              class="text-white bg-primary hover:bg-secondary font-medium rounded-2xl w-28 text-md px-5 py-2.5 text-center mb-5">Submit</button>
           </div>
         </div>
         <input type="hidden" class="hidden" name="roleCode" id="roleCode" value="TO">

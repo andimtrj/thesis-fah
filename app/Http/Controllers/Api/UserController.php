@@ -38,6 +38,7 @@ class UserController extends Controller
     public function RegisterTenantOwner(Request $request){
         $validator = Validator::make($request->all(), [
             'email' => 'required|email:rfc,dns|unique:users,email',
+>>>>>>> b33e8cf9af32b44501d139bd3ab7c0e17f786944
             'password' => 'required|string|min:8',
             'phoneNumber' => 'required|string|max:16',
             'tenantName' => 'required|string|max:255',
@@ -79,10 +80,26 @@ class UserController extends Controller
             return $response;
 
         }catch(\Exception $e){
-            return redirect()->back()->withErrors($validator)->withInput();
+            return response()->json(['error' => 'An Error Ocurred during Tenant Owner Registration'], 500);
         }
     }
 
+<<<<<<<<< Temporary merge branch 1
+
+
+    private function RegisterTenantOwner(Request $request, Tenant $tenant){
+        $roleId = $this->roleController->GetRoleId($request->roleCode);
+        $user = User::create([
+            // 'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'phone_number' => $request->phoneNumber,
+            'first_name' => $request->firstName,
+            'last_name' => $request->lastName,
+            'role_id' => $roleId,
+            'tenant_id' => $tenant->id,
+            'email_verified_at'=> $request->emailVerifiedTime
+=========
     public function RegisterBranchAdmin(Request $request){
         $validator = Validator::make($request->all(), [
             'email' => 'required|email:rfc,dns|unique:users,email',
@@ -159,8 +176,24 @@ class UserController extends Controller
             return response()->json(['error' => 'Token not provided'], 401);
         }
 
+<<<<<<< HEAD
+    private function RegisterTenantOwner(Request $request, Tenant $tenant){
+        $roleId = $this->roleController->GetRoleId($request->roleCode);
+        $user = User::create([
+            // 'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'phone_number' => $request->phoneNumber,
+            'first_name' => $request->firstName,
+            'last_name' => $request->lastName,
+            'role_id' => $roleId,
+            'tenant_id' => $tenant->id,
+            'email_verified_at'=> $request->emailVerifiedTime
+        ]);
+=======
         // Find the token record in the database
         $tokenRecord = PersonalAccessToken::where('token', hash('sha256', $token))->first();
+>>>>>>> b33e8cf9af32b44501d139bd3ab7c0e17f786944
 
         if (!$tokenRecord) {
             return response()->json(['error' => 'Invalid token'], 401);

@@ -1,3 +1,5 @@
+@props(['textButton', 'modalTitle', 'for', 'name', 'id', 'placeholder'])
+
 <div class="flex items-center">
   {{-- Button Add Branch --}}
   <button data-modal-target="addModal" data-modal-toggle="addModal"
@@ -6,7 +8,7 @@
       fill="none" viewBox="0 0 24 24">
       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
     </svg>
-    <span>Add Branch</span>
+    <span>{{ $textButton }}</span>
   </button>
 
   <!-- Main modal -->
@@ -19,7 +21,7 @@
         <div
           class="flex items-center justify-between px-4 py-3 md:px-4 md:py-3 border-b rounded-t-xl bg-primary text-white">
           <h3 class="text-lg font-semibold">
-            Add New Branch
+            {{ $modalTitle }}
           </h3>
           <button type="button"
             class="text-gray-300 bg-transparent hover:bg-secondary rounded-xl text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
@@ -36,15 +38,13 @@
         <form class="p-4 md:p-5">
           <div class="grid gap-4 mb-6 grid-cols-2">
             <div class="col-span-2">
-              <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Branch
-                Name</label>
-              <input type="text" name="name" id="name"
+              <label for="{{ $for }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ $labelName }}</label>
+              <input type="text" name="{{ $name }}" id="{{ $id }}"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Type branch name" required="">
+                placeholder="{{ $placeholder }}" required="">
             </div>
             <div class="col-span-2">
-              <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Branch
-                location</label>
+              <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Branch Location</label>
               <input type="text" name="name" id="name"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 placeholder="Type branch location" required="">

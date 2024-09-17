@@ -7,18 +7,18 @@
       </div>
 
       <div class="flex gap-3">
-        <x-search-input/>
-        <x-add-modal for="name" name="name" id="nameInput" placeholder="Input Name">
+        <x-search-input />
+        <x-modal.add-modal for="name" name="name" id="nameInput" placeholder="Input Name">
           @slot('textButton')
             Add Branch
           @endslot
           @slot('modalTitle')
-            Add new test
+            Add new branch
           @endslot
           @slot('labelName')
             Branch Name
           @endslot
-        </x-add-modal>
+        </x-modal.add-modal>
       </div>
     </div>
 
@@ -27,7 +27,7 @@
         <th scope="col" class="px-4 py-4 w-12 text-center">
           ID
         </th>
-        <th scope="col" class="px-4 py-4 w-[45vw]">
+        <th scope="col" class="px-4 py-4 w-[45vw] md:w-[18vw]">
           Location
         </th>
         <th scope="col" class="px-4 py-4 text-center">
@@ -36,7 +36,7 @@
         <th scope="col" class="px-4 py-4 text-center">
           Action
         </th>
-        <th scope="col" class="px-4 py-4"></th>
+        <th scope="col"></th>
       @endslot
 
       {{-- Table Body --}}
@@ -50,13 +50,13 @@
         <td class="px-4 py-3 text-center">
           5
         </td>
-        <x-table.action addUrl="{{ route('branch') }}" editUrl=" {{ route('branch') }}"
-          deleteUrl="{{ route('branch') }}" detailUrl="{{ route('branchadmin') }}" />
+        <x-table.action addUrl="{{ route('branchadmin') }}" detailUrl="{{ route('branchadmin') }}" />
       </tr>
+
     </x-table.table>
 
     {{-- Pagination --}}
-    <x-pagination/>
+    <x-pagination />
   </x-sidebar.sidebar>
 
 

@@ -14,17 +14,17 @@
         </div>
         <div class="flex gap-3">
           <x-search-input />
-          <x-add-modal for="name" name="name" id="nameInput" placeholder="Input Name">
+          <x-modal.add-modal for="name" name="name" id="nameInput" placeholder="Input Name">
             @slot('textButton')
               Add Admin
             @endslot
             @slot('modalTitle')
-              Add branch admin
+              Add new branch admin
             @endslot
             @slot('labelName')
               Name
             @endslot
-          </x-add-modal>
+          </x-modal.add-modal>
         </div>
       </div>
 
@@ -154,6 +154,28 @@
       // Update tab styles
       ingredientsTab.classList.add('border-b-2', 'border-accent'); // Add border to Ingredients tab
       adminTab.classList.remove('border-b-2', 'border-accent'); // Remove border from Admin tab
+    });
+
+    // JavaScript to handle dropdown selection
+    document.addEventListener('DOMContentLoaded', function() {
+      const dropdownButton = document.getElementById('dropdown-button');
+      const dropdownLabel = document.getElementById('dropdown-label');
+      const dropdownItems = document.querySelectorAll('.dropdown-item');
+
+      dropdownItems.forEach(item => {
+        item.addEventListener('click', function() {
+          const selectedText = this.getAttribute('data-value');
+          dropdownLabel.textContent = selectedText;
+
+          // Close dropdown after selection (if required)
+          document.getElementById('dropdown').classList.add('hidden');
+        });
+      });
+
+      // Optional: Toggle dropdown visibility
+      dropdownButton.addEventListener('click', function() {
+        document.getElementById('dropdown').classList.toggle('hidden');
+      });
     });
   </script>
 </x-master>

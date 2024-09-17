@@ -14,29 +14,30 @@ use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\TenantController;
+use App\Http\Controllers\AuthController;
 
 class UserController extends Controller
 {
 
-    protected $tenantController;
-    protected $roleController;
-    protected $branchController;
+    private $tenantController;
+    private $roleController;
+    private $branchController;
+    private $authController;
 
-    public function __construct(TenantController $tenantController, RoleController $roleController, BranchController $branchController)
+    public function __construct(TenantController $tenantController
+                                , RoleController $roleController
+                                , BranchController $branchController
+                                , AuthController $authController)
     {
         $this->branchController = $branchController;
         $this->tenantController = $tenantController;
         $this->roleController = $roleController;
+        $this->authController = $authController;
     }
 //#region Register
     public function RegisterTenantOwner(Request $request){
         $validator = Validator::make($request->all(), [
-<<<<<<< HEAD
-            // 'name' => 'required|string|max:255',
-            'email' => 'required|email:rfc,dns',
-=======
             'email' => 'required|email:rfc,dns|unique:users,email',
->>>>>>> b33e8cf9af32b44501d139bd3ab7c0e17f786944
             'password' => 'required|string|min:8',
             'phoneNumber' => 'required|string|max:16',
             'tenantName' => 'required|string|max:255',
@@ -52,7 +53,11 @@ class UserController extends Controller
 
         $request['emailVerifiedTime'] = date('Y-m-d H:i:s');
         if($validator->fails()){
-            return response()->json($validator->errors(), 400);
+            return [
+                'statusCode' => 400,
+                'message' => $validator->errors(),
+                'data' => $validator
+            ];
         }
 
         try{
@@ -71,22 +76,23 @@ class UserController extends Controller
                     'email_verified_at'=> $request->emailVerifiedTime
                 ]);
 
-                $token =  $user->createToken('auth_token')->plainTextToken;
 
-                $response = response()->json([
-                                'data' => $user,
-                                'access_token' => $token,
-                                'token_type' => 'Bearer'
-                            ], 200);
+                $response = [
+                    'statusCode' => 200,
+                    'message' => 'Registration Success!'
+                ];
             });
 
             return $response;
 
         }catch(\Exception $e){
-            return response()->json(['error' => 'An Error Ocurred during Tenant Owner Registration'], 500);
+            return [
+                'statusCode' => 500,
+                'message' => 'An Error Occurred During Registration'
+            ];
+
         }
     }
-
     public function RegisterBranchAdmin(Request $request){
         $validator = Validator::make($request->all(), [
             'email' => 'required|email:rfc,dns|unique:users,email',
@@ -101,7 +107,8 @@ class UserController extends Controller
 
         $request['emailVerifiedTime'] = date('Y-m-d H:i:s');
         if($validator->fails()){
-            return response()->json($validator->errors(), 400);
+            return response()->json(['errors' => $validator->errors()], 400);
+
         }
 
         try{
@@ -163,24 +170,8 @@ class UserController extends Controller
             return response()->json(['error' => 'Token not provided'], 401);
         }
 
-<<<<<<< HEAD
-    private function RegisterTenantOwner(Request $request, Tenant $tenant){
-        $roleId = $this->roleController->GetRoleId($request->roleCode);
-        $user = User::create([
-            // 'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'phone_number' => $request->phoneNumber,
-            'first_name' => $request->firstName,
-            'last_name' => $request->lastName,
-            'role_id' => $roleId,
-            'tenant_id' => $tenant->id,
-            'email_verified_at'=> $request->emailVerifiedTime
-        ]);
-=======
         // Find the token record in the database
         $tokenRecord = PersonalAccessToken::where('token', hash('sha256', $token))->first();
->>>>>>> b33e8cf9af32b44501d139bd3ab7c0e17f786944
 
         if (!$tokenRecord) {
             return response()->json(['error' => 'Invalid token'], 401);

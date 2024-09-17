@@ -11,6 +11,7 @@ use function Laravel\Prompts\error;
 
 class AuthController extends Controller
 {
+
     public function Authenticate(Request $request){
         $validator = Validator::make($request->all(), [
             'email' => 'required|email:rfc,dns',
@@ -18,7 +19,7 @@ class AuthController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->errors(), 500);
+            return redirect('/login')->withErrors($validator)->withInput();
         }
 
         $credentials = $request->only('email', 'password');
@@ -26,7 +27,7 @@ class AuthController extends Controller
         if(Auth::attempt($credentials)){
             $request->session()->regenerate();
 
-            return response()->json(['message' => 'Login Successful']);
+            return redirect()->intended('/branch');
         }
 
         return response()->json(['message' => 'Login Failed'], 500);

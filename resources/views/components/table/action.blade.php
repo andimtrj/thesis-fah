@@ -1,4 +1,4 @@
-@props(['addUrl', 'editUrl', 'deleteUrl', 'detailUrl', 'hideActions'=>false])
+@props(['addUrl', 'detailUrl', 'hideActions'=>false, 'modalTitle'=>'Delete Modal', 'modalDesc'=>'Delete Desc Modal'])
 
 <td class="px-4 py-3 flex gap-4 items-center justify-center">
   @if (!isset($hideActions) || !$hideActions)
@@ -21,11 +21,8 @@
       Branch Location
     @endslot
   </x-modal.edit-modal>
-  <x-modal.delete-modal>
-    @slot('modalTitle')
-      Delete Branch
-    @endslot
-  </x-modal.delete-modal>
+  <x-modal.delete-modal :modalTitle="$modalTitle" :modalDesc="$modalDesc"/>
+
 </td>
 <td class="px-4 py-3 text-center">
   @if (!isset($hideActions) || !$hideActions)

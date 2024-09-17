@@ -65,9 +65,7 @@
             <td class="px-4 py-3 text-center">
               081287708023
             </td>
-            <x-table.action addUrl="{{ route('branch') }}" editUrl=" {{ route('branch') }}"
-              deleteUrl="{{ route('branch') }}" detailUrl="{{ route('branchadmin') }}"
-              hideActions="{{ true }}" />
+            <x-table.action addUrl="{{ route('branch') }}" detailUrl="{{ route('branchadmin') }}" :hideActions="true" modalTitle="Delete Branch Admin" modalDesc="branch admin"/>
           </tr>
         </x-table.table>
         <x-pagination />

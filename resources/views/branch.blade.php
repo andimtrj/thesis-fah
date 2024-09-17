@@ -50,9 +50,8 @@
         <td class="px-4 py-3 text-center">
           5
         </td>
-        <x-table.action addUrl="{{ route('branchadmin') }}" detailUrl="{{ route('branchadmin') }}" />
+        <x-table.action addUrl="{{ route('branchadmin') }}" detailUrl="{{ route('branchadmin') }}" modalTitle="Delete Branch" modalDesc="branch"/>
       </tr>
-
     </x-table.table>
 
     {{-- Pagination --}}

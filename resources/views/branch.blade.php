@@ -27,7 +27,7 @@
         <th scope="col" class="px-4 py-4 w-12 text-center">
           ID
         </th>
-        <th scope="col" class="px-4 py-4 w-[45vw] md:w-[18vw]">
+        <th scope="col" class="px-4 py-4 lg:w-[45vw] md:w-[18vw]">
           Location
         </th>
         <th scope="col" class="px-4 py-4 text-center">
@@ -50,7 +50,21 @@
         <td class="px-4 py-3 text-center">
           5
         </td>
-        <x-table.action addUrl="{{ route('branchadmin') }}" detailUrl="{{ route('branchadmin') }}" modalTitle="Delete Branch" modalDesc="branch"/>
+        <x-table.action addUrl="{{ route('branchadmin') }}" detailUrl="{{ route('branchadmin') }}"
+          deleteTitle="Delete Branch" deleteDesc="branch" editTitle="Edit Branch" :inputs="[
+              [
+                  'name' => 'branch_name',
+                  'label' => 'Branch Name',
+                  'type' => 'text',
+                  'placeholder' => 'Current Branch Name',
+              ],
+              [
+                  'name' => 'branch_location',
+                  'label' => 'Branch Location',
+                  'type' => 'text',
+                  'placeholder' => 'Current Branch Location',
+              ],
+          ]" />
       </tr>
     </x-table.table>
 

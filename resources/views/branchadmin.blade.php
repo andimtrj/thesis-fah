@@ -65,7 +65,40 @@
             <td class="px-4 py-3 text-center">
               081287708023
             </td>
-            <x-table.action addUrl="{{ route('branch') }}" detailUrl="{{ route('branchadmin') }}" :hideActions="true" modalTitle="Delete Branch Admin" modalDesc="branch admin"/>
+            <x-table.action addUrl="{{ route('branch') }}" detailUrl="{{ route('branchadmin') }}" :hideActions="true"
+              deleteTitle="Delete Branch Admin" deleteDesc="branch admin" editTitle="Edit Branch Admin"
+              :inputs="[
+                  [
+                      'name' => 'admin_name',
+                      'label' => 'Admin Name',
+                      'type' => 'text',
+                      'placeholder' => 'Current admin name',
+                  ],
+                  [
+                      'name' => 'admin_email',
+                      'label' => 'Admin Email',
+                      'type' => 'email',
+                      'placeholder' => 'Current admin email',
+                  ],
+                  [
+                      'name' => 'admin_id',
+                      'label' => 'Admin ID',
+                      'type' => 'text',
+                      'placeholder' => 'Current Admin ID',
+                  ],
+                  [
+                      'name' => 'admin_password',
+                      'label' => 'Admin Password',
+                      'type' => 'password',
+                      'placeholder' => 'Current Admin Password',
+                  ],
+                  [
+                      'name' => 'admin_phone',
+                      'label' => 'Admin Phone',
+                      'type' => 'tel',
+                      'placeholder' => 'Current Admin Phone Num',
+                  ],
+              ]" />
           </tr>
         </x-table.table>
         <x-pagination />

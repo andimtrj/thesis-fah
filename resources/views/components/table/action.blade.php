@@ -1,4 +1,12 @@
-@props(['addUrl', 'detailUrl', 'hideActions'=>false, 'modalTitle'=>'Delete Modal', 'modalDesc'=>'Delete Desc Modal'])
+@props([
+    'addUrl',
+    'detailUrl',
+    'hideActions' => false,
+    'deleteTitle' => 'Delete Modal',
+    'deleteDesc' => 'Delete Desc Modal',
+    'editTitle' => 'Edit Title',
+    'inputs'=>[]
+])
 
 <td class="px-4 py-3 flex gap-4 items-center justify-center">
   @if (!isset($hideActions) || !$hideActions)
@@ -10,22 +18,14 @@
       </svg>
     </a>
   @endif
-  <x-modal.edit-modal>
-    @slot('modalTitle')
-      Edit Branch
-    @endslot
-    @slot('label1')
-      Branch Name
-    @endslot
-    @slot('label2')
-      Branch Location
-    @endslot
-  </x-modal.edit-modal>
-  <x-modal.delete-modal :modalTitle="$modalTitle" :modalDesc="$modalDesc"/>
+  <x-modal.edit-modal :editTitle="$editTitle" :inputs='$inputs'/>
+  <x-modal.delete-modal :deleteTitle="$deleteTitle" :deleteDesc="$deleteDesc" />
 
 </td>
 <td class="px-4 py-3 text-center">
   @if (!isset($hideActions) || !$hideActions)
-    <a href=" {{ $detailUrl }}" class="bg-secondary px-5 py-2 text-white rounded-lg md:flex">View Details</a>
+    <a href=" {{ $detailUrl }}"
+      class="bg-secondary lg:px-5 md:px-2 py-2 text-white rounded-lg flex justify-center md:text-xs lg:text-base">View
+      Details</a>
   @endif
 </td>

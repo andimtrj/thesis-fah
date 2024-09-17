@@ -1,4 +1,4 @@
-@props(['modalTitle'=>'Delete Modal', 'modalDesc'=>'Delete Desc Modal'])
+@props(['deleteTitle'=>'Delete Modal', 'deleteDesc'=>'Delete Desc Modal'])
 
 <div class="flex items-center">
   <a data-modal-target="deleteModal" data-modal-toggle="deleteModal" class="border-2 w-fit p-1 rounded-lg cursor-pointer">
@@ -18,7 +18,7 @@
         <div
           class="flex items-center justify-between px-4 py-3 md:px-4 md:py-3 border-b rounded-t-xl bg-primary text-white">
           <h3 class="text-lg font-semibold">
-            {{ $modalTitle }}
+            {{ $deleteTitle }}
           </h3>
           <button type="button"
             class="text-gray-300 bg-transparent hover:bg-secondary rounded-xl text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
@@ -33,7 +33,7 @@
         </div>
         <!-- Modal body -->
         <div class="flex flex-col items-center justify-center p-4 ">
-          <h1 class="text-lg font-medium text-black mb-3 text-center md:w-72"> Are you sure want to delete this {{ $modalDesc }}?</h1>
+          <h1 class="text-lg font-medium text-black mb-3 text-center md:w-72"> Are you sure want to delete this {{ $deleteDesc }}?</h1>
           <div class="flex gap-4">
             <button type="submit"
               class="text-white flex items-center w-fit gap-1 bg-danger font-medium rounded-lg text-sm px-5 py-2.5">

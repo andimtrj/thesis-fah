@@ -14,139 +14,20 @@
         </div>
         <div class="flex gap-3">
           <x-search-input />
-          <x-modal.add-modal for="name" name="name" id="nameInput" placeholder="Input Name">
-            @slot('textButton')
-              Add Admin
-            @endslot
-            @slot('modalTitle')
-              Add new branch admin
-            @endslot
-            @slot('labelName')
-              Name
-            @endslot
-          </x-modal.add-modal>
+          <x-branchadmin.add-admin/>
         </div>
       </div>
 
       {{-- Table Admin --}}
       <div id="admin-table">
-        <x-table.table>
-          @slot('head')
-            <th scope="col" class="px-4 py-4 w-12 text-center">
-              ID
-            </th>
-            <th scope="col" class="px-4 py-4 w-[30vw]">
-              Admin Name
-            </th>
-            <th scope="col" class="px-4 py-4 text-center">
-              Email
-            </th>
-            <th scope="col" class="px-4 py-4 text-center">
-              Phone Number
-            </th>
-            <th scope="col" class="px-4 py-4 text-center">
-              Action
-            </th>
-            <th scope="col" class="px-4 py-4"></th>
-          @endslot
-
-          {{-- Table Body --}}
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-base">
-            <th scope="row"
-              class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-              1
-            </th>
-            <td class="px-4 py-3">
-              Andi Mataraja
-            </td>
-            <td class="px-4 py-3 text-center">
-              andi.mataraja@binus.ac.id
-            </td>
-            <td class="px-4 py-3 text-center">
-              081287708023
-            </td>
-            <x-table.action addUrl="{{ route('branch') }}" detailUrl="{{ route('branchadmin') }}" :hideActions="true"
-              deleteTitle="Delete Branch Admin" deleteDesc="branch admin" editTitle="Edit Branch Admin"
-              :inputs="[
-                  [
-                      'name' => 'admin_name',
-                      'label' => 'Admin Name',
-                      'type' => 'text',
-                      'placeholder' => 'Current admin name',
-                  ],
-                  [
-                      'name' => 'admin_email',
-                      'label' => 'Admin Email',
-                      'type' => 'email',
-                      'placeholder' => 'Current admin email',
-                  ],
-                  [
-                      'name' => 'admin_id',
-                      'label' => 'Admin ID',
-                      'type' => 'text',
-                      'placeholder' => 'Current Admin ID',
-                  ],
-                  [
-                      'name' => 'admin_password',
-                      'label' => 'Admin Password',
-                      'type' => 'password',
-                      'placeholder' => 'Current Admin Password',
-                  ],
-                  [
-                      'name' => 'admin_phone',
-                      'label' => 'Admin Phone',
-                      'type' => 'tel',
-                      'placeholder' => 'Current Admin Phone Num',
-                  ],
-              ]" />
-          </tr>
-        </x-table.table>
+        <x-branchadmin.table/>
         <x-pagination />
       </div>
 
 
       {{-- Table Ingredients --}}
       <div id="ingredients-table" class="hidden">
-        <x-table.table>
-          @slot('head')
-            <th scope="col" class="px-4 py-4 w-12 text-center">
-              ID
-            </th>
-            <th scope="col" class="px-4 py-4 w-[30vw]">
-              Name
-            </th>
-            <th scope="col" class="px-4 py-4 text-center">
-              Quantity
-            </th>
-            <th scope="col" class="px-4 py-4 text-center">
-              Last Added
-            </th>
-            <th scope="col" class="px-4 py-4 text-center">
-              Action
-            </th>
-            <th scope="col" class="px-4 py-4"></th>
-          @endslot
-
-          {{-- Table Body --}}
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-base">
-            <th scope="row"
-              class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-              1
-            </th>
-            <td class="px-4 py-3">
-              Ayam
-            </td>
-            <td class="px-4 py-3 text-center">
-              20
-            </td>
-            <td class="px-4 py-3 text-center">
-              6-Sep-2024
-            </td>
-            <x-table.action addUrl="{{ route('branch') }}" editUrl=" {{ route('branch') }}"
-              deleteUrl="{{ route('branch') }}" detailUrl="{{ route('branchadmin') }}"
-              hideActions="{{ true }}" />
-          </tr>
-        </x-table.table>
+        
         <x-pagination />
       </div>
 

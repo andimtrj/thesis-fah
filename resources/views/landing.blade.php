@@ -5,7 +5,7 @@
         <h1 class="text-4xl">LOGO</h1>
       </div>
       <div>
-        <a href="/"
+        <a href="{{ route('register') }}"
           class="flex border-primary border-opacity-20 border-2 px-7 py-2 rounded-lg font-medium drop-shadow-xl">Sign
           Up</a>
       </div>
@@ -18,15 +18,15 @@
       reduce waste, and boost efficiency today!</h4>
   </div>
 
-  <div class="flex justify-center items-center gap-10">
-    <div class="w-56 h-56 flex justify-center items-center border-2 border-abu rounded-2xl">
-      <h1>Test 1</h1>
+  <div class="flex justify-center items-center gap-10 text-lg">
+    <div class="w-72 h-72 flex justify-center items-center bg-cream shadow-2xl rounded-2xl px-4 py-2">
+      <h1>Save time on manual recording and stock monitoring.</h1>
     </div>
-    <div class="w-72 h-72 flex justify-center items-center border-2 border-abu rounded-2xl">
-      <h1>Test 2</h1>
+    <div class="w-96 h-96 flex justify-center items-center bg-cream shadow-2xl rounded-2xl px-4 py-2">
+      <h1>Monitor stock accurately and in real-time from anywhere. </h1>
     </div>
-    <div class="w-56 h-56 flex justify-center items-center border-2 border-abu rounded-2xl">
-      <h1>Test 1</h1>
+    <div class="w-72 h-72 flex justify-center items-center bg-cream shadow-2xl rounded-2xl px-4 py-2">
+      <h1>Reduce errors in stock calculations with automation.</h1>
     </div>
   </div>
   

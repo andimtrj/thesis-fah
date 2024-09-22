@@ -17,7 +17,7 @@ Route::middleware('web')->group(function () {
         return view('login');
     })->name('login');
 
-    Route::post('/createBranch',  [BranchController::class, 'CreateBranch']);
+    Route::post('/createBranch',  [BranchController::class, 'CreateBranch'])->name('login');
 
     Route::middleware('auth')->group(function(){
         Route::get('/branch', function () {
@@ -35,8 +35,10 @@ Route::middleware('web')->group(function () {
         return view('landing');
     })->name('landing');
 
+    Route::get('/branchadmin', function () {
+        return view('branchadmin');
+    })->name('branchadmin');
 });
-
 
 
 #region Authenticate
@@ -44,6 +46,5 @@ Route::post('/auth', [AuthController::class, 'Authenticate'])->name('auth');
 Route::post('/registration', [ApiWebController::class, 'Registration'])->name('registration');
 Route::post('/logout', [AuthController::class, 'Logout'])->name('logout');
 #endregion
-
 
 

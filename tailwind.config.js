@@ -13,7 +13,8 @@ export default {
         secondary: '#1A4D7C',
         accent: '#F65A11',
         cream: '#EFEDE7',
-        abu: '#6A6D69'
+        abu: '#6A6D69',
+        danger: '#B22222'
       },
       fontFamily: {
         body: ['Poppins']

@@ -1,7 +1,9 @@
+
+
 <div class="flex items-center">
   {{-- Button Add Branch --}}
   <button data-modal-target="addModal" data-modal-toggle="addModal"
-    class="flex items-center text-white bg-accent px-3 py-2 rounded-lg gap-1 flex-shrink-0 shadow-md">
+    class="flex items-center text-white bg-accent lg:px-3 md:px-1 py-2 rounded-lg gap-1 flex-shrink-0 shadow-md w-fit md:text-xs lg:text-base">
     <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
       fill="none" viewBox="0 0 24 24">
       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
@@ -34,18 +36,19 @@
         </div>
         <!-- Modal body -->
         <form class="p-4 md:p-5">
+          @csrf
           <div class="grid gap-4 mb-6 grid-cols-2">
             <div class="col-span-2">
-              <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Branch
+              <label for="branch_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Branch
                 Name</label>
-              <input type="text" name="name" id="name"
+              <input type="text" name="branch_name" id="branch_name"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Type branch name" required="">
             </div>
             <div class="col-span-2">
-              <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Branch
-                location</label>
-              <input type="text" name="name" id="name"
+              <label for="branch_location" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Branch
+                Location</label>
+              <input type="text" branch_location="branch_location" id="branch_location"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 placeholder="Type branch location" required="">
             </div>

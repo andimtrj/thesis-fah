@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components\table;
+namespace App\View\Components;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class table extends Component
+class branch.table extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class table extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.table.table');
+        return view('components.branch.table');
     }
 }

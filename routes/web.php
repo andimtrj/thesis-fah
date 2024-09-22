@@ -33,8 +33,15 @@ Route::middleware('web')->group(function () {
         return view('landing');
     })->name('landing');
 
+    Route::get('/branchadmin', function () {
+        return view('branchadmin');
+    })->name('branchadmin');
 });
 
-Route::get('/login', function () {
-    return view('login');
-});
+
+#region Authenticate
+Route::post('/auth', [AuthController::class, 'Authenticate']);
+Route::post('/registration', [ApiWebController::class, 'Registration']);
+#endregion
+
+

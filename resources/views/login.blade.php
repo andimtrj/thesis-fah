@@ -7,12 +7,12 @@
         <h1 class="text-3xl font-semibold mb-6">Welcome back!</h1>
         <x-input type="email" name="email" id="email" label="Email address" />
         @if ($errors->has('email'))
-            <p class="text-red-500 text-sm">{{ $errors->first('email') }}</p>
+            <p class="text-red-500 text-sm mb-2">{{ $errors->first('email') }}</p>
         @endif
 
         <x-input type="password" name="password" id="password" label="Password" />
         @if ($errors->has('password'))
-            <p class="text-red-500 text-sm">{{ $errors->first('password') }}</p>
+            <p class="text-red-500 text-sm mb-2">{{ $errors->first('password') }}</p>
         @endif
 
         <button type="submit"

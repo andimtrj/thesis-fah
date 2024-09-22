@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApiWebController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BranchController;
 
 // Route::get('/', function () {
 //     return view('home');
@@ -16,6 +17,8 @@ Route::middleware('web')->group(function () {
         return view('login');
     })->name('login');
 
+    Route::post('/createBranch',  [BranchController::class, 'CreateBranch']);
+
     Route::middleware('auth')->group(function(){
         Route::get('/branch', function () {
             return view('branch');
@@ -26,7 +29,6 @@ Route::middleware('web')->group(function () {
         })->name('menu');
 
     });
-
 
 
     Route::get('/landing', function () {

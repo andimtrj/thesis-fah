@@ -15,13 +15,13 @@
     <x-table.table>
       @slot('head')
         <th scope="col" class="px-4 py-4 w-12 text-center">
-          ID
+          BRANCH CODE
         </th>
         <th scope="col" class="px-4 py-4 w-[45vw]">
-          Location
+          BRANCH NAME
         </th>
         <th scope="col" class="px-4 py-4 text-center">
-          Total Branch Admin
+          TOTAL BRANCH ADMIN
         </th>
         <th scope="col" class="px-4 py-4 text-center">
           Action

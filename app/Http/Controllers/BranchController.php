@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Branch;
 use App\Models\Tenant;
+use App\DTO\BaseResponseObj;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -34,7 +35,7 @@ class BranchController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->errors(), 400);
+            return redirect('/branch')->with('error', 'An error occurred: ' . $validator->messages());
         }
 
         try{
@@ -45,7 +46,7 @@ class BranchController extends Controller
                 $branchCode = $this->GenerateBranchCode();
                 $tenantId = Tenant::GetTenantIdByTenantCode($request);
 
-                $branch = Branch::create([
+                Branch::create([
                     'branch_code' => $branchCode,
                     'branch_name' => $request->branchName,
                     'tenant_id' => $tenantId,
@@ -57,13 +58,22 @@ class BranchController extends Controller
                     'updated_by' => $user->email,
                 ]);
 
-                $response = response()->json($branch, 200);
+                $response = new BaseResponseObj();
+                $response->statusCode = '200';
+                $response->message = 'Registration Success!';
+
+                return $response;
             });
 
-            return $response;
+            return redirect()->intended('/branch')->with('status', $response['message']);
 
         }catch(\Exception $e){
-            return response()->json(['error' => 'An Error Ocurred during Branch Admin Registration'], 500);
+            $response = new BaseResponseObj();
+            $response->statusCode = '500';
+            $response->message = 'An Error Occurred During Registration. ' . $e->getMessage();
+
+            return redirect()->intended('/branch')->with('status', $response->message);
+
         }
     }
     // #endregion

@@ -15,23 +15,28 @@ class AuthController extends Controller
 
     public function Authenticate(Request $request){
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email:rfc,dns',
-            'password' => 'required|min:8|string'
+            'email' => 'required|email:rfc,dns|exists:users,email',
+            'password' => 'required|string'
         ]);
 
         if($validator->fails()){
             return redirect('/login')->withErrors($validator)->withInput();
         }
-
         $credentials = $request->only('email', 'password');
 
+
+        if (!Auth::attempt($credentials)) {
+            return redirect()->back()->withErrors([
+                'error' => 'Invalid Login.',
+            ])->withInput();
+        }
         if(Auth::attempt($credentials)){
             $request->session()->regenerate();
 
             return redirect()->intended('/branch');
         }
 
-        return response()->json(['message' => 'Login Failed'], 500);
+        return redirect('/login')->withErrors($validator)->withInput();
     }
 
     public function Logout(Request $request): RedirectResponse

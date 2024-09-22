@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTO\BaseResponseObj;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Branch;
@@ -25,13 +26,9 @@ class UserController extends Controller
     private $authController;
 
     public function __construct(TenantController $tenantController
-                                , RoleController $roleController
-                                , BranchController $branchController
                                 , AuthController $authController)
     {
-        $this->branchController = $branchController;
         $this->tenantController = $tenantController;
-        $this->roleController = $roleController;
         $this->authController = $authController;
     }
 //#region Register
@@ -53,11 +50,12 @@ class UserController extends Controller
 
         $request['emailVerifiedTime'] = date('Y-m-d H:i:s');
         if($validator->fails()){
-            return [
-                'statusCode' => 400,
-                'message' => $validator->errors(),
-                'data' => $validator
-            ];
+            $response = new BaseResponseObj();
+            $response->statusCode = '400';
+            $response->message = $validator->errors();
+            $response->data = $validator;
+
+            return $response;
         }
 
         try{
@@ -76,20 +74,21 @@ class UserController extends Controller
                     'email_verified_at'=> $request->emailVerifiedTime
                 ]);
 
+                $response = new BaseResponseObj();
+                $response->statusCode = '200';
+                $response->message = 'Registration Success!';
 
-                $response = [
-                    'statusCode' => 200,
-                    'message' => 'Registration Success!'
-                ];
+                return $response;
             });
 
             return $response;
 
         }catch(\Exception $e){
-            return [
-                'statusCode' => 500,
-                'message' => 'An Error Occurred During Registration'
-            ];
+            $response = new BaseResponseObj();
+            $response->statusCode = '500';
+            $response->message = 'An Error Occurred During Registration. ' . $e->getMessage();
+
+            return $response;
 
         }
     }
@@ -107,12 +106,20 @@ class UserController extends Controller
 
         $request['emailVerifiedTime'] = date('Y-m-d H:i:s');
         if($validator->fails()){
-            return response()->json(['errors' => $validator->errors()], 400);
+            $response = new BaseResponseObj();
+            $response->statusCode = '400';
+            $response->message = $validator->errors();
+
+            return $response;
 
         }
 
         try{
             $tenantOwner = $this->getUserInfoByToken($request);
+            if($tenantOwner->statusCode){
+                return $tenantOwner;
+            }
+
             $tenantOwnerTenantId = $tenantOwner->tenant_id;
 
             $branch = Branch::GetBranchByBranchCode($request->branchCode);
@@ -150,7 +157,11 @@ class UserController extends Controller
             }
             else
             {
-                return response()->json(['error' => 'Tenant Not Match'], 500);
+                $response = new BaseResponseObj();
+                $response->statusCode = "500";
+                $response->message = 'Tenant Not Match!';
+
+                return $response;
             }
 
 
@@ -165,20 +176,28 @@ class UserController extends Controller
     {
         // Extract token from Authorization header
         $token = $request->bearerToken();
+        $response = new BaseResponseObj();
 
         if (!$token) {
-            return response()->json(['error' => 'Token not provided'], 401);
+            $response->statusCode = "401";
+            $response->message = 'Token not provided!';
+
+            return $response;
         }
 
         // Find the token record in the database
         $tokenRecord = PersonalAccessToken::where('token', hash('sha256', $token))->first();
 
         if (!$tokenRecord) {
-            return response()->json(['error' => 'Invalid token'], 401);
+            $response->statusCode = "401";
+            $response->message = 'Invalid Token!';
+
+            return $response;
         }
 
         // Retrieve the associated user
-        return $user = $tokenRecord->tokenable; // This retrieves the user (or model) associated with the token
+        $user = $tokenRecord->tokenable;
+        return $user; // This retrieves the user (or model) associated with the token
 
     }
 

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('branch_code', 8)->unique();
             $table->string('branch_name');
-            $table->integer('tenant_id');
+            $table->bigInteger('tenant_id');
             $table->string('address');
             $table->string('city');
             $table->string('provice');

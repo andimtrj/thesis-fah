@@ -40,7 +40,8 @@
     </div>
 
     <!-- Logout Section -->
-    <form action="">
+    <form action="{{ route('logout') }}" method="POST">
+      @csrf
       <button href="" class="flex items-center p-2 rounded-lg group hover:bg-secondary w-full">
         <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
           height="24" fill="none" viewBox="0 0 24 24">
@@ -54,6 +55,6 @@
   </div>
 </aside>
 
-<div class="p-4 sm:ml-64 bg-[#EFEDE7]">
+<div class="p-4 sm:ml-64">
   {{ $slot }}
 </div>

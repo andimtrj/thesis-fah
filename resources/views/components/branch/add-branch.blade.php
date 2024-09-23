@@ -1,7 +1,7 @@
 <x-master>
   <x-sidebar.sidebar>
     <h1 class="text-3xl font-medium mb-5">Add Branch</h1>
-    <div class="bg-cream px-10 py-7 rounded-xl shadow-md">
+    <div class="bg-cream px-10 py-7 rounded-xl">
       <h2 class="text-xl font-medium mb-5 border-b-abu border-b-2">Branch Details</h2>
       <form action="" method="">
         <div class="mb-5">

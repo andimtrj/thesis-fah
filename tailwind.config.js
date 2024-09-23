@@ -22,6 +22,9 @@ export default {
       backgroundImage: {
         'custom-gradient': 'linear-gradient(115deg, #62cff4, #2c67f2)',
         'new-gradient': 'linear-gradient(45deg, hsl(201deg 100% 14%) 0%, hsl(207deg 69% 24%) 47%, hsl(209deg 65% 29%) 100%)',
+      },
+      boxShadow: {
+        'container': '0 3px 10px rgb(0,0,0,0.2)'
       }
     },
   },

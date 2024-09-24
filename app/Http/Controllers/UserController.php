@@ -1,37 +1,30 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Models\User;
-use App\Models\Branch;
-use App\Models\Tenant;
+use App\DTO\BaseResponseObj;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\TenantController;
-use App\Http\Controllers\AuthController;
 
 class UserController extends Controller
 {
-
     private $tenantController;
     private $roleController;
     private $branchController;
     private $authController;
 
     public function __construct(TenantController $tenantController
-                                , RoleController $roleController
-                                , BranchController $branchController
                                 , AuthController $authController)
     {
-        $this->branchController = $branchController;
         $this->tenantController = $tenantController;
-        $this->roleController = $roleController;
         $this->authController = $authController;
     }
 //#region Register
@@ -53,11 +46,12 @@ class UserController extends Controller
 
         $request['emailVerifiedTime'] = date('Y-m-d H:i:s');
         if($validator->fails()){
-            return [
-                'statusCode' => 400,
-                'message' => $validator->errors(),
-                'data' => $validator
-            ];
+            $response = new BaseResponseObj();
+            $response->statusCode = '400';
+            $response->message = $validator->errors();
+            $response->data = $validator;
+
+            return $response;
         }
 
         try{
@@ -65,7 +59,7 @@ class UserController extends Controller
                 $tenant = $this->tenantController->CreateTenant($request);
 
                 $role = Role::where('role_code', $request->roleCode)->firstOrFail();
-                $user = User::create([
+                User::create([
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
                     'phone_number' => $request->phoneNumber,
@@ -76,20 +70,21 @@ class UserController extends Controller
                     'email_verified_at'=> $request->emailVerifiedTime
                 ]);
 
+                $response = new BaseResponseObj();
+                $response->statusCode = '200';
+                $response->message = 'Registration Success!';
 
-                $response = [
-                    'statusCode' => 200,
-                    'message' => 'Registration Success!'
-                ];
+                return $response;
             });
 
             return $response;
 
         }catch(\Exception $e){
-            return [
-                'statusCode' => 500,
-                'message' => 'An Error Occurred During Registration'
-            ];
+            $response = new BaseResponseObj();
+            $response->statusCode = '500';
+            $response->message = 'An Error Occurred During Registration. ' . $e->getMessage();
+
+            return $response;
 
         }
     }
@@ -100,61 +95,62 @@ class UserController extends Controller
             'phoneNumber' => 'required|string|max:16',
             'firstName' => 'required|string|max:255',
             'lastName' => 'required|string|max:255',
-            'roleCode' => 'required|string|in:TO',
-            'branchCode' => 'required|string|max:255|exists:branches,branch_code',
-            'tenantCode' => 'required|string|max:255|exists:tenants,tenant_code'
+            'roleCode' => 'required|string|in:BA',
+            'branchId' => 'required|string|max:255|exists:branches,id',
+            'tenantId' => 'required|string|max:255|exists:tenants,id'
         ]);
 
         $request['emailVerifiedTime'] = date('Y-m-d H:i:s');
         if($validator->fails()){
-            return response()->json(['errors' => $validator->errors()], 400);
+            $response = new BaseResponseObj();
+            $response->statusCode = '400';
+            $response->message = $validator->errors();
+
+            return $response;
 
         }
 
         try{
-            $tenantOwner = $this->getUserInfoByToken($request);
-            $tenantOwnerTenantId = $tenantOwner->tenant_id;
 
-            $branch = Branch::GetBranchByBranchCode($request->branchCode);
-            $branchTenantId = $branch->tenant_id;
+            DB::transaction(function() use($request ,&$response){
+                $role = Role::where('role_code', $request->roleCode)->firstOrFail();
+                $user = Auth::user();
 
-            $tenantId = Tenant::GetTenantIdByTenantCode($request->tenantCode);
+                if ($user) {
+                    // User is authenticated
+                    echo $user->name;
+                } else {
+                    // No user is logged in
+                    echo 'No user is logged in.';
+                }
 
-            if($tenantId == $tenantOwnerTenantId && $tenantId == $branchTenantId){
-                $request->merge(['tenantId' => $tenantId],
-                                ['branchId' => $branch->id]);
+                User::create([
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'phone_number' => $request->phoneNumber,
+                    'first_name' => $request->firstName,
+                    'last_name' => $request->lastName,
+                    'role_id' => $role->id,
+                    'tenant_id' => $request->tenantId,
+                    'branch_id' => $request->branchId,
+                    'email_verified_at'=> $request->emailVerifiedTime
+                ]);
 
-                DB::transaction(function() use($request ,&$response){
-                    $role = Role::where('role_code', $request->roleCode)->firstOrFail();
-                    $user = User::create([
-                        'email' => $request->email,
-                        'password' => Hash::make($request->password),
-                        'phone_number' => $request->phoneNumber,
-                        'first_name' => $request->firstName,
-                        'last_name' => $request->lastName,
-                        'role_id' => $role->id,
-                        'tenant_id' => $request->tenantId,
-                        'branch_id' => $request->branchId,
-                        'email_verified_at'=> $request->emailVerifiedTime
-                    ]);
-                    $token =  $user->createToken('auth_token')->plainTextToken;
-
-                    $response = response()->json([
-                                    'data' => $user,
-                                    'access_token' => $token,
-                                    'token_type' => 'Bearer'
-                                ], 200);
-                });
+                $response = new BaseResponseObj();
+                $response->statusCode = '200';
+                $response->message = 'Registration Success!';
 
                 return $response;
-            }
-            else
-            {
-                return response()->json(['error' => 'Tenant Not Match'], 500);
-            }
+            });
 
+            return $response;
 
         }catch(\Exception $e){
+            $response = new BaseResponseObj();
+            $response->statusCode = '500';
+            $response->message = 'An Error Occurred During Registration. ' . $e->getMessage();
+
+            return $response;
 
         }
 
@@ -165,22 +161,29 @@ class UserController extends Controller
     {
         // Extract token from Authorization header
         $token = $request->bearerToken();
+        $response = new BaseResponseObj();
 
         if (!$token) {
-            return response()->json(['error' => 'Token not provided'], 401);
+            $response->statusCode = "401";
+            $response->message = 'Token not provided!';
+
+            return $response;
         }
 
         // Find the token record in the database
         $tokenRecord = PersonalAccessToken::where('token', hash('sha256', $token))->first();
 
         if (!$tokenRecord) {
-            return response()->json(['error' => 'Invalid token'], 401);
+            $response->statusCode = "401";
+            $response->message = 'Invalid Token!';
+
+            return $response;
         }
 
         // Retrieve the associated user
-        return $user = $tokenRecord->tokenable; // This retrieves the user (or model) associated with the token
+        $user = $tokenRecord->tokenable;
+        return $user; // This retrieves the user (or model) associated with the token
 
     }
-
 
 }

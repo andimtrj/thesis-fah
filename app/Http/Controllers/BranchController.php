@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Branch;
 use App\Models\Tenant;
+use App\DTO\BaseResponseObj;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -34,36 +35,42 @@ class BranchController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->errors(), 400);
+            return redirect('/branch')->with('error', 'An error occurred: ' . $validator->messages());
         }
 
         try{
             $response = null;
 
             DB::transaction(function() use($request, &$response){
-                $user = User::find($request->tenantOwnerId);
                 $branchCode = $this->GenerateBranchCode();
                 $tenantId = Tenant::GetTenantIdByTenantCode($request);
 
-                $branch = Branch::create([
+                Branch::create([
                     'branch_code' => $branchCode,
                     'branch_name' => $request->branchName,
                     'tenant_id' => $tenantId,
                     'address' => $request->branchAddress,
                     'city' => $request->branchCity,
                     'provice' => $request->branchProvince,
-                    'zip_code' => $request->branchZipCode,
-                    'created_by' => $user->email,
-                    'updated_by' => $user->email,
+                    'zip_code' => $request->branchZipCode
                 ]);
 
-                $response = response()->json($branch, 200);
+                $response = new BaseResponseObj();
+                $response->statusCode = '200';
+                $response->message = 'Registration Success!';
+
+                return $response;
             });
 
-            return $response;
+            return redirect()->intended('/branch')->with('status', $response['message']);
 
         }catch(\Exception $e){
-            return response()->json(['error' => 'An Error Ocurred during Branch Admin Registration'], 500);
+            $response = new BaseResponseObj();
+            $response->statusCode = '500';
+            $response->message = 'An Error Occurred During Registration. ' . $e->getMessage();
+
+            return redirect()->intended('/branch')->with('status', $response->message);
+
         }
     }
     // #endregion

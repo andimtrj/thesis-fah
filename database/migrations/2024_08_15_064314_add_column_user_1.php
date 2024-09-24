@@ -15,9 +15,9 @@ return new class extends Migration
             $table->string('phone_number', 16)->after('remember_token');
             $table->string('first_name', 128)->after('phone_number');
             $table->string('last_name', 128)->after('first_name');
-            $table->integer('role_id')->after('last_name');
-            $table->integer('tenant_id')->after('role_id');
-            $table->integer('branch_id')->after('tenant_id')->nullable();
+            $table->bigInteger('role_id')->after('last_name');
+            $table->bigInteger('tenant_id')->after('role_id');
+            $table->bigInteger('branch_id')->after('tenant_id')->nullable();
         });
     }
 

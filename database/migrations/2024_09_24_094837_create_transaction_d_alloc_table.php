@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('branches', function (Blueprint $table) {
+        Schema::create('transaction_d_alloc', function (Blueprint $table) {
             $table->id();
-            $table->string('branch_code', 8)->unique();
-            $table->string('branch_name');
-            $table->bigInteger('tenant_id');
-            $table->string('address');
-            $table->string('city');
-            $table->string('provice');
-            $table->string('zip_code');
+            $table->foreignId('ingredient_id')->constrained();
+            $table->foreignId('transaction_d_id')->constrained(
+                table:'transaction_d'
+            );
+            $table->decimal('ingredient_amt');
+            $table->string('ingredient_name');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('branches');
+        Schema::dropIfExists('transaction_d_alloc');
     }
 };

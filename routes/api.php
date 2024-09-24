@@ -14,9 +14,9 @@ Route::post('/registerBranchAdmin', [\App\Http\Controllers\Api\UserController::c
 #endregion
 
 #region Branch
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/createBranch', [\App\Http\Controllers\Api\BranchController::class, 'CreateBranch']);
-});
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::post('/createBranch', [\App\Http\Controllers\Api\BranchController::class, 'CreateBranch']);
+// });
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/registerBranchAdmin', [\App\Http\Controllers\Api\UserController::class, 'RegisterBranchAdmin']);
 });

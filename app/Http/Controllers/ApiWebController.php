@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
@@ -20,11 +20,11 @@ class ApiWebController extends Controller
         if($request->roleCode == 'TO'){
             try {
                 $response = $this->userController->RegisterTenantOwner($request);
-                if ($response['statusCode'] == 200) {
+                if ($response->statusCode == "200") {
                     $this->authController->Authenticate($request);
-                    return redirect()->intended('/branch')->with('status', $response['message']);
+                    return redirect()->intended('/branch')->with('status', $response->message);
                 } else {
-                    return redirect('/')->withErrors($response['data'])->withInput();
+                    return redirect('/')->withErrors($response->data)->withInput();
                 }
             } catch (\Exception $e) {
                 // Log or handle the exception

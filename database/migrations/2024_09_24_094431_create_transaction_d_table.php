@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('branches', function (Blueprint $table) {
+        Schema::create('transaction_d', function (Blueprint $table) {
             $table->id();
-            $table->string('branch_code', 8)->unique();
-            $table->string('branch_name');
-            $table->bigInteger('tenant_id');
-            $table->string('address');
-            $table->string('city');
-            $table->string('provice');
-            $table->string('zip_code');
+            $table->foreignId('product_id')->constrained();
+            $table->decimal('product_amt');
+            $table->string('product_name');
+            $table->string('notes');
+            $table->foreignId('transaction_h_id')->constrained(
+                table:'transaction_h'
+            );
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('branches');
+        Schema::dropIfExists('transaction_d');
     }
 };

@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('branches', function (Blueprint $table) {
+        Schema::create('metric_groups', function (Blueprint $table) {
             $table->id();
-            $table->string('branch_code', 8)->unique();
-            $table->string('branch_name');
-            $table->bigInteger('tenant_id');
-            $table->string('address');
-            $table->string('city');
-            $table->string('provice');
-            $table->string('zip_code');
+            $table->string('metric_grp_code')->unique();
+            $table->string('metric_grp_name');
+            $table->integer('base_metric_seq_no');
             $table->timestamps();
         });
     }
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('branches');
+        Schema::dropIfExists('metric_groups');
     }
 };

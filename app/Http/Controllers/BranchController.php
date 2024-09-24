@@ -42,7 +42,6 @@ class BranchController extends Controller
             $response = null;
 
             DB::transaction(function() use($request, &$response){
-                $user = User::find($request->tenantOwnerId);
                 $branchCode = $this->GenerateBranchCode();
                 $tenantId = Tenant::GetTenantIdByTenantCode($request);
 
@@ -53,9 +52,7 @@ class BranchController extends Controller
                     'address' => $request->branchAddress,
                     'city' => $request->branchCity,
                     'provice' => $request->branchProvince,
-                    'zip_code' => $request->branchZipCode,
-                    'created_by' => $user->email,
-                    'updated_by' => $user->email,
+                    'zip_code' => $request->branchZipCode
                 ]);
 
                 $response = new BaseResponseObj();

@@ -9,7 +9,7 @@
   <title>Thesis</title>
 </head>
 
-<body>
+<body class="bg-page-gradient bg-no-repeat bg-cover min-h-screen">
   {{ $slot }}
 </body>
 

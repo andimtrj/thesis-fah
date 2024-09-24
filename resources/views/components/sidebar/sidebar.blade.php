@@ -56,7 +56,7 @@
 </aside>
 
 <div class="p-5 sm:ml-64">
-  <div class="shadow-container p-5 rounded-lg">
+  <div class="shadow-container rounded-xl bg-white">
     {{ $slot }}
   </div>
 </div>

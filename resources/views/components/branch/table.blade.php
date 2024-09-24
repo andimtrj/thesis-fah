@@ -1,19 +1,19 @@
     {{-- Table --}}
     <div class="relative overflow-x-auto rounded-t-xl">
-      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <table class="w-full text-sm text-left rtl:text-right text-gray-500">
         {{-- Table Head --}}
-        <thead class="text-sm text-gray-700 uppercase bg-cream">
+        <thead class="text-white bg-primary">
           <tr>
-            <th scope="col" class="px-4 py-4 text-center">
+            <th scope="col" class="px-4 py-4 text-center w-[15.2vw] font-medium">
               Branch Code
             </th>
-            <th scope="col" class="px-4 py-4 lg:w-[45vw] md:w-[18vw]">
+            <th scope="col" class="px-4 py-4 lg:w-[35vw] md:w-[18vw] font-medium">
               Branch Name
             </th>
-            <th scope="col" class="px-4 py-4 text-center">
+            <th scope="col" class="px-4 py-4 text-center font-medium">
               Total Branch Admin
             </th>
-            <th scope="col" class="px-4 py-4 text-center">
+            <th scope="col" class="px-4 py-4 text-center font-medium">
               Action
             </th>
           </tr>
@@ -22,7 +22,7 @@
         {{-- Table Body --}}
         <tbody>
           {{-- Table Body --}}
-          <tr class="bg-white border-y dark:bg-gray-800 dark:border-gray-700 text-base">
+          <tr class="bg-white border-y text-base">
             <th scope="row"
               class="px-4 py-3 font-medium text-center">
               RR0001

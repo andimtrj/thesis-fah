@@ -17,19 +17,19 @@
 
           <div class="flex gap-1 text-cream">
             <a href=""
-              class="border-2 border-primary bg-primary p-1 rounded-md w-8 h-8 flex justify-center items-center"> 1
+              class="border border-primary bg-cream text-abu p-1 rounded-md w-8 h-8 flex justify-center items-center"> 1
             </a>
             <a href=""
-              class="border-2 border-primary text-abu p-1 rounded-md w-8 h-8 flex justify-center items-center"> 2
+              class="border border-primary text-abu p-1 rounded-md w-8 h-8 flex justify-center items-center"> 2
             </a>
             <a href=""
-              class="border-2 border-primary text-abu p-1 rounded-md w-8 h-8 flex justify-center items-center"> 3
+              class="border border-primary text-abu p-1 rounded-md w-8 h-8 flex justify-center items-center"> 3
             </a>
             <a href=""
-              class="border-2 border-primary text-abu p-1 rounded-md w-8 h-8 flex justify-center items-center"> ..
+              class="border border-primary text-abu p-1 rounded-md w-8 h-8 flex justify-center items-center"> ..
             </a>
             <a href=""
-              class="border-2 border-primary text-abu p-1 rounded-md w-8 h-8 flex justify-center items-center"> 32
+              class="border border-primary text-abu p-1 rounded-md w-8 h-8 flex justify-center items-center"> 32
             </a>
           </div>
 

@@ -28,16 +28,22 @@ Route::middleware('web')->group(function () {
             return view('menu');
         })->name('menu');
 
+        Route::get('/landing', function () {
+            return view('landing');
+        })->name('landing');
+    
+        Route::get('/branchadmin', function () {
+            return view('branchadmin');
+        })->name('branchadmin');
+
+        Route::get('/add-branch', function () {
+            return view('components.branch.add-branch');
+        })->name('add-branch');
+
+        Route::get('/edit-branch', function () {
+            return view('components.branch.edit-branch');
+        })->name('edit-branch');
     });
-
-
-    Route::get('/landing', function () {
-        return view('landing');
-    })->name('landing');
-
-    Route::get('/branchadmin', function () {
-        return view('branchadmin');
-    })->name('branchadmin');
 });
 
 

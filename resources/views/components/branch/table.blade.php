@@ -2,7 +2,7 @@
     <div class="relative overflow-x-auto rounded-t-xl">
       <table class="w-full text-sm text-left rtl:text-right text-gray-500">
         {{-- Table Head --}}
-        <thead class="text-white bg-primary">
+        <thead class="bg-cream">
           <tr>
             <th scope="col" class="px-4 py-4 text-center w-[15.2vw] font-medium">
               Branch Code

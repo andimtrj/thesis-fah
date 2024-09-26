@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
+use App\Models\Tenant;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,6 +34,21 @@ class AuthController extends Controller
         }
         if(Auth::attempt($credentials)){
             $request->session()->regenerate();
+            $authTenantId = Auth::user()->tenant_id;
+            $authTenant = Tenant::find($authTenantId);
+            $authTenantCode = $authTenant->tenant_code;
+
+            $authBranchId = Auth::user()->branch_id;
+            $authBranch = Branch::find($authBranchId);
+            $authBranchCode = $authBranch->branch_code ?? "";
+
+
+            session(
+                [
+                    'tenant_code' => $authTenantCode,
+                    'branch_code' => $authBranchCode
+                ]
+            );
 
             return redirect()->intended('/branch');
         }

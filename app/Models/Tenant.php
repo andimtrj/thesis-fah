@@ -31,13 +31,6 @@ class Tenant extends Model
     }
 
     public static function GetTenantIdByTenantCode(Request $request){
-        $validator = Validator::make($request->all(), [
-            'tenantCode' => 'required|string|max:255|exists:tenants,tenant_code'
-        ]);
-
-        if($validator->fails()){
-            return response()->json($validator->errors(), 400);
-        }
 
         $tenant = Tenant::where('tenant_code', $request->tenantCode)->firstOrFail();
         return $tenant->id;

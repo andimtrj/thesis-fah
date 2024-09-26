@@ -1,25 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\DTO\BaseResponseObj;
 use App\Models\Role;
 use App\Models\User;
-use App\Models\Branch;
-use App\Models\Tenant;
+use App\DTO\BaseResponseObj;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\TenantController;
-use App\Http\Controllers\AuthController;
 
 class UserController extends Controller
 {
-
     private $tenantController;
     private $roleController;
     private $branchController;
@@ -63,7 +59,7 @@ class UserController extends Controller
                 $tenant = $this->tenantController->CreateTenant($request);
 
                 $role = Role::where('role_code', $request->roleCode)->firstOrFail();
-                $user = User::create([
+                User::create([
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
                     'phone_number' => $request->phoneNumber,
@@ -99,9 +95,9 @@ class UserController extends Controller
             'phoneNumber' => 'required|string|max:16',
             'firstName' => 'required|string|max:255',
             'lastName' => 'required|string|max:255',
-            'roleCode' => 'required|string|in:TO',
-            'branchCode' => 'required|string|max:255|exists:branches,branch_code',
-            'tenantCode' => 'required|string|max:255|exists:tenants,tenant_code'
+            'roleCode' => 'required|string|in:BA',
+            'branchId' => 'required|string|max:255|exists:branches,id',
+            'tenantId' => 'required|string|max:255|exists:tenants,id'
         ]);
 
         $request['emailVerifiedTime'] = date('Y-m-d H:i:s');
@@ -115,57 +111,46 @@ class UserController extends Controller
         }
 
         try{
-            $tenantOwner = $this->getUserInfoByToken($request);
-            if($tenantOwner->statusCode){
-                return $tenantOwner;
-            }
 
-            $tenantOwnerTenantId = $tenantOwner->tenant_id;
+            DB::transaction(function() use($request ,&$response){
+                $role = Role::where('role_code', $request->roleCode)->firstOrFail();
+                $user = Auth::user();
 
-            $branch = Branch::GetBranchByBranchCode($request->branchCode);
-            $branchTenantId = $branch->tenant_id;
+                if ($user) {
+                    // User is authenticated
+                    echo $user->name;
+                } else {
+                    // No user is logged in
+                    echo 'No user is logged in.';
+                }
 
-            $tenantId = Tenant::GetTenantIdByTenantCode($request->tenantCode);
+                User::create([
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'phone_number' => $request->phoneNumber,
+                    'first_name' => $request->firstName,
+                    'last_name' => $request->lastName,
+                    'role_id' => $role->id,
+                    'tenant_id' => $request->tenantId,
+                    'branch_id' => $request->branchId,
+                    'email_verified_at'=> $request->emailVerifiedTime
+                ]);
 
-            if($tenantId == $tenantOwnerTenantId && $tenantId == $branchTenantId){
-                $request->merge(['tenantId' => $tenantId],
-                                ['branchId' => $branch->id]);
-
-                DB::transaction(function() use($request ,&$response){
-                    $role = Role::where('role_code', $request->roleCode)->firstOrFail();
-                    $user = User::create([
-                        'email' => $request->email,
-                        'password' => Hash::make($request->password),
-                        'phone_number' => $request->phoneNumber,
-                        'first_name' => $request->firstName,
-                        'last_name' => $request->lastName,
-                        'role_id' => $role->id,
-                        'tenant_id' => $request->tenantId,
-                        'branch_id' => $request->branchId,
-                        'email_verified_at'=> $request->emailVerifiedTime
-                    ]);
-                    $token =  $user->createToken('auth_token')->plainTextToken;
-
-                    $response = response()->json([
-                                    'data' => $user,
-                                    'access_token' => $token,
-                                    'token_type' => 'Bearer'
-                                ], 200);
-                });
-
-                return $response;
-            }
-            else
-            {
                 $response = new BaseResponseObj();
-                $response->statusCode = "500";
-                $response->message = 'Tenant Not Match!';
+                $response->statusCode = '200';
+                $response->message = 'Registration Success!';
 
                 return $response;
-            }
+            });
 
+            return $response;
 
         }catch(\Exception $e){
+            $response = new BaseResponseObj();
+            $response->statusCode = '500';
+            $response->message = 'An Error Occurred During Registration. ' . $e->getMessage();
+
+            return $response;
 
         }
 
@@ -200,6 +185,5 @@ class UserController extends Controller
         return $user; // This retrieves the user (or model) associated with the token
 
     }
-
 
 }

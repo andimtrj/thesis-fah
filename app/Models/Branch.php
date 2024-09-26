@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use function Laravel\Prompts\select;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Validator;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -15,9 +16,36 @@ class Branch extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'branch_code',
+        'branch_name',
+        'tenant_id',
+        'address',
+        'city',
+        'province',
+        'zip_code',
+        'created_by',
+        'updated_by'
+    ];
+
+
     public function user(): HasMany
     {
         return $this->hasMany(User::class);
+    }
+
+    public function creator() {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function updater() {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
     }
 
     public static function GetBranchByBranchCode(Request $request){
@@ -33,7 +61,7 @@ class Branch extends Model
 
     }
 
-    public function GetPagingBranch(Request $request){
+    public static function GetPagingBranch(Request $request){
         if($request->input('tenantCode')){
             $paramTenantCode = $request->input('tenantCode');
             $query = Branch::join('tenants', 'branches.tenant_id', '=', 'tenants.id')

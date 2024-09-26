@@ -34,7 +34,7 @@
         </div>
       </div>
       <div class="flex gap-2">
-        <button class="bg-secondary bg-opacity-10 rounded-lg px-5 py-2 text-secondary flex items-center gap-1">
+        <button class="bg-secondary bg-opacity-10 rounded-lg px-7 py-2 text-secondary flex items-center gap-1">
           <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
             fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-width="2"

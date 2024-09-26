@@ -45,9 +45,13 @@
               placeholder="Current branch zip code" required="">
           </div>
         </div>
-        <div class="flex justify-end">
+        <div class="flex justify-end gap-5">
+          <a href="{{ route('branch') }}"
+            class="flex items-center text-white bg-danger hover:shadow-container lg:px-10 md:px-1 py-2 font-medium rounded-lg gap-1 flex-shrink-0 w-fit md:text-xs lg:text-base">
+            <span>Cancel</span>
+          </a>
           <button type="submit"
-            class="flex items-center text-white bg-accent lg:px-10 md:px-1 py-2 font-medium rounded-lg gap-1 flex-shrink-0 shadow-sm w-fit md:text-xs lg:text-base">
+            class="flex items-center text-white bg-secondary hover:shadow-container lg:px-10 md:px-1 py-2 font-medium rounded-lg gap-1 flex-shrink-0 w-fit md:text-xs lg:text-base">
             <span>Submit</span>
           </button>
         </div>

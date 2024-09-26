@@ -15,29 +15,37 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Branch extends Model
 {
     use HasFactory;
-    protected $fillable = ['created_by', 'updated_by'];
+
+    protected $fillable = [
+        'branch_code',
+        'branch_name',
+        'tenant_id',
+        'address',
+        'city',
+        'province',
+        'zip_code',
+        'created_by',
+        'updated_by'
+    ];
+
 
     public function user(): HasMany
     {
         return $this->hasMany(User::class);
     }
 
+    public function creator() {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function updater() {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+
     protected static function boot()
     {
         parent::boot();
 
-        static::creating(function ($model) {
-            if (Auth::check()) {
-                $model->created_by = Auth::id();
-                $model->updated_by = Auth::id();
-            }
-        });
-
-        static::updating(function ($model) {
-            if (Auth::check()) {
-                $model->updated_by = Auth::id();
-            }
-        });
     }
 
     public static function GetBranchByBranchCode(Request $request){
@@ -53,7 +61,7 @@ class Branch extends Model
 
     }
 
-    public function GetPagingBranch(Request $request){
+    public static function GetPagingBranch(Request $request){
         if($request->input('tenantCode')){
             $paramTenantCode = $request->input('tenantCode');
             $query = Branch::join('tenants', 'branches.tenant_id', '=', 'tenants.id')

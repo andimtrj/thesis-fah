@@ -4,6 +4,7 @@ use App\Http\Controllers\ApiWebController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BranchController;
+use App\Models\Branch;
 
 // Route::get('/', function () {
 //     return view('home');
@@ -17,7 +18,6 @@ Route::middleware('web')->group(function () {
         return view('login');
     })->name('login');
 
-    Route::post('/createBranch',  [BranchController::class, 'CreateBranch'])->name('login');
 
     Route::middleware('auth')->group(function(){
         Route::get('/branch', function () {
@@ -31,7 +31,7 @@ Route::middleware('web')->group(function () {
         Route::get('/landing', function () {
             return view('landing');
         })->name('landing');
-    
+
         Route::get('/branchadmin', function () {
             return view('branchadmin');
         })->name('branchadmin');
@@ -43,6 +43,9 @@ Route::middleware('web')->group(function () {
         Route::get('/edit-branch', function () {
             return view('components.branch.edit-branch');
         })->name('edit-branch');
+
+        Route::post('/create-branch',  [BranchController::class, 'CreateBranch'])->name('create-branch');
+        Route::get('/get-paging-branch', [BranchController::class, 'GetPagingBranch'])->name('get-paging-branch');
     });
 });
 

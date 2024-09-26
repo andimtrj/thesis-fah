@@ -9,6 +9,7 @@ use App\DTO\BaseResponseObj;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\TenantController;
 
@@ -24,10 +25,10 @@ class BranchController extends Controller
 
     // #region Insert Branch
     public function CreateBranch(Request $request){
+        // dd($request);
         $validator = Validator::make($request->all(), [
             'branchName' => 'required|string|max:255',
             'tenantCode' => 'required|string|max:8|exists:tenants,tenant_code',
-            'tenantOwnerId' => 'required|integer|exists:users,id',
             'branchAddress' => 'required|string|max:255',
             'branchCity' => 'required|string|max:255',
             'branchProvince' => 'required|string|max:255',
@@ -35,11 +36,10 @@ class BranchController extends Controller
         ]);
 
         if($validator->fails()){
-            return redirect('/branch')->with('error', 'An error occurred: ' . $validator->messages());
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         try{
-            $response = null;
 
             DB::transaction(function() use($request, &$response){
                 $branchCode = $this->GenerateBranchCode();
@@ -47,13 +47,16 @@ class BranchController extends Controller
 
                 Branch::create([
                     'branch_code' => $branchCode,
-                    'branch_name' => $request->branchName,
+                    'branch_name' => $request->input('branchName'),
                     'tenant_id' => $tenantId,
-                    'address' => $request->branchAddress,
-                    'city' => $request->branchCity,
-                    'provice' => $request->branchProvince,
-                    'zip_code' => $request->branchZipCode
+                    'address' => $request->input('branchAddress'),
+                    'city' => $request->input('branchCity'),
+                    'province' => $request->input('branchProvince'),
+                    'zip_code' => $request->input('branchZipCode'),
+                    'created_by' => Auth::id(),
+                    'updated_by' => Auth::id()
                 ]);
+
 
                 $response = new BaseResponseObj();
                 $response->statusCode = '200';
@@ -62,7 +65,7 @@ class BranchController extends Controller
                 return $response;
             });
 
-            return redirect()->intended('/branch')->with('status', $response['message']);
+            return redirect()->intended('/branch')->with('status', $response->statusCode);
 
         }catch(\Exception $e){
             $response = new BaseResponseObj();
@@ -100,5 +103,8 @@ class BranchController extends Controller
     // #endregion
 
     // #region Get
+    public function GetPagingBranch(Request $request){
+        return Branch::GetPagingBranch($request);
+    }
     // #endregion
 }

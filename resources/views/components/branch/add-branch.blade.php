@@ -1,8 +1,10 @@
 <x-master>
   <x-sidebar.sidebar>
-    <h1 class="text-3xl font-medium mb-5">Add Branch</h1>
-    <div class="bg-cream px-10 py-7 rounded-xl">
-      <h2 class="text-xl font-medium mb-5 border-b-abu border-b-2">Branch Details</h2>
+    <div class="px-10 py-5 bg-primary text-white rounded-t-xl">
+      <h1 class="text-3xl font-medium">Add Branch</h1>
+    </div>
+    <div class="px-10 py-7 rounded-xl">
+      <h2 class="text-xl font-medium mb-5 border-b-2 border-abu">Branch Details</h2>
       <form action="" method="">
         <div class="mb-5">
           <label for="branch_name" class="block mb-1 text-sm font-medium text-gray-900">Branch
@@ -45,13 +47,8 @@
         </div>
         <div class="flex justify-end">
           <button type="submit"
-            class="flex items-center text-white bg-accent lg:px-3 md:px-1 py-2 rounded-lg gap-1 flex-shrink-0 shadow-sm w-fit md:text-xs lg:text-base">
-            <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-              height="24" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M5 12h14m-7 7V5" />
-            </svg>
-            <span>Add Branch</span>
+            class="flex items-center text-white bg-accent lg:px-10 md:px-1 py-2 font-medium rounded-lg gap-1 flex-shrink-0 shadow-sm w-fit md:text-xs lg:text-base">
+            <span>Submit</span>
           </button>
         </div>
       </form>

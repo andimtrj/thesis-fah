@@ -1,6 +1,6 @@
 <x-master>
   <x-sidebar.sidebar>
-    <div class="flex justify-between gap-3 items-center px-5 py-3 bg-primary rounded-t-xl">
+    <div class="flex justify-between gap-3 items-center px-10 py-5 bg-primary rounded-t-xl">
       <div class="flex items-center">
         <h1 class="text-3xl font-medium text-white">Roji Ramen</h1>
       </div>
@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <div class="flex items-end gap-5 px-5 bg-white mt-5">
+    <div class="flex items-end gap-5 px-10 bg-white mt-5">
       <div class="flex gap-5">
         <div class="w-[15vw]">
           <label for="small-input" class="block mb-1 text-sm font-medium text-gray-900">Branch code</label>
@@ -48,7 +48,7 @@
       </div>
     </div>
 
-    <div class="px-5 mt-5">
+    <div class="px-10 mt-5">
       <x-branch.table />
     </div>
     {{-- Pagination --}}

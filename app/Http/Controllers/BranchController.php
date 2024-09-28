@@ -43,7 +43,7 @@ class BranchController extends Controller
 
             DB::transaction(function() use($request, &$response){
                 $branchCode = $this->GenerateBranchCode();
-                $tenantId = Tenant::GetTenantIdByTenantCode($request);
+                $tenantId = Tenant::GetTenantIdByTenantCode($request->input('tenantCode'));
 
                 Branch::create([
                     'branch_code' => $branchCode,
@@ -103,8 +103,21 @@ class BranchController extends Controller
     // #endregion
 
     // #region Get
-    public function GetPagingBranch(Request $request){
-        return Branch::GetPagingBranch($request);
-    }
+
     // #endregion
+
+    public function showBranchPaging(Request $request)
+    {
+        $formSubmitted = $request->has('branchCode') || $request->has('branchName');
+        $authTenantId = Auth::user()->tenant_id;
+
+        if ($authTenantId) {
+            $branches = Branch::GetPagingBranch($request); // Call the Model method here
+        } else {
+            throw new \Exception("Tenant Code Is Null");
+        }
+
+        return view('branch', compact('branches', 'formSubmitted')); // Pass variables to view
+    }
+
 }

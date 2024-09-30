@@ -42,7 +42,7 @@
 {{-- Pagination --}}
 @if(isset($branches))
     <div class="mt-4">
-        {{ $branches->links() }} <!-- Ensure this is placed here -->
+        {{ $branches->appends(request()->query())->links() }}
     </div>
 @endif
 

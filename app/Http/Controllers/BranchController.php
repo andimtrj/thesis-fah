@@ -108,11 +108,11 @@ class BranchController extends Controller
 
     public function showBranchPaging(Request $request)
     {
-        $formSubmitted = $request->has('branchCode') || $request->has('branchName');
+        $formSubmitted = $request->has('branchCode') || $request->has('branchName') || $request->has('page');
         $authTenantId = Auth::user()->tenant_id;
 
         if ($authTenantId) {
-            $branches = Branch::GetPagingBranch($request); // Call the Model method here
+            $branches = Branch::GetPagingBranch($request)->withQueryString(); // Call the Model method here
         } else {
             throw new \Exception("Tenant Code Is Null");
         }

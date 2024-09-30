@@ -19,7 +19,7 @@
     </div>
 
     <div class="flex items-end gap-5 px-10 bg-white mt-5">
-        <form class="flex gap-5">
+        <form action="{{ route('branch') }}" method="GET" class="flex gap-5">
             <div class="w-[15vw]">
                 <label for="branchCode" class="block mb-1 text-sm font-medium text-gray-900">Branch code</label>
                 <input type="text" id="branchCode" name="branchCode"

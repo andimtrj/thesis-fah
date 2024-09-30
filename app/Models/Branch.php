@@ -98,6 +98,6 @@ class Branch extends Model
             throw new \Exception("Tenant Code Is Null");
         }
 
-        return $branches->withQueryString();
+        return $branches;
     }
 }

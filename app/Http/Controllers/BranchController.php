@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\TenantController;
+use App\View\Components\branch as ComponentsBranch;
 
 class BranchController extends Controller
 {
@@ -120,4 +121,31 @@ class BranchController extends Controller
         return view('branch', compact('branches', 'formSubmitted')); // Pass variables to view
     }
 
+    public function DetailBranchPage($id){
+
+        // Find the branch by id
+        $branch = Branch::findOrFail($id);
+
+        // Pass the branch to the view
+        return view('components.branch.edit-branch', compact('branch'));
+    }
+
+    public function UpdateBranch(Request $request, $id){
+        $validatedData = $request->validate([
+            'branch_name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'province' => 'required|string|max:255',
+            'zip_code' => 'required|string|max:255',
+        ]);
+
+        // Find the branch by id
+        $branch = Branch::findOrFail($id);
+
+        // Update the branch with validated data
+        $branch->update($validatedData);
+
+        return redirect(route('branch'))->with('success', 'Branch updated successfully.');
+
+    }
 }

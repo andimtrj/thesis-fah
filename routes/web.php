@@ -24,17 +24,13 @@ Route::middleware('web')->group(function () {
             return view('branch');
         })->name('branch');
 
-        Route::get('/menu', function () {
-            return view('menu');
-        })->name('menu');
+        Route::get('/product', function () {
+            return view('product');
+        })->name('product');
 
         Route::get('/landing', function () {
             return view('landing');
         })->name('landing');
-
-        Route::get('/branchadmin', function () {
-            return view('branchadmin');
-        })->name('branchadmin');
 
         Route::get('/add-branch', function () {
             return view('components.branch.add-branch');

@@ -11,4 +11,13 @@ class ProductIngredientD extends Model
 
     protected $table = 'product_ingredient_d';
 
+    protected $fillable = [
+        'prod_h_ing_id',
+        'ingredient_id',
+        'ingredient_amt'
+    ];
+
+    public function ProductIngredientH(){
+        return $this->belongsTo(ProductIngredientH::class);
+    }
 }

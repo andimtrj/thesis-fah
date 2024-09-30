@@ -20,9 +20,7 @@ Route::middleware('web')->group(function () {
 
 
     Route::middleware('auth')->group(function(){
-        Route::get('/branch', function () {
-            return view('branch');
-        })->name('branch');
+        Route::get('/branch', [BranchController::class, 'showBranchPaging'])->name('branch');
 
         Route::get('/product', function () {
             return view('product');

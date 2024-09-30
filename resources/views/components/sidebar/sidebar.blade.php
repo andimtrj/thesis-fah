@@ -54,10 +54,5 @@
 </aside>
 
 <div class="p-5 sm:ml-64">
-  <div class="mb-5">
-    <h1 class="text-4xl font-bold text-secondary">{{ $title }}</h1>
-  </div>
-  <div class="rounded-xl bg-white shadow-container">
-    {{ $slot }}
-  </div>
+  {{ $slot }}
 </div>

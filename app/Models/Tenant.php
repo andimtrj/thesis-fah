@@ -30,9 +30,9 @@ class Tenant extends Model
         return $this->hasMany(User::class);
     }
 
-    public static function GetTenantIdByTenantCode(Request $request){
+    public static function GetTenantIdByTenantCode(string $tenantCode){
 
-        $tenant = Tenant::where('tenant_code', $request->tenantCode)->firstOrFail();
+        $tenant = Tenant::where('tenant_code', $tenantCode)->firstOrFail();
         return $tenant->id;
     }
 

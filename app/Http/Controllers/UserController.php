@@ -157,33 +157,4 @@ class UserController extends Controller
     }
 //#endregion
 
-    public static function getUserInfoByToken(Request $request)
-    {
-        // Extract token from Authorization header
-        $token = $request->bearerToken();
-        $response = new BaseResponseObj();
-
-        if (!$token) {
-            $response->statusCode = "401";
-            $response->message = 'Token not provided!';
-
-            return $response;
-        }
-
-        // Find the token record in the database
-        $tokenRecord = PersonalAccessToken::where('token', hash('sha256', $token))->first();
-
-        if (!$tokenRecord) {
-            $response->statusCode = "401";
-            $response->message = 'Invalid Token!';
-
-            return $response;
-        }
-
-        // Retrieve the associated user
-        $user = $tokenRecord->tokenable;
-        return $user; // This retrieves the user (or model) associated with the token
-
-    }
-
 }

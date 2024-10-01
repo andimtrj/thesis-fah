@@ -20,9 +20,7 @@ Route::middleware('web')->group(function () {
 
 
     Route::middleware('auth')->group(function(){
-        Route::get('/branch', function () {
-            return view('branch');
-        })->name('branch');
+        Route::get('/branch', [BranchController::class, 'showBranchPaging'])->name('branch');
 
         Route::get('/menu', function () {
             return view('menu');
@@ -40,11 +38,10 @@ Route::middleware('web')->group(function () {
             return view('components.branch.add-branch');
         })->name('add-branch');
 
-        Route::get('/edit-branch', function () {
-            return view('components.branch.edit-branch');
-        })->name('edit-branch');
+        Route::get('/edit-branch/{id}', [BranchController:: class, 'DetailBranchPage'])->name('edit-branch');
 
         Route::post('/create-branch',  [BranchController::class, 'CreateBranch'])->name('create-branch');
+        Route::post('/update-branch/{id}',  [BranchController::class, 'UpdateBranch'])->name('update-branch');
         Route::get('/get-paging-branch', [BranchController::class, 'GetPagingBranch'])->name('get-paging-branch');
     });
 });

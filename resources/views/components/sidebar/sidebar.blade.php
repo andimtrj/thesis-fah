@@ -20,7 +20,7 @@
     <!-- Sidebar Links Section -->
     <div class="flex-1">
       <ul class="space-y-2 font-normal">
-        <x-sidebar.sidebar-link href="{{ route('branch') }}" linkName="Branch">
+        <x-sidebar.sidebar-link href="{{ route('branch') }}" linkName="Branches">
           <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
             height="24" fill="currentColor" viewBox="0 0 24 24">
             <path fill-rule="evenodd"
@@ -28,8 +28,15 @@
               clip-rule="evenodd" />
           </svg>
         </x-sidebar.sidebar-link>
-        <x-sidebar.sidebar-link href="{{ route('product') }}" linkName="Product">
-          <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24">
+        <x-sidebar.sidebar-link href="{{ route('ingredient') }}" linkName="Ingredients">
+          <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path fill="currentColor"
+              d="M10.357 4.103c-1.001 1.001-1.58 2.335-1.912 3.673c-.333 1.344-.431 2.747-.43 3.95a.327.327 0 0 1-.322.323c-1.771.007-4.016.22-5.832 1.087c-.682.326-.967.998-.826 1.635c.133.596.615 1.085 1.267 1.244c.795.194 1.717.445 2.519.73c.401.142.76.288 1.052.434c.302.152.487.28.578.372c.091.09.22.275.371.577c.146.292.292.65.434 1.051c.284.801.534 1.723.728 2.517c.159.652.648 1.135 1.245 1.267c.637.142 1.309-.143 1.635-.825c.867-1.813 1.08-4.054 1.09-5.823c0-.174.147-.321.323-.321c1.202 0 2.606-.098 3.95-.431c1.34-.333 2.674-.912 3.676-1.914c1.12-1.12 1.668-2.609 1.917-4.056c.25-1.451.209-2.926.095-4.092a3.77 3.77 0 0 0-3.41-3.41c-1.166-.113-2.64-.154-4.092.095c-1.447.25-2.936.798-4.056 1.917M16 5a1 1 0 1 1 0 2a1 1 0 0 1 0-2" />
+          </svg>
+        </x-sidebar.sidebar-link>
+        <x-sidebar.sidebar-link href="{{ route('product') }}" linkName="Products">
+          <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="24" height="24"
+            viewBox="0 0 24 24">
             <path fill="currentColor"
               d="M3.743 2.816A.88.88 0 0 1 5.5 2.88v4.494a.625.625 0 1 0 1.25 0V2.75a.75.75 0 0 1 1.5 0v4.624a.625.625 0 1 0 1.25 0V2.88a.88.88 0 0 1 1.757-.064C11.3 3.428 11.5 6.37 11.5 8c0 1.35-.67 2.544-1.692 3.267c-.216.153-.268.315-.263.397c.123 1.878.455 7.018.455 7.833a2.5 2.5 0 0 1-5 0c0-.816.332-5.955.455-7.833c.005-.082-.047-.244-.263-.397A4 4 0 0 1 3.5 8c0-1.63.2-4.572.243-5.184M13 7.75A5.75 5.75 0 0 1 18.75 2a.75.75 0 0 1 .75.75v8.5c0 .318.106 1.895.225 3.642l.005.083c.13 1.908.27 3.983.27 4.522a2.5 2.5 0 0 1-5 0c0-.514.128-2.611.252-4.534c.062-.971.125-1.912.172-2.61l.023-.353h-.697A1.75 1.75 0 0 1 13 10.25z" />
           </svg>

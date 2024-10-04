@@ -3,7 +3,7 @@
     <div class="px-10 py-5 bg-primary text-white rounded-t-xl">
       <h1 class="text-3xl font-medium">Edit Branch</h1>
     </div>
-    <div class="px-10 py-7 rounded-xl">
+    <div class="px-10 py-7 rounded-xl bg-white">
       <h2 class="text-xl font-medium mb-5 border-b-2 border-abu">Branch Details</h2>
       <form action="" method="">
         <div class="mb-5">

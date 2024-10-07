@@ -5,7 +5,8 @@
     </div>
     <div class="px-10 py-7 rounded-xl">
       <h2 class="text-xl font-medium mb-5 border-b-2 border-abu">Branch Details</h2>
-      <form action="" method="">
+      <form action="{{ route('update-branch', ['id' => $branch->id]) }}" method="POST">
+        @csrf
         <div class="mb-5">
           <label for="branch_name" class="block mb-1 text-sm font-medium text-gray-900">Branch
             Name</label>

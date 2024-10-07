@@ -80,7 +80,8 @@ class Branch extends Model
                 // ->where('r.role_code', 'BA') // Apply the role filter here
                 ->select('b.branch_code', 'b.branch_name', DB::raw('COUNT(u.id) as branch_admin_count'), 'b.id as id') // Selecting the required fields and count
                 ->orderBy('b.created_at', 'desc')
-                ->groupBy('b.id', 'b.branch_code', 'b.branch_name'); // Grouping by the necessary fields
+                ->groupBy('b.id', 'b.branch_code', 'b.branch_name')
+                ->where('b.tenant_id', '=', $authTenantId); // Grouping by the necessary fields
 
             // Apply filters if branchCode or branchName is provided
             if ($request->input('branchCode')) {

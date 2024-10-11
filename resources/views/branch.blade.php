@@ -1,16 +1,17 @@
 <x-master>
   <x-sidebar.sidebar>
+    {{-- Page Title --}}
     <div>
-      <h1 class="text-3xl font-bold mb-2 text-secondary">Branch Page</h1>
+      <h1 class="text-3xl font-bold mb-2 text-secondary">Branch Page (pake page atau ngga)</h1>
     </div>
+    {{-- SubTitle, Add, Search --}}
     <div class="shadow-md rounded-xl">
       <div class="flex justify-between gap-3 items-center px-10 py-5 bg-primary rounded-t-xl">
         <div class="flex items-center">
-          <h1 class="text-3xl font-medium text-white">Roji Ramen</h1>
+          <h1 class="text-3xl font-medium text-white">{{ $tenant->tenant_name }}</h1>
         </div>
         <div class="flex gap-3">
-          <a href="{{ route('add-branch') }}" data-modal-target="addModal" data-modal-toggle="addModal"
-            class="flex items-center text-white bg-accent lg:px-3 md:px-1 py-2 rounded-lg gap-1 flex-shrink-0 shadow-container w-fit md:text-xs lg:text-base">
+          <a href="{{ route('add-branch') }}" class="flex items-center text-white bg-accent lg:px-3 md:px-1 py-2 rounded-lg gap-1 flex-shrink-0 shadow-container w-fit md:text-xs lg:text-base">
             <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
               height="24" fill="none" viewBox="0 0 24 24">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

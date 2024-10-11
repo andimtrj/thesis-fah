@@ -23,7 +23,8 @@ class ProductController extends Controller
         $this->productIngredientController = $productIngredientController;
     }
 
-    public function CreateProduct(Request $request){
+    public function CreateProduct(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'productName' => 'required|string|max:255',
             'tenantCode' => 'required|string|max:8|exists:tenants,tenant_code',
@@ -36,13 +37,13 @@ class ProductController extends Controller
             'ingredients.*.amt' => 'required|numeric|min:0'
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        try{
+        try {
 
-            DB::transaction(function() use($request, &$response){
+            DB::transaction(function () use ($request, &$response) {
                 $productCode = $this->GenerateProductCode();
                 $tenantId = Tenant::GetTenantIdByTenantCode($request->input('tenantCode'));
                 $branchId = Branch::GetBranchIdByBranchCode($request->input('branchCode'));
@@ -60,7 +61,7 @@ class ProductController extends Controller
                     'updated_by' => Auth::id()
                 ]);
 
-                if($product){
+                if ($product) {
                     $request->merge(['product' => $product]);
 
                     $response = $this->productIngredientController->CreateProductIngredient($request);
@@ -81,17 +82,17 @@ class ProductController extends Controller
         }
     }
 
-    private static function GenerateProductCode(){
+    private static function GenerateProductCode()
+    {
         $lastProductCode = DB::table('products')
-        ->orderBy('product_code', 'desc')
-        ->first()
-        ->product_code ?? null;
+            ->orderBy('product_code', 'desc')
+            ->first()
+            ->product_code ?? null;
 
 
-        if($lastProductCode == null){
+        if ($lastProductCode == null) {
             $newProductCode = 'P0000001';
-        }
-        else{
+        } else {
             $lastProductCodeNum = (int) substr($lastProductCode, 1);
 
             $newNumber = ++$lastProductCodeNum;
@@ -100,6 +101,19 @@ class ProductController extends Controller
         }
 
         return $newProductCode;
+    }
 
+    public function showProduct()
+    {
+        $authTenantId = Auth::user()->tenant_id;
+
+        if ($authTenantId) {
+            // Ambil tenant berdasarkan tenant_id user untuk display tenant_name
+            $tenant = Tenant::find($authTenantId);
+        } else {
+            throw new \Exception("Tenant Code Is Null");
+        }
+
+        return view('product', compact('tenant')); // Pass tenant variable to view
     }
 }

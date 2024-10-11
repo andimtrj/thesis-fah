@@ -70,13 +70,15 @@ class ProductController extends Controller
                 }
             });
 
-            return redirect()->intended('/branch')->with('status', $response->statusCode);
-        } catch (\Exception $e) {
+            return redirect()->intended('/product')->with('status', $response->statusCode);
+
+        }catch(\Exception $e){
             $response = new BaseResponseObj();
             $response->statusCode = '500';
             $response->message = 'An Error Occurred During Registration. ' . $e->getMessage();
 
-            return redirect()->intended('/branch')->with('status', $response->message);
+            return redirect()->intended('/product')->with('error', $response->message);
+
         }
     }
 

@@ -71,13 +71,13 @@ class IngredientController extends Controller
                 return $response;
             });
 
-            return redirect()->intended('/branch')->with('status', $response->statusCode);
+            return redirect()->intended('/ingredient')->with('status', $response->statusCode);
         } catch (\Exception $e) {
             $response = new BaseResponseObj();
             $response->statusCode = '500';
             $response->message = 'An Error Occurred During Registration. ' . $e->getMessage();
 
-            return redirect()->intended('/branch')->with('status', $response->message);
+            return redirect()->intended('/ingredient')->with('status', $response->message);
         }
     }
 
@@ -107,12 +107,12 @@ class IngredientController extends Controller
         $authTenantId = Auth::user()->tenant_id;
 
         if ($authTenantId) {
-            // Ambil tenant berdasarkan tenant_id user untuk display tenant_name
             $tenant = Tenant::find($authTenantId);
+            $branches = Branch::where('tenant_id', $authTenantId)->get(); // Ambil semua branch terkait tenant
         } else {
             throw new \Exception("Tenant Code Is Null");
         }
 
-        return view('ingredient', compact('tenant')); // Pass tenant variable to view
+        return view('ingredient', compact('tenant', 'branches')); // Kirim data branches ke view
     }
 }

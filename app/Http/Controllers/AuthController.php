@@ -29,7 +29,7 @@ class AuthController extends Controller
 
         if (!Auth::attempt($credentials)) {
             return redirect()->back()->withErrors([
-                'error' => 'Invalid Login.',
+                'email' => 'Invalid Login.',
             ])->withInput();
         }
         if(Auth::attempt($credentials)){
@@ -38,17 +38,25 @@ class AuthController extends Controller
             $authTenant = Tenant::find($authTenantId);
             $authTenantCode = $authTenant->tenant_code;
 
-            $authBranchId = Auth::user()->branch_id;
-            $authBranch = Branch::find($authBranchId);
-            $authBranchCode = $authBranch->branch_code ?? "";
-
-
             session(
                 [
-                    'tenant_code' => $authTenantCode,
-                    'branch_code' => $authBranchCode
+                    'tenant_code' => $authTenantCode
                 ]
             );
+
+            $authBranchId = Auth::user()->branch_id;
+            $authBranch = Branch::find($authBranchId);
+
+            if($authBranch){
+                $authBranchCode = $authBranch->branch_code ?? "";
+                session(
+                    [
+                        'branch_code' => $authBranchCode
+                    ]
+                );
+            }
+
+
 
             return redirect()->intended('/branch');
         }

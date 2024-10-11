@@ -78,9 +78,10 @@ class Branch extends Model
                 ->leftJoin('users as u', 'b.id', '=', 'u.branch_id')
                 ->leftJoin('roles as r', 'u.role_id', '=', 'r.id')
                 // ->where('r.role_code', 'BA') // Apply the role filter here
-                ->select('b.branch_code', 'b.branch_name', DB::raw('COUNT(u.id) as branch_admin_count')) // Selecting the required fields and count
+                ->select('b.branch_code', 'b.branch_name', DB::raw('COUNT(u.id) as branch_admin_count'), 'b.id as id') // Selecting the required fields and count
                 ->orderBy('b.created_at', 'desc')
-                ->groupBy('b.id', 'b.branch_code', 'b.branch_name'); // Grouping by the necessary fields
+                ->groupBy('b.id', 'b.branch_code', 'b.branch_name')
+                ->where('b.tenant_id', '=', $authTenantId); // Grouping by the necessary fields
 
             // Apply filters if branchCode or branchName is provided
             if ($request->input('branchCode')) {

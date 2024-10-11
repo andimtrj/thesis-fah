@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Ingredient;
 use App\Models\Metric;
+use App\Models\MetricGroup;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,23 +25,12 @@ class IngredientController extends Controller
             'metricCode' => [
                 'required',
                 'string',
-                'max:8',
-                function ($attribute, $value, $fail) use ($request) { //Jagain metrics biar kalau diubah2 sm user dr front end ga bisa keinput.
-                    $validMetrics = [
-                        'weight' => ['kg', 'grams', 'tons'],
-                        'volume' => ['liters', 'ml', 'gallons'],
-                        'pieces' => ['Pcs']
-                    ];
-
-                    if (!isset($validMetrics[$request->metricGroup]) || !in_array($value, $validMetrics[$request->metricGroup])) {
-                        $fail("The selected $attribute is invalid for the given metric group.");
-                    }
-                },
-            ],
-            'ingredientAmt' => 'required|decimal'
+                'max:8',],
+            'ingredientAmt' => 'required'
         ]);
-
         if ($validator->fails()) {
+            dd($validator);
+
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -104,17 +94,41 @@ class IngredientController extends Controller
         return $newIngredientCode;
     }
 
-    public function showIngredient()
+    public function showIngredientPage(Request $request)
     {
+        $formSubmitted = $request->has('branchCode') || $request->has('ingredientCode') || $request->has('ingredientName');
         $authTenantId = Auth::user()->tenant_id;
-
+        // dd($formSubmitted);
         if ($authTenantId) {
             // Ambil tenant berdasarkan tenant_id user untuk display tenant_name
             $tenant = Tenant::find($authTenantId);
+            $branches = Branch::where('tenant_id', '=', $authTenantId)->get();
+            if($formSubmitted){
+                $ingredients = Ingredient::GetPagingIngredient($request)->withQueryString();
+                return view('ingredient', compact('tenant', 'branches', 'ingredients', 'formSubmitted')); // Pass tenant variable to view
+
+            }
         } else {
             throw new \Exception("Tenant Code Is Null");
         }
 
-        return view('ingredient', compact('tenant')); // Pass tenant variable to view
+        return view('ingredient', compact('tenant', 'branches', 'formSubmitted')); // Pass tenant variable to view
+    }
+
+    public function showAddIngredientPage(){
+        $metricGroups = MetricGroup::get();
+        $metrics = Metric::get();
+
+        $authTenantId = Auth::user()->tenant_id;
+        if ($authTenantId) {
+            // Ambil tenant berdasarkan tenant_id user untuk display tenant_name
+            $tenant = Tenant::find($authTenantId);
+            $branches = Branch::where('tenant_id', '=', $authTenantId)->get();
+        } else {
+            throw new \Exception("Tenant Code Is Null");
+        }
+
+
+        return view('components.ingredient.add-ingredient', compact('metricGroups', 'metrics', 'tenant', 'branches'));
     }
 }

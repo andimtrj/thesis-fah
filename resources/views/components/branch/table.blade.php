@@ -29,7 +29,7 @@
                     </td>
                 </tr>
             @endforeach
-            @elseif (empty($branches))
+            @elseif ($branches->isEmpty())
             {{-- {{ dd($request->session()->all()) }} --}}
                 <tr>
                     <td colspan="4" class="text-center py-4">No branches found</td>

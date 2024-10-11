@@ -44,9 +44,10 @@ Route::middleware('web')->group(function () {
         Route::get('/get-paging-branch', [BranchController::class, 'GetPagingBranch'])->name('get-paging-branch');
 
         // Ingredient
-        Route::get('/ingredient', [IngredientController::class, 'showIngredient'])->name('ingredient');
-        Route::get('/add-ingredient', function () {return view('components.ingredient.add-ingredient');})->name('add-ingredient');
+        Route::get('/ingredient', [IngredientController::class, 'showIngredientPage'])->name('ingredient');
+        Route::get('/add-ingredient', [IngredientController::class, 'showAddIngredientPage'])->name('add-ingredient');
         Route::get('/edit-ingredient', function () {return view('components.ingredient.edit-ingredient');})->name('edit-ingredient');
+        Route::post('/insert-ingredient', [IngredientController::class, 'InsertIngredient'])->name('insert-ingredient');
 
         Route::get('/product', [ProductController::class, 'showProduct'])->name('product');
 

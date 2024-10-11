@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class branchadmin.deleteAdmin extends Component
+class ingredient.delete-ingredient extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class branchadmin.deleteAdmin extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.branchadmin.delete-admin');
+        return view('components.ingredient.delete-ingredient');
     }
 }

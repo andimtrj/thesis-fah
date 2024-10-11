@@ -1,5 +1,5 @@
     {{-- Pagination --}}
-    <div class="bg-white px-5 py-2 flex items-center justify-between rounded-b-xl shadow-md">
+    <div class="bg-white px-10 py-2 flex items-center justify-between rounded-b-xl shadow-md">
       <div class="text-xs">
         <span>Showing 1 to 10 of 100 Entries</span>
       </div>

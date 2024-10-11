@@ -114,11 +114,13 @@ class BranchController extends Controller
 
         if ($authTenantId) {
             $branches = Branch::GetPagingBranch($request)->withQueryString(); // Call the Model method here
+
+            $tenant = Tenant::find($authTenantId); // Ambil tenant berdasarkan tenant_id user untuk display tenant_name
         } else {
             throw new \Exception("Tenant Code Is Null");
         }
 
-        return view('branch', compact('branches', 'formSubmitted')); // Pass variables to view
+        return view('branch', compact('branches', 'formSubmitted', 'tenant'));
     }
 
     public function DetailBranchPage($id){

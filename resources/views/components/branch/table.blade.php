@@ -1,7 +1,7 @@
 {{-- table.blade.php --}}
-<div class="relative overflow-x-auto rounded-t-xl">
+<div class="relative overflow-x-auto bg-white rounded-xl shadow-container">
     <table class="min-w-full leading-normal">
-        <thead>
+        <thead class="bg-cream">
             <tr>
                 <th scope="col" class="px-4 py-3 text-center">Branch Code</th>
                 <th scope="col" class="px-4 py-3">Branch Name</th>
@@ -13,11 +13,11 @@
 
             @if(isset($branches) && $branches->isNotEmpty())
             @foreach ($branches as $branch)
-                <tr class="bg-white border-y text-base">
-                    <th scope="row" class="px-4 py-3 font-medium text-center">{{ $branch->branch_code }}</th>
-                    <td class="px-4 py-3">{{ $branch->branch_name }}</td>
-                    <td class="px-4 py-3 text-center">{{ $branch->branch_admin_count }}</td>
-                    <td class="px-4 py-3 flex gap-4 items-center justify-center">
+                <tr class="bg-white border-y text-base text-abu">
+                    <th scope="row" class="px-3 py-[10px] font-medium text-center">{{ $branch->branch_code }}</th>
+                    <td class="px-3 py-[10px]">{{ $branch->branch_name }}</td>
+                    <td class="px-3 py-[10px] text-center">{{ $branch->branch_admin_count }}</td>
+                    <td class="px-3 py-[10px] flex gap-4 items-center justify-center">
                         <a href="{{ route('edit-branch', ['id' => $branch->id]) }}" class="border-2 w-fit p-1 rounded-lg cursor-pointer">
                             <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                 viewBox="0 0 24 24">
@@ -29,7 +29,7 @@
                     </td>
                 </tr>
             @endforeach
-            @elseif (empty($branches))
+            @elseif ($branches->isEmpty())
             {{-- {{ dd($request->session()->all()) }} --}}
                 <tr>
                     <td colspan="4" class="text-center py-4">No branches found</td>

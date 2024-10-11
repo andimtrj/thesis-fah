@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class branchadmin.adminAdd extends Component
+class ingredient.table extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class branchadmin.adminAdd extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.branchadmin.add-admin');
+        return view('components.ingredient.table');
     }
 }

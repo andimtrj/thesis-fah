@@ -22,13 +22,19 @@ class ApiWebController extends Controller
                 $response = $this->userController->RegisterTenantOwner($request);
                 if ($response->statusCode == "200") {
                     $this->authController->Authenticate($request);
-                    return redirect()->intended('/branch')->with('status', $response->message);
+                    return redirect()->intended('/branch')->with([
+                        'status' => $response->statusCode,
+                        'message' => $response->message,
+                    ]);
                 } else {
                     return redirect('/')->withErrors($response->data)->withInput();
                 }
             } catch (\Exception $e) {
                 // Log or handle the exception
-                return redirect('/')->with('error', 'An error occurred: ' . $e->getMessage());
+                return redirect('/')->with([
+                    'status' => '500',
+                    'message' => 'An Error Occurred During Registration ' . $e->getMessage(),
+                ]);
             }
         }
     }

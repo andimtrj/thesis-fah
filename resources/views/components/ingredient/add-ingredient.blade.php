@@ -50,13 +50,6 @@
                 <option selected>Select matric</option>
               </select>
             </div>
-            <div>
-              <label for="number-input"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Amount</label>
-              <input type="number" id="number-input" name="ingredientAmt" aria-describedby="helper-text-explanation"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary block w-full p-2.5"
-                placeholder="Type a number" step="0.01" required />
-            </div>
             <input type="hidden" name="tenantCode" id="tenantCode" value="{{ session('tenant_code') }}">
           </div>
           <div class="flex justify-end gap-5">

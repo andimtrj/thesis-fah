@@ -66,14 +66,20 @@ class BranchController extends Controller
                 return $response;
             });
 
-            return redirect()->intended('/branch')->with('status', $response->statusCode);
+            return redirect()->intended('/branch')->with([
+                'status' => $response->statusCode,
+                'message' => $response->message,
+            ]);
 
         }catch(\Exception $e){
             $response = new BaseResponseObj();
             $response->statusCode = '500';
-            $response->message = 'An Error Occurred During Registration. ' . $e->getMessage();
+            $response->message = 'An Error Occurred During Registration : ' . $e->getMessage();
 
-            return redirect()->intended('/branch')->with('status', $response->message);
+            return redirect()->intended('/branch')->with([
+                'status' => $response->statusCode,
+                'message' => $response->message,
+            ]);
 
         }
     }
@@ -132,7 +138,9 @@ class BranchController extends Controller
         return view('components.branch.edit-branch', compact('branch'));
     }
 
-    public function UpdateBranch(Request $request, $id){
+    public function UpdateBranch(Request $request, $id)
+    {
+        // Validate the incoming request and get the validated data
         $validatedData = $request->validate([
             'branch_name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
@@ -141,13 +149,31 @@ class BranchController extends Controller
             'zip_code' => 'required|string|max:255',
         ]);
 
-        // Find the branch by id
-        $branch = Branch::findOrFail($id);
+        try {
+            // Find the branch by id
+            $branch = Branch::findOrFail($id);
 
-        // Update the branch with validated data
-        $branch->update($validatedData);
+            // Update the branch with validated data
+            $branch->update($validatedData);
 
-        return redirect(route('branch'))->with('success', 'Branch updated successfully.');
+            $response = new BaseResponseObj();
+            $response->statusCode = '200';
+            $response->message = 'Registration Success!';
 
+            return redirect()->intended('/branch')->with([
+                'status' => $response->statusCode,
+                'message' => $response->message,
+            ]);
+        } catch (\Exception $e) {
+            $response = new BaseResponseObj();
+            $response->statusCode = '500';
+            $response->message = 'An Error Occurred During Registration : ' . $e->getMessage();
+
+            return redirect()->intended('/branch')->with([
+                'status' => $response->statusCode,
+                'message' => $response->message,
+            ]);
+        }
     }
+
 }

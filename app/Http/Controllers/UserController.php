@@ -82,7 +82,7 @@ class UserController extends Controller
         }catch(\Exception $e){
             $response = new BaseResponseObj();
             $response->statusCode = '500';
-            $response->message = 'An Error Occurred During Registration. ' . $e->getMessage();
+            $response->message = 'An Error Occurred During Registration : ' . $e->getMessage();
 
             return $response;
 
@@ -148,7 +148,7 @@ class UserController extends Controller
         }catch(\Exception $e){
             $response = new BaseResponseObj();
             $response->statusCode = '500';
-            $response->message = 'An Error Occurred During Registration. ' . $e->getMessage();
+            $response->message = 'An Error Occurred During Registration : ' . $e->getMessage();
 
             return $response;
 

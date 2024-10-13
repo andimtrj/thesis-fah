@@ -16,18 +16,25 @@ class Ingredient extends Model
     protected $fillable = [
         'ingredient_code',
         'ingredient_name',
-        'metric_id',
+        'initial_metric_id',
         'tenant_id' ,
         'branch_id' ,
-        'ingredient_amt',
+        'initial_amt',
         'created_by',
-        'updated_by'
+        'updated_by',
+        'curr_metric_id',
+        'curr_amt'
     ];
 
 
-    public function metric(): BelongsTo
+    public function initialMetric(): BelongsTo
     {
-        return $this->belongsTo(Metric::class);
+        return $this->belongsTo(Metric::class, 'initial_metric_id');
+    }
+
+    public function currMetric(): BelongsTo
+    {
+        return $this->belongsTo(Metric::class, 'curr_metric_id');
     }
 
     public function tenant(): BelongsTo
@@ -56,8 +63,9 @@ class Ingredient extends Model
             $query = Ingredient::from('ingredients as i')
                                 ->join('tenants as t', 'i.tenant_id', '=', 't.id')
                                 ->join('branches as b', 'i.branch_id', '=', 'b.id')
-                                ->join('metrics as m', 'i.metric_id', '=', 'm.id')
-                                ->select('i.ingredient_code', 'i.ingredient_name', 'i.ingredient_amt', 'm.metric_unit as metric_unit')
+                                ->join('metrics as m', 'i.curr_metric_id', '=', 'm.id')
+                                ->select('i.id', 'i.ingredient_code', 'i.ingredient_name', 'i.curr_amt', 'm.metric_unit as metric_unit')
+                                ->orderBy('i.created_at', 'desc')
                                 ->where('i.tenant_id', '=', $authTenantId);
             // dd($query, $request);
             // dd($authBranchId, $request->input('branch_code'), $request);

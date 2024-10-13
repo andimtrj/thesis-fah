@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('metrics', function(Blueprint $table){
-            $table->foreignId('created_by')->change()->constrained('users');
-            $table->foreignId('updated_by')->change()->constrained('users');
+            $table->integer('metric_seq_no')->change();
         });
 
     }
@@ -24,8 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('metrics', function(Blueprint $table){
-            $table->dropColumn('created_by');
-            $table->dropColumn('updated_by');
+            $table->string('metric_seq_no', 255)->change();
         });
 
     }

@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class MetricGroup extends Model
 {
     use HasFactory;
+
+    public function Metrics(){
+        return $this->hasMany(Metric::class);
+    }
 }

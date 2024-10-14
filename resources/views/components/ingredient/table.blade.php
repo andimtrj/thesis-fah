@@ -30,7 +30,7 @@
             <tr class="bg-white border-y text-base text-abu">
                 <th scope="row" class="px-4 py-3 font-medium text-center">{{ $ingredient->ingredient_code }}</th>
                 <td class="px-4 py-3">{{ $ingredient->ingredient_name }}</td>
-                <td class="px-4 py-3 text-right">{{ $ingredient->curr_amt }}</td>
+                <td class="px-4 py-3 text-right">{{ $ingredient->ingredient_amt }}</td>
                 <td class="px-4 py-3 text-center">{{ $ingredient->metric_unit }}</td>
                 <td class="px-4 py-3 flex gap-4 items-center justify-center">
                 <a href="{{ route('edit-ingredient',  ['id' => $ingredient->id]) }}" class="border-2 w-fit p-1 rounded-lg cursor-pointer">

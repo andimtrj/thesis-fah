@@ -44,14 +44,12 @@ class IngredientController extends Controller
                 Ingredient::create([
                     'ingredient_code' => $ingredientCode,
                     'ingredient_name' => $request->input('ingredientName'),
-                    'initial_metric_id' => $metricId,
+                    'metric_id' => $metricId,
                     'tenant_id' => $tenantId,
                     'branch_id' => $branchId,
-                    'initial_amt' => 0,
+                    'ingredient_amt' => 0,
                     'created_by' => Auth::id(),
-                    'updated_by' => Auth::id(),
-                    'curr_metric_id' => $metricId,
-                    'curr_amt' => 0
+                    'updated_by' => Auth::id()
                 ]);
 
 
@@ -162,16 +160,6 @@ class IngredientController extends Controller
         $validatedData = Validator::make($request->all(), [
             'ingredientName' => 'required|string|max:255',
             'branchCode' => 'required|string|max:255|exists:branches,branch_code',
-            'metricGroups' => [
-                'required',
-                'numeric',
-                function ($attribute, $value, $fail) {
-                    if ($value < -9223372036854775808 || $value > 9223372036854775807) {
-                        $fail($attribute . ' must be a valid bigint.');
-                    }
-                },
-                'exists:metric_groups,id'
-            ],
             'metricCode' => 'required|string|max:255|exists:metrics,metric_code'
         ]);
         if($validatedData->fails()){
@@ -184,17 +172,9 @@ class IngredientController extends Controller
             DB::transaction(function () use ($request, $id, &$response) {
                 $ingredient = Ingredient::findOrFail($id);
 
-                $initMetric = $ingredient->initialMetric;
+                $metric = $ingredient->metric;
 
-
-                if($initMetric->metric_group_id == $request->input('metricGroups')){
-                    $ingredient = $this->validateIngredientMetric($request, $ingredient, $initMetric);
-                }
-                else
-                {
-                    $newMetric = Metric::where('metric_code', '=', $request->input('metricCode'))->firstOrFail();
-                    $ingredient->currMetric()->associate($newMetric);
-                }
+                $ingredient = $this->validateIngredientMetric($request, $ingredient, $metric);
 
                 $ingredient->ingredient_name = $request->input('ingredientName');
 
@@ -232,41 +212,37 @@ class IngredientController extends Controller
         ]);
     }
 
-    private function validateIngredientMetric(Request $request, $ingredient, $initMetric){
+    private function validateIngredientMetric(Request $request, $ingredient, $metric){
 
-        if($request->input('metricCode') == $initMetric->metric_code){
-            $newMetric = Metric::where('metric_code', '=', $request->input('metricCode'))->firstOrFail();
 
-            $ingredient->currMetric()->associate($newMetric);
-            $ingredient->curr_amt = $ingredient->initial_amt;
+        if($request->input('metricCode') == $metric->metric_code){
 
             return $ingredient;
+
         }else{
             $newMetric = Metric::where('metric_code', '=', $request->input('metricCode'))->firstOrFail();
 
-            // New Metric Sequence No is Greater Than Current Metric Sequence No
-            if ($newMetric->metric_seq_no > $initMetric->metric_seq_no) {
-                $metric_seq_no_diff = $newMetric->metric_seq_no - $initMetric->metric_seq_no;
-                // dd($metric_seq_no_diff);
-                $factor = pow(10, $metric_seq_no_diff);
-                // dd($factor);
-                $ingredient->curr_amt = bcdiv($ingredient->initial_amt, $factor, 2);  // 2 is the number of decimal places
-            }
-            // New Metric Sequence No is Less Than Current Metric Sequence No
-            elseif ($newMetric->metric_seq_no < $initMetric->metric_seq_no) {
-                $metric_seq_no_diff = $initMetric->metric_seq_no - $newMetric->metric_seq_no;
-                // dd($metric_seq_no_diff);
-
-                $factor = pow(10, $metric_seq_no_diff);
-                $ingredient->curr_amt = bcmul($ingredient->initial_amt, $factor, 2);  // 2 is the number of decimal places
-            }
-
-
-            // Update metric
-            $ingredient->currMetric()->associate($newMetric);
+            $ingredient->metric()->associate($newMetric);
 
             return $ingredient;
 
+
+            // New Metric Sequence No is Greater Than Current Metric Sequence No
+            // if ($newMetric->metric_seq_no > $metric->metric_seq_no) {
+            //     $metric_seq_no_diff = $newMetric->metric_seq_no - $metric->metric_seq_no;
+            //     // dd($metric_seq_no_diff);
+            //     $factor = pow(10, $metric_seq_no_diff);
+            //     // dd($factor);
+            //     $ingredient->curr_amt = bcdiv($ingredient->initial_amt, $factor, 2);  // 2 is the number of decimal places
+            // }
+            // // New Metric Sequence No is Less Than Current Metric Sequence No
+            // elseif ($newMetric->metric_seq_no < $metric->metric_seq_no) {
+            //     $metric_seq_no_diff = $metric->metric_seq_no - $newMetric->metric_seq_no;
+            //     // dd($metric_seq_no_diff);
+
+            //     $factor = pow(10, $metric_seq_no_diff);
+            //     $ingredient->curr_amt = bcmul($ingredient->initial_amt, $factor, 2);  // 2 is the number of decimal places
+            // }
 
         }
     }

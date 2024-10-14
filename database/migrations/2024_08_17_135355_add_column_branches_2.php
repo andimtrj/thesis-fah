@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('branches', function(Blueprint $table){
-            $table->string('updated_by', 258);
+            $table->dropColumn('updated_by');
         });
 
     }

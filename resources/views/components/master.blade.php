@@ -38,6 +38,18 @@
                         popup: 'small-swal error-swal' // Add error class here
                     }
                 });
+            @elseif (session('status') == '400')
+            console.log('message : ', "{{ session('message') }}"); // Properly include the message in quotes
+                Swal.fire({
+                    position: "top-end",
+                    title: "{{ session('message') }}",
+                    showConfirmButton: false,
+                    timer: 5000,
+                    backdrop: false,
+                    customClass: {
+                        popup: 'small-swal bad-request-swal' // Add error class here
+                    }
+                });
             @endif
         @endif
     });
@@ -64,5 +76,9 @@
 
     .error-swal {
         background-color: rgb(255, 0, 0); /* Error color */
+    }
+
+    .bad-request-swal {
+        background-color: rgba(204, 176, 49, 0.889); /* Error color */
     }
 </style>

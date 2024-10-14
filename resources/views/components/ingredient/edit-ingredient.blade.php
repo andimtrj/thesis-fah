@@ -53,24 +53,21 @@
             <div class="grid md:grid-cols-3 md:gap-6 mb-5">
                 <div>
                     <label for="metricGroups" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Metric Groups</label>
-                    <select id="metricGroups" name="metricGroups"
+                    <select id="metricGroups" name="metricGroups" disabled
                         class="bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-lg focus:ring-primary block w-full p-2.5">
                         @foreach ($metricGroups as $metricGroup)
                             <option value="{{ $metricGroup->id }}"
-                                {{ $ingredient->currMetric->metric_group_id == $metricGroup->id ? 'selected' : '' }}>
+                                {{ $ingredient->metric->metric_group_id == $metricGroup->id ? 'selected' : '' }}>
                                 {{ $metricGroup->metric_grp_name }}
                             </option>
                         @endforeach
                     </select>
-                    @if ($errors->has('metricGroups'))
-                        <p class="text-red-500 text-sm">{{ $errors->first('metricGroups') }}</p>
-                    @endif
                 </div>
               <div>
                 <label for="metricCode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Metrics</label>
                 <select id="metrics" name="metricCode"
                   class="bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-lg focus:ring-primary block w-full p-2.5">
-                  <option value="{{ $ingredient->currMetric->metric_code }}" selected>{{ $ingredient->currMetric->metric_name }}</option>
+                  <option value="{{ $ingredient->metric->metric_code }}" selected>{{ $ingredient->metric->metric_name }}</option>
                 </select>
                 @if ($errors->has('metricCode'))
                     <p class="text-red-500 text-sm">{{ $errors->first('metricCode') }}</p>
@@ -91,49 +88,50 @@
         </div>
       </div>
     </x-sidebar.sidebar>
-    <script>
-        const metricGroups = document.getElementById('metricGroups');
-        const metrics = document.getElementById('metrics');
 
-        // Pass the $metrics collection as a JSON array to JavaScript
-        const allMetrics = @json($metrics ?? []); // Provide a default empty array if $metrics is not available
+<script>
+    const metricGroups = document.getElementById('metricGroups');
+    const metrics = document.getElementById('metrics');
 
-        // Function to populate the metrics dropdown based on the selected metric group
-        function populateMetrics() {
-            const selectedGroupId = metricGroups.value;
-            metrics.innerHTML = ''; // Clear previous options
+    // Pass the $metrics collection as a JSON array to JavaScript
+    const allMetrics = @json($metrics ?? []); // Provide a default empty array if $metrics is not available
 
-            // Filter the metrics that belong to the selected metric group
-            const filteredMetrics = allMetrics.filter(metric => metric.metric_group_id == selectedGroupId);
+    // Function to populate the metrics dropdown based on the selected metric group
+    function populateMetrics() {
+        const selectedGroupId = metricGroups.value;
+        metrics.innerHTML = ''; // Clear previous options
 
-            // Populate the metrics dropdown based on the filtered results
-            if (filteredMetrics.length > 0) {
-                filteredMetrics.forEach(function (metric) {
-                    const option = document.createElement('option');
-                    option.value = metric.metric_code;
-                    option.textContent = metric.metric_unit;
+        // Filter the metrics that belong to the selected metric group
+        const filteredMetrics = allMetrics.filter(metric => metric.metric_group_id == selectedGroupId);
 
-                    // Mark the correct metric as selected based on the pre-selected metric
-                    if ("{{ $ingredient->currMetric->metric_code }}" == metric.metric_code) {
-                        option.selected = true;
-                    }
-
-                    metrics.appendChild(option);
-                });
-            } else {
+        // Populate the metrics dropdown based on the filtered results
+        if (filteredMetrics.length > 0) {
+            filteredMetrics.forEach(function (metric) {
                 const option = document.createElement('option');
-                option.value = '';
-                option.textContent = 'No metrics available';
+                option.value = metric.metric_code;
+                option.textContent = metric.metric_unit;
+
+                // Mark the correct metric as selected based on the pre-selected metric
+                if ("{{ $ingredient->metric->metric_code }}" == metric.metric_code) {
+                    option.selected = true;
+                }
+
                 metrics.appendChild(option);
-            }
+            });
+        } else {
+            const option = document.createElement('option');
+            option.value = '';
+            option.textContent = 'No metrics available';
+            metrics.appendChild(option);
         }
+    }
 
-        // Run the function once the page loads to populate the metrics based on the selected metric group
-        window.addEventListener('DOMContentLoaded', populateMetrics);
+    // Run the function once the page loads to populate the metrics based on the selected metric group
+    window.addEventListener('DOMContentLoaded', populateMetrics);
 
-        // Also call the function whenever the metric group is changed
-        metricGroups.addEventListener('change', populateMetrics);
-    </script>
+    // Also call the function whenever the metric group is changed
+    metricGroups.addEventListener('change', populateMetrics);
+</script>
 
 
   </x-master>

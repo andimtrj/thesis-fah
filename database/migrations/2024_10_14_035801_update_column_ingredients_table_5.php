@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::table('ingredients', function(Blueprint $table){
             $table->decimal('ingredient_amt', 17, 2)->change();
         });
-
     }
 
     /**
@@ -25,5 +24,6 @@ return new class extends Migration
         Schema::table('ingredients', function(Blueprint $table){
             $table->decimal('ingredient_amt', 8, 2)->change();
         });
+
     }
 };

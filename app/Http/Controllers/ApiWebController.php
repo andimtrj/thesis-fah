@@ -19,21 +19,12 @@ class ApiWebController extends Controller
     public function Registration(Request $request){
         if($request->roleCode == 'TO'){
             try {
-                $response = $this->userController->RegisterTenantOwner($request);
-                if ($response->statusCode == "200") {
-                    $this->authController->Authenticate($request);
-                    return redirect()->intended('/branch')->with([
-                        'status' => $response->statusCode,
-                        'message' => $response->message,
-                    ]);
-                } else {
-                    return redirect('/')->withErrors($response->data)->withInput();
-                }
+                return $this->userController->RegisterTenantOwner($request);
             } catch (\Exception $e) {
                 // Log or handle the exception
-                return redirect('/')->with([
+                return redirect()->intended('/')->with([
                     'status' => '500',
-                    'message' => 'An Error Occurred During Registration ' . $e->getMessage(),
+                    'message' => 'An Error Occurred During Registration : ' . $e->getMessage(),
                 ]);
             }
         }

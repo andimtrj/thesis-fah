@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class Ingredient extends Model
 {
@@ -16,26 +17,20 @@ class Ingredient extends Model
     protected $fillable = [
         'ingredient_code',
         'ingredient_name',
-        'initial_metric_id',
+        'metric_id',
         'tenant_id' ,
         'branch_id' ,
-        'initial_amt',
+        'ingredient_amt',
         'created_by',
-        'updated_by',
-        'curr_metric_id',
-        'curr_amt'
+        'updated_by'
     ];
 
 
-    public function initialMetric(): BelongsTo
+    public function metric(): BelongsTo
     {
-        return $this->belongsTo(Metric::class, 'initial_metric_id');
+        return $this->belongsTo(Metric::class, 'metric_id');
     }
 
-    public function currMetric(): BelongsTo
-    {
-        return $this->belongsTo(Metric::class, 'curr_metric_id');
-    }
 
     public function tenant(): BelongsTo
     {
@@ -63,8 +58,12 @@ class Ingredient extends Model
             $query = Ingredient::from('ingredients as i')
                                 ->join('tenants as t', 'i.tenant_id', '=', 't.id')
                                 ->join('branches as b', 'i.branch_id', '=', 'b.id')
-                                ->join('metrics as m', 'i.curr_metric_id', '=', 'm.id')
-                                ->select('i.id', 'i.ingredient_code', 'i.ingredient_name', 'i.curr_amt', 'm.metric_unit as metric_unit')
+                                ->join('metrics as m', 'i.metric_id', '=', 'm.id')
+                                ->select('i.id',
+                                        'i.ingredient_code',
+                                        'i.ingredient_name',
+                                        DB::raw('FORMAT(i.ingredient_amt / POWER(10, m.metric_seq_no - 1), 2) as ingredient_amt'),
+                                        'm.metric_unit as metric_unit')
                                 ->orderBy('i.created_at', 'desc')
                                 ->where('i.tenant_id', '=', $authTenantId);
             // dd($query, $request);

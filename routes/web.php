@@ -43,14 +43,14 @@ Route::middleware('web')->group(function () {
         Route::post('/update-branch/{id}',  [BranchController::class, 'UpdateBranch'])->name('update-branch');
         Route::get('/get-paging-branch', [BranchController::class, 'GetPagingBranch'])->name('get-paging-branch');
 
+
         // Ingredient
-        Route::get('/ingredient', [IngredientController::class, 'showIngredientPage'])->name('ingredient');
-        Route::get('/add-ingredient', [IngredientController::class, 'showAddIngredientPage'])->name('add-ingredient');
-        Route::get('/edit-ingredient/{id}', [IngredientController::class, 'DetailIngredientPage'])->name('edit-ingredient');
-        Route::post('/insert-ingredient', [IngredientController::class, 'InsertIngredient'])->name('insert-ingredient');
-        Route::post('/update-ingredient/{id}', [IngredientController::class, 'UpdateIngredient'])->name('update-ingredient');
+        Route::get('/ingredient', [IngredientController::class, 'showIngredient'])->name('ingredient');
+        Route::get('/add-ingredient', function () {return view('components.ingredient.add-ingredient');})->name('add-ingredient');
+        Route::get('/edit-ingredient', function () {return view('components.ingredient.edit-ingredient');})->name('edit-ingredient');
 
         Route::get('/product', [ProductController::class, 'showProduct'])->name('product');
+        Route::get('/add-product', function(){return view('components.product.add-product');})->name('add-product');
 
         Route::get('/landing', function () {Return view('landing');})->name('landing');
     });

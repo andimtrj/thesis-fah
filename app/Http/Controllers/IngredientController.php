@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Ingredient;
 use App\Models\Metric;
 use App\Models\MetricGroup;
+use App\Models\MetricGroup;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -98,6 +99,7 @@ class IngredientController extends Controller
         return $newIngredientCode;
     }
 
+    public function showIngredientPage(Request $request)
     public function showIngredientPage(Request $request)
     {
         $formSubmitted = $request->has('branchCode') || $request->has('ingredientCode') || $request->has('ingredientName');

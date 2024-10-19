@@ -69,7 +69,11 @@ class Ingredient extends Model
             // dd($query, $request);
             // dd($authBranchId, $request->input('branch_code'), $request);
             if($request->has('branchCode'))
+            // dd($query, $request);
+            // dd($authBranchId, $request->input('branch_code'), $request);
+            if($request->has('branchCode'))
             {
+                $query->where('b.branch_code', '=', $request->input('branchCode'));
                 $query->where('b.branch_code', '=', $request->input('branchCode'));
             }
             else

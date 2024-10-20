@@ -12,9 +12,10 @@ class ProductIngredientD extends Model
     protected $table = 'product_ingredient_d';
 
     protected $fillable = [
-        'prod_h_ing_id',
+        'prod_ing_h_id',
         'ingredient_id',
-        'ingredient_amt'
+        'ingredient_amt',
+        'metric_id'
     ];
 
     public function ProductIngredientH(){

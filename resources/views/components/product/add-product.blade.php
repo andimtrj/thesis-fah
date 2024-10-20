@@ -18,6 +18,10 @@
                 <input type="hidden" name="isActive" value="0">
                 <!-- Checkbox, submitting "true" when checked -->
                 <input type="checkbox" value="1" class="sr-only peer" id="isActive" name="isActive">
+                @if ($errors->has('isActive'))
+                    <p class="text-red-500 text-sm">{{ $errors->first('isActive') }}</p>
+                @endif
+
                 <div
                 class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
                 </div>
@@ -26,6 +30,10 @@
             <input type="text" name="productName" id="productName"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary block w-full p-2.5"
               placeholder="Type Product name" required="">
+            @if ($errors->has('productName'))
+                <p class="text-red-500 text-sm">{{ $errors->first('productName') }}</p>
+            @endif
+
           </div>
           <input type="hidden" name="tenantCode" id="tenantCode" value="{{ session('tenant_code') }}">
             @if(session('branch_code'))
@@ -41,6 +49,9 @@
                     <option value="{{ $branch->branch_code }}">{{ $branch->branch_name }}</option>
                 @endforeach
                 </select>
+                @if ($errors->has('branchCode'))
+                    <p class="text-red-500 text-sm">{{ $errors->first('branchCode') }}</p>
+                @endif
                 <p class="text-red-500 text-sm" id="required-text" hidden>Branch Is Required</p>
             </div>
             @endif
@@ -52,6 +63,10 @@
                 class="bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-lg focus:ring-primary block w-full p-2.5">
                 <option value="" disabled selected>Select product category</option>
             </select>
+            @if ($errors->has('branchCode'))
+                <p class="text-red-500 text-sm">{{ $errors->first('branchCode') }}</p>
+            @endif
+
             </div>
             <div>
               <label for="productPrice" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product
@@ -59,6 +74,9 @@
               <input type="number" id="productPrice" name="productPrice" aria-describedby="helper-text-explanation"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary block w-full p-2.5"
                 placeholder="Type a number" step="1000" required />
+                @if ($errors->has('branchCode'))
+                    <p class="text-red-500 text-sm">{{ $errors->first('branchCode') }}</p>
+                @endif
             </div>
           </div>
 
@@ -155,28 +173,6 @@
 
     const productCategory = document.getElementById('productCategoryCode');
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const selectedBranchCode = localStorage.getItem('selectedBranchCode');
-        const selectedProductCategoryValue = localStorage.getItem('selectedProductCategoryValue');
-        console.log('Selected Product Category Value : ', selectedProductCategoryValue);
-        if (selectedBranchCode) {
-            document.getElementById('branches').value = selectedBranchCode;
-            // Trigger the 'change' event to repopulate the product category dropdown
-            console.log('Change jalan kah?');
-            document.getElementById('branches').dispatchEvent(new Event('change'));
-        }
-
-        if (selectedProductCategoryValue) {
-            setTimeout(() => { // Ensure product categories are loaded before selecting
-                const productCategoryDropdown = document.getElementById('productCategoryCode');
-                const optionExists = [...productCategoryDropdown.options].some(option => option.value === selectedProductCategoryValue);
-
-                if (optionExists) {
-                    productCategoryDropdown.value = selectedProductCategoryValue;
-                }
-            }, 500); // Adjust the timeout as needed based on when the product categories are populated
-        }
-    });
 
 
     // if (branchCodeInput && branchCodeInput.value) {
@@ -312,12 +308,6 @@
             productCategory.appendChild(option);
         }
     })
-
-    document.getElementById('productCategoryCode').addEventListener('change', function() {
-        const selectedOption = this.options[this.selectedIndex]; // Get the selected <option>
-        localStorage.setItem('selectedProductCategoryValue', selectedOption.value);
-        localStorage.setItem('selectedProductCategoryText', selectedOption.textContent);
-    });
 
 
     document.getElementById('ingredient-table-body').addEventListener('change', function(event) {

@@ -17,8 +17,8 @@ class ProductIngredientController extends Controller
         $validator = Validator::make($request->all(), [
             'product' => 'required',
             'ingredients' => 'required|array',
-            'ingredients.*.id' => 'required|integer|exists:ingredients,id',
-            'ingredients.*.amt' => 'required|numeric|min:0'
+            'ingredients.*.ingredient_code' => 'required|integer|exists:ingredients,ingredient_code',
+            'ingredients.*.amount' => 'required|numeric|min:0'
         ]);
 
         if($validator->fails()){

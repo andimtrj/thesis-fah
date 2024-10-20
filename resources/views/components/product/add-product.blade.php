@@ -6,7 +6,7 @@
       </div>
       <div class="px-10 py-7 rounded-xl bg-white">
         <h2 class="text-xl font-medium mb-5 border-b-abu border-b-2">Product Details</h2>
-        <form action="" method="POST">
+        <form action="{{ route('insert-product') }}" method="POST">
           @csrf
           <div class="mb-5">
             <label for="productName" class="flex mb-1 text-sm font-medium text-gray-900 justify-between items-center">
@@ -14,29 +14,49 @@
                 Name</span>
               <label class="inline-flex items-center cursor-pointer">
                 <span class="text-sm font-medium text-gray-900 mr-2">Is Active</span>
-                <input type="checkbox" value="" class="sr-only peer">
+                <!-- Hidden input with value "false" -->
+                <input type="hidden" name="isActive" value="0">
+                <!-- Checkbox, submitting "true" when checked -->
+                <input type="checkbox" value="1" class="sr-only peer" id="isActive" name="isActive">
                 <div
-                  class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
+                class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
                 </div>
               </label>
             </label>
             <input type="text" name="productName" id="productName"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary block w-full p-2.5"
-              placeholder="Type ingredient name" required="">
+              placeholder="Type Product name" required="">
           </div>
+          <input type="hidden" name="tenantCode" id="tenantCode" value="{{ session('tenant_code') }}">
+            @if(session('branch_code'))
+                <input type="hidden" name="branchCode" id="branches" value="{{ session('branch_code') }}">
+            @else
+            <div>
+                <label for="branches" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Branch</label>
+                <select id="branches" name="branchCode"
+                class="bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-lg focus:ring-primary block w-full p-2.5"
+                required>
+                <option value="" disabled selected>Select Branch</option>
+                @foreach ($branches as $branch)
+                    <option value="{{ $branch->branch_code }}">{{ $branch->branch_name }}</option>
+                @endforeach
+                </select>
+                <p class="text-red-500 text-sm" id="required-text" hidden>Branch Is Required</p>
+            </div>
+            @endif
           <div class="grid md:grid-cols-2 md:gap-6 mb-5 items-center">
             <div>
-              <label for="metricGroups" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product
+              <label for="productCategoryCode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product
                 Category</label>
-              <select id="metricGroups" name="metricGroups"
+              <select id="productCategoryCode" name="productCategoryCode"
                 class="bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-lg focus:ring-primary block w-full p-2.5">
                 <option value="" disabled selected>Select product category</option>
-              </select>
+            </select>
             </div>
             <div>
-              <label for="number-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product
+              <label for="productPrice" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product
                 Price</label>
-              <input type="number" id="number-input" name="ingredientAmt" aria-describedby="helper-text-explanation"
+              <input type="number" id="productPrice" name="productPrice" aria-describedby="helper-text-explanation"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary block w-full p-2.5"
                 placeholder="Type a number" step="1000" required />
             </div>
@@ -106,8 +126,8 @@
             </table>
             <div class="flex justify-end mt-2">
               <button type="button" id="add-row"
-                class="text-green-500 bg-green-500 bg-opacity-10 hover:underline underline-offset-2 px-4 py-2 rounded-lg">Add
-                Row</button>
+                class="text-green-500 bg-green-500 bg-opacity-10 hover:underline underline-offset-2 px-4 py-2 rounded-lg">
+                Add Row</button>
             </div>
           </div>
 
@@ -127,53 +147,114 @@
     </div>
   </x-sidebar.sidebar>
   <script>
+    let branchDropdown = document.getElementById('branches');
+    let addRowButton = document.getElementById('add-row');
+    let branchRequiredText = document.getElementById('required-text');
+
+    let branchCodeInput = document.getElementById('branches');
+
+    const productCategory = document.getElementById('productCategoryCode');
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectedBranchCode = localStorage.getItem('selectedBranchCode');
+        const selectedProductCategoryValue = localStorage.getItem('selectedProductCategoryValue');
+        console.log('Selected Product Category Value : ', selectedProductCategoryValue);
+        if (selectedBranchCode) {
+            document.getElementById('branches').value = selectedBranchCode;
+            // Trigger the 'change' event to repopulate the product category dropdown
+            console.log('Change jalan kah?');
+            document.getElementById('branches').dispatchEvent(new Event('change'));
+        }
+
+        if (selectedProductCategoryValue) {
+            setTimeout(() => { // Ensure product categories are loaded before selecting
+                const productCategoryDropdown = document.getElementById('productCategoryCode');
+                const optionExists = [...productCategoryDropdown.options].some(option => option.value === selectedProductCategoryValue);
+
+                if (optionExists) {
+                    productCategoryDropdown.value = selectedProductCategoryValue;
+                }
+            }, 500); // Adjust the timeout as needed based on when the product categories are populated
+        }
+    });
+
+
+    // if (branchCodeInput && branchCodeInput.value) {
+    //     addRowButton.disabled = false; // Enable button if branchCode exists
+    // } else {
+    //     addRowButton.disabled = true; // Keep button disabled if no branchCode
+    // }
+
+    // Listen for changes in the branch dropdown
+    // if (branchDropdown) {
+    //     branchDropdown.addEventListener('change', function() {
+    //         if (branchDropdown.value) {
+    //             addRowButton.disabled = false; // Enable the button if a branch is selected
+    //         } else {
+    //             addRowButton.disabled = true; // Disable the button if no branch is selected
+    //         }
+    //     });
+    // }
+
     document.getElementById('add-row').addEventListener('click', function() {
-      let tableBody = document.getElementById('ingredient-table-body');
-      let rowCount = tableBody.rows.length;
+        console.log("BranchCodeInput : ", branchCodeInput);
+        if (!branchCodeInput.value) {
+            branchRequiredText.hidden = false; // Show the required text if branchCode is empty
+        }else{
 
-      let newRow = document.createElement('tr');
-      newRow.classList.add('bg-white', 'border-y', 'text-base', 'text-abu');
+            branchRequiredText.hidden = true; // Hide the required text if branchCode has a value
+            let tableBody = document.getElementById('ingredient-table-body');
+            let rowCount = tableBody.rows.length;
 
-      newRow.innerHTML = `
-    <td class="px-2 py-3">
-      <input type="text" name="ingredients[${rowCount}][name]"
-        class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-primary"
-        placeholder="Type ingredient name">
-    </td>
-    <td class="px-2 w-full">
-      <div class="flex items-center justify-center">
-        <button class="decrease-value inline-flex items-center justify-center p-1 me-3 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200">
-          <span class="sr-only">Quantity button</span>
-          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
-          </svg>
-        </button>
-        <div>
-          <input type="number" name="ingredients[${rowCount}][amount]"
-            class="ingredient-amount bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1"
-            value="0" required />
-        </div>
-        <button class="increase-value inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200">
-          <span class="sr-only">Quantity button</span>
-          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
-          </svg>
-        </button>
-      </div>
-    </td>
-    <td class="px-2">
-      <select id="metricGroups" name="ingredients[${rowCount}][metrics]"
-        class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-primary">
-        <option value="" disabled selected>Select ingredient metrics</option>
-      </select>
-    </td>
-    <td class="px-2 text-center">
-      <button type="button" class="text-sm delete-row bg-danger bg-opacity-10 text-danger hover:underline underline-offset-2 px-4 py-2 rounded-lg">Remove</button>
-    </td>
-  `;
+            let newRow = document.createElement('tr');
+            newRow.classList.add('bg-white', 'border-y', 'text-base', 'text-abu');
 
-      tableBody.appendChild(newRow);
-      bindRowButtons(newRow);
+            newRow.innerHTML = `
+                <td class="px-2 py-3">
+                <select id="ingredients" name="ingredients[${rowCount}][ingredient_code]"
+                    class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-primary">
+                    <option value="" disabled selected>Select Ingredient</option>
+                    @foreach ($ingredients as $ingredient)
+                        <option value="{{ $ingredient->ingredient_code }}">{{ $ingredient->ingredient_name }}</option>
+                    @endforeach
+                </select>
+                </td>
+                <td class="px-2 w-full">
+                <div class="flex items-center justify-center">
+                    <button class="decrease-value inline-flex items-center justify-center p-1 me-3 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200">
+                    <span class="sr-only">Quantity button</span>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
+                    </svg>
+                    </button>
+                    <div>
+                    <input type="number" name="ingredients[${rowCount}][amount]"
+                        class="ingredient-amount bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1"
+                        value="0" required />
+                    </div>
+                    <button class="increase-value inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200">
+                    <span class="sr-only">Quantity button</span>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
+                    </svg>
+                    </button>
+                </div>
+                </td>
+                <td class="px-2">
+                <select id="metrics" name="ingredients[${rowCount}][metric_code]"
+                    class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-primary">
+                    <option value="" disabled selected>Select ingredient metrics</option>
+                </select>
+                </td>
+                <td class="px-2 text-center">
+                <button type="button" class="text-sm delete-row bg-danger bg-opacity-10 text-danger hover:underline underline-offset-2 px-4 py-2 rounded-lg">Remove</button>
+                </td>
+                `;
+
+            tableBody.appendChild(newRow);
+            bindRowButtons(newRow);
+
+        }
     });
 
     function bindRowButtons(row) {
@@ -198,6 +279,85 @@
 
     // Bind buttons for the initial row if any
     document.querySelectorAll('#ingredient-table-body tr').forEach(bindRowButtons);
+
+    const allProductCategories = @json($productCategories ?? []); // Provide a default empty array if $metrics is not available
+
+    document.getElementById('branches').addEventListener('change', function(event){
+        let tableBody = document.getElementById('ingredient-table-body');
+        tableBody.innerHTML = '';
+        productCategory.innerHTML = ''; // Clear previous options
+        const selectedBranchCode = this.value
+        localStorage.setItem('selectedBranchCode', selectedBranchCode);
+
+        console.log(allProductCategories);
+        const branches = @json($branches ?? []);
+        const selectedBranch = branches.filter(branch => branch.branch_code == selectedBranchCode);
+        console.log('selected branch', selectedBranch);
+        const filteredProductCategories = allProductCategories.filter(productCategory => productCategory.branch_id == selectedBranch[0].id);
+        console.log('Filtered Product Categories', filteredProductCategories);
+        if(filteredProductCategories.length > 0){
+            filteredProductCategories.forEach(function (product_category) {
+                const option = document.createElement('option');
+                option.value = product_category.prod_category_code;
+                option.textContent = product_category.prod_category_name;
+                productCategory.appendChild(option);
+                console.log('Product Category Change : ', productCategory);
+                localStorage.setItem('selectedProductCategoryValue', option.value);
+            });
+
+        } else {
+            const option = document.createElement('option');
+            option.value = '';
+            option.textContent = 'No Product Category available';
+            productCategory.appendChild(option);
+        }
+    })
+
+    document.getElementById('productCategoryCode').addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex]; // Get the selected <option>
+        localStorage.setItem('selectedProductCategoryValue', selectedOption.value);
+        localStorage.setItem('selectedProductCategoryText', selectedOption.textContent);
+    });
+
+
+    document.getElementById('ingredient-table-body').addEventListener('change', function(event) {
+        if (event.target && event.target.matches('select[name^="ingredients"][name$="[ingredient_code]"]')) {
+            let row = event.target.closest('tr'); // Get the row where the select changed
+            let ingredientCode = event.target.value; // Get selected ingredient code
+
+            if (ingredientCode) {
+                fetchMetricsForIngredient(ingredientCode, row);
+            }
+        }
+    });
+
+    function fetchMetricsForIngredient(ingredientCode, row) {
+        console.log(ingredientCode);
+        // Make an AJAX call to get metrics for the selected ingredient
+        fetch(`/get-metrics/${ingredientCode}`) // You can create this route in Laravel
+            .then(response => response.json())
+            .then(data => {
+                let metricsSelect = row.querySelector('select[name^="ingredients"][name$="[metric_code]"]');
+                metricsSelect.innerHTML = ''; // Clear previous options
+
+                console.log('data : ', data);
+                if (data.metrics.length > 0) {
+                    data.metrics.forEach(metric => {
+                        let option = document.createElement('option');
+                        option.value = metric.metric_code;
+                        option.textContent = metric.metric_unit;
+                        metricsSelect.appendChild(option);
+                    });
+                } else {
+                    let option = document.createElement('option');
+                    option.value = '';
+                    option.textContent = 'No metrics available';
+                    metricsSelect.appendChild(option);
+                }
+            })
+            .catch(error => console.error('Error fetching metrics:', error));
+    }
+
   </script>
 
 </x-master>

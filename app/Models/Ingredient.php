@@ -28,7 +28,7 @@ class Ingredient extends Model
 
     public function metric(): BelongsTo
     {
-        return $this->belongsTo(Metric::class, 'metric_id');
+        return $this->belongsTo(Metric::class);
     }
 
 
@@ -66,9 +66,6 @@ class Ingredient extends Model
                                         'm.metric_unit as metric_unit')
                                 ->orderBy('i.created_at', 'desc')
                                 ->where('i.tenant_id', '=', $authTenantId);
-            // dd($query, $request);
-            // dd($authBranchId, $request->input('branch_code'), $request);
-            if($request->has('branchCode'))
             // dd($query, $request);
             // dd($authBranchId, $request->input('branch_code'), $request);
             if($request->has('branchCode'))

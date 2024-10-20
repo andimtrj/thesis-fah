@@ -24,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('transaction_d_alloc', function(Blueprint $table){
-            $table->dropColumn('ingredient_amt');
+            $table->decimal('ingredient_amt', 8, 2)->change();
             $table->dropForeign(['metric_id']);
             $table->dropColumn('metric_id');
         });

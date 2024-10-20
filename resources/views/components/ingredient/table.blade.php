@@ -21,29 +21,6 @@
         </th>
         </tr>
     </thead>
-{{-- Table --}}
-<div class="relative overflow-x-auto bg-white rounded-xl shadow-container">
-    <table class="min-w-full leading-normal">
-    {{-- Table Head --}}
-    <thead class="bg-cream">
-        <tr>
-        <th scope="col" class="px-4 py-4 text-center w-[15.2vw]">
-            Ingredient Code
-        </th>
-        <th scope="col" class="px-4 py-4 text-left w-[21vw]">
-            Ingredient Name
-        </th>
-        <th scope="col" class="px-4 py-4 text-right lg:w-[15vw] md:w-[7vw]">
-            Ingredient Amount
-        </th>
-        <th scope="col" class="px-4 py-4 text-center">
-            Metric
-        </th>
-        <th scope="col" class="px-4 py-4 text-center">
-            Action
-        </th>
-        </tr>
-    </thead>
 
     {{-- Table Body --}}
     <tbody>

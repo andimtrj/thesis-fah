@@ -41,13 +41,9 @@ class Product extends Model
                                 ->join('branches as b', 'p.branch_id', '=', 'b.id')
                                 ->join('product_ingredient_h as pih', 'pih.product_id', '=', 'p.id')
                                 ->where('p.tenant_id', '=', $authTenantId);
-            if($authBranchId)
+            if($request->has('branchCode'))
             {
-                $query->where('p.branch_id', '=', $authBranchId);
-            }
-            else if($request->has('branch_code'))
-            {
-                $query->where('b.branch_code', '=', $request->input('branch_code'));
+                $query->where('b.branch_code', '=', $request->input('branchCode'));
             }
             else
             {

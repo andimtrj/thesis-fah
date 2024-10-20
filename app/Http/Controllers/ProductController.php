@@ -23,8 +23,9 @@ class ProductController extends Controller
         $this->productIngredientController = $productIngredientController;
     }
 
-    public function CreateProduct(Request $request)
+    public function InsertProduct(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'productName' => 'required|string|max:255',
             'tenantCode' => 'required|string|max:8|exists:tenants,tenant_code',
@@ -33,10 +34,12 @@ class ProductController extends Controller
             'productPrice' => 'required|numeric',
             'isActive' => 'required|boolean',
             'ingredients' => 'required|array',
-            'ingredients.*.id' => 'required|integer|exists:ingredients,id',
-            'ingredients.*.amt' => 'required|numeric|min:0'
+            'ingredients.*.ingredient_code' => 'required|integer|exists:ingredients,ingredient_code',
+            'ingredients.*.amount' => 'required|numeric|min:0',
+            'ingredients.*.metric_code' => 'required|string|exists:metrics, metric_code'
         ]);
 
+        dd($validator->fails());
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
@@ -109,17 +112,42 @@ class ProductController extends Controller
         return $newProductCode;
     }
 
-    public function showProduct()
+    public function showProductPage(Request $request)
     {
+        $formSubmitted = $request->has('branchCode') || $request->has('productCode') || $request->has('productName');
         $authTenantId = Auth::user()->tenant_id;
 
         if ($authTenantId) {
             // Ambil tenant berdasarkan tenant_id user untuk display tenant_name
             $tenant = Tenant::find($authTenantId);
+            $branches = Branch::where('tenant_id', '=', $authTenantId)->get();
+            if($formSubmitted){
+                $products = Product::GetPagingProduct($request)->withQueryString();
+                return view('product', compact('tenant', 'branches', 'products', 'formSubmitted')); // Pass tenant variable to view
+
+            }
         } else {
             throw new \Exception("Tenant Code Is Null");
         }
 
-        return view('product', compact('tenant')); // Pass tenant variable to view
+        return view('product', compact('tenant', 'branches', 'formSubmitted')); // Pass tenant variable to view
     }
+
+    public function showAddProductPage(){
+
+        $authTenantId = Auth::user()->tenant_id;
+        if ($authTenantId) {
+            // Ambil tenant berdasarkan tenant_id user untuk display tenant_name
+            $tenant = Tenant::find($authTenantId);
+            $branches = Branch::where('tenant_id', '=', $authTenantId)->get();
+            $ingredients = Ingredient::where('tenant_id', '=', $authTenantId)->get();
+            $productCategories = ProductCategory::where('tenant_id', '=', $authTenantId)->get();
+            return view('components.product.add-product', compact('productCategories', 'tenant', 'branches', 'ingredients'));
+        } else {
+            throw new \Exception("Tenant Code Is Null");
+        }
+
+
+    }
+
 }

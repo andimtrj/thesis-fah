@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Branch;
+use App\Models\Metric;
 use App\Models\Tenant;
+use App\Models\Ingredient;
+use App\Models\MetricGroup;
 use App\DTO\BaseResponseObj;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Models\Ingredient;
-use App\Models\Metric;
-use App\Models\MetricGroup;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -246,5 +247,37 @@ class IngredientController extends Controller
 
         }
     }
+
+    public function getMetrics($ingredient_code)
+    {
+        try{
+            $ingredient = Ingredient::where('ingredient_code', $ingredient_code)->first();
+
+            if ($ingredient) {
+                // Get metrics for the same metric group
+                $metric = $ingredient->metric;
+                $metricGroupId = $metric->metric_group_id;
+                if ($metricGroupId) {
+                    // Get all metrics for the same metric group
+                    $metrics = Metric::where('metric_group_id', '=', $metricGroupId)->get();
+
+                    // Return the metrics as JSON
+                    return response()->json(['metrics' => $metrics]);
+                }
+            }
+
+            return response()->json(['metrics' => []], 404); // Return empty array if no metrics found
+
+        }
+        catch(\Exception $e){
+            $response = new BaseResponseObj();
+            $response->statusCode = '500';
+            $response->message = 'An Error Occurred During Registration : ' . $e->getMessage();
+
+            return response()->json(['response' => $response]);
+        }
+        // Find the ingredient with its metrics and their metric group
+    }
+
 
 }

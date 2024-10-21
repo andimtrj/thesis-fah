@@ -22,6 +22,7 @@ class ProductController extends Controller
     {
         $this->productIngredientController = $productIngredientController;
     }
+}
     public function InsertProduct(Request $request)
     {
         $validator = $this->validateProductRequest($request);

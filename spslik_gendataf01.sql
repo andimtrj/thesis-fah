@@ -3,13 +3,13 @@
 -- DROP FUNCTION IF EXISTS public.spslik_gendataf01(timestamp without time zone, timestamp without time zone, character varying, character varying, character varying, bigint);
 
 CREATE OR REPLACE FUNCTION public.spslik_gendataf01(
-	schedulestartdate timestamp without time zone DEFAULT NULL::timestamp without time zone,
-	scheduleenddate timestamp without time zone DEFAULT NULL::timestamp without time zone,
-	periodmonth character varying DEFAULT NULL::character varying,
-	periodyear character varying DEFAULT NULL::character varying,
-	"user" character varying DEFAULT NULL::character varying,
-	scheduleid bigint DEFAULT NULL::bigint)
-    RETURNS TABLE(flagdtl text, "PeriodMonth" integer, "Periodyear" integer, norekfasilitas integer, nocif integer, kdsifatkredit text, kdjeniskredit text, akadpembiyaan text, noakadawal integer, tglakadawal timestamp without time zone, noakadakhr integer, tglakadakhr timestamp without time zone, baruperpjgan text, tglawalkredit timestamp without time zone, tglmulai timestamp without time zone, tgljthtmp timestamp without time zone, kdktgrdebt text, kdjnspenggunaan text, kdorientasipenggunaan text, kdsectoreconomy text, lokasiproyekdati2 text, nlproyek integer, kdvaluta text, prcntgsukubng integer, jnssukubng integer, kreditpembiayaanprogpmrnth integer, takeoverdari text, sumberdana integer, plafonawal integer, plafon integer, pncairanblnbrjln integer, denda integer, bakidebet integer, nldlmmtuangasal integer, kdkolektibilitas text, tglmacet timestamp without time zone, kodesebabmacet text, tunggakanpkk integer, tunggakanbng integer, jmlhhrtunggakan integer, frektunggakan integer, frekrestrukturisasi integer, tglrestrukturawal timestamp without time zone, tglrestrukturakhr timestamp without time zone, kdcararestruktur text, kdkondisi text, tglkondisi timestamp without time zone, keterangan text, kdkntrcbg text, operasidata text, usrcrt name, dtmcrt timestamp without time zone, usrupd name, dtmupd timestamp without time zone) 
+	schedulestartdate timestamp without time zone DEFAULT NULL,
+	scheduleenddate timestamp without time zone DEFAULT NULL,
+	periodmonth character varying DEFAULT NULL,
+	periodyear character varying DEFAULT NULL,
+	"user" character varying DEFAULT NULL,
+	scheduleid bigint DEFAULT NULL)
+    RETURNS TABLE(flagdtl text, "PeriodMonth" integer, "Periodyear" integer, norekfasilitas integer, nocif integer, kdsifatkredit text, kdjeniskredit text, akadpembiyaan text, noakadawal integer, tglakadawal timestamp without time zone, noakadakhr integer, tglakadakhr timestamp without time zone, baruperpjgan text, tglawalkredit timestamp without time zone, tglmulai timestamp without time zone, tgljthtmp timestamp without time zone, kdktgrdebt text, kdjnspenggunaan text, kdorientasipenggunaan text, kdsectoreconomy text, lokasiproyekdati2 text, nlproyek integer, kdvaluta text, prcntgsukubng integer, jnssukubng integer, kreditpembiayaanprogpmrnth integer, takeoverdari text, sumberdana integer, plafonawal integer, plafon integer, pncairanblnbrjln integer, denda integer, bakidebet integer, nldlmmtuangasal integer, kdkolektibilitas text, tglmacet timestamp without time zone, kodesebabmacet text, tunggakanpkk integer, tunggakanbng integer, jmlhhrtunggakan integer, frektunggakan integer, frekrestrukturisasi integer, tglrestrukturawal timestamp without time zone, tglrestrukturakhr timestamp without time zone, kdcararestruktur text, kdkondisi text, tglkondisi timestamp without time zone, keterangan text, kdkntrcbg text, operasidata text, usrcrt name, dtmcrt timestamp without time zone, usrupd name, dtmupd timestamp without time zone)
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE PARALLEL UNSAFE
@@ -826,5 +826,11 @@ BEGIN
 END; 
 $BODY$;
 
-ALTER FUNCTION public.spslik_gendataf01(timestamp without time zone, timestamp without time zone, character varying, character varying, character varying, bigint)
+ALTER FUNCTION public.spslik_gendataf01(
+	timestamp without time zone,
+	timestamp without time zone,
+	character varying,
+	character varying,
+	character varying,
+	bigint)
     OWNER TO postgres;

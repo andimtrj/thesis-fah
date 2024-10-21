@@ -31,18 +31,11 @@ class ProductController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        try {
-            $response = DB::transaction(function () use ($request) {
-                return $this->createProductTransaction($request);
-            });
+        DB::transaction(function () use ($request) {
+            $this->createProductTransaction($request);
+        });
 
-            return $response;
-        } catch (\Exception $e) {
-            return redirect()->intended('/product')->with([
-                'status' => '500',
-                'message' => 'An Error Occurred During Registration : ' . $e->getMessage(),
-            ]);
-        }
+        return redirect('/product')->with('status', 'Product created successfully!');
     }
 
     private static function GenerateProductCode()
@@ -120,32 +113,32 @@ class ProductController extends Controller
         ]);
     }
 
-    private function createProductTransaction($request)
-    {
-        $productCode = $this->GenerateProductCode();
-        $tenantId = Tenant::GetTenantIdByTenantCode($request->input('tenantCode'));
-        $branchId = Branch::GetBranchIdByBranchCode($request->input('branchCode'));
-        $productCategoryId = ProductCategory::GetProductCategoryIdByProductCategoryCode($request->input('productCategoryCode'));
+private function createProductTransaction($request)
+{
+    $productCode = $this->GenerateProductCode();
+    $tenantId = Tenant::GetTenantIdByTenantCode($request->input('tenantCode'));
+    $branchId = Branch::GetBranchIdByBranchCode($request->input('branchCode'));
+    $productCategoryId = ProductCategory::GetProductCategoryIdByProductCategoryCode($request->input('productCategoryCode'));
 
-        $product = Product::create([
-            'product_code' => $productCode,
-            'product_name' => $request->input('productName'),
-            'product_category_id' => $productCategoryId,
-            'tenant_id' => $tenantId,
-            'branch_id' => $branchId,
-            'product_price' => $request->input('productPrice'),
-            'is_active' => $request->input('isActive'),
-            'created_by' => Auth::id(),
-            'updated_by' => Auth::id()
-        ]);
+    $product = Product::create([
+        'product_code' => $productCode,
+        'product_name' => $request->input('productName'),
+        'product_category_id' => $productCategoryId,
+        'tenant_id' => $tenantId,
+        'branch_id' => $branchId,
+        'product_price' => $request->input('productPrice'),
+        'is_active' => $request->input('isActive'),
+        'created_by' => Auth::id(),
+        'updated_by' => Auth::id()
+    ]);
 
-        if ($product) {
-            $request->merge(['product' => $product]);
-            return $this->productIngredientController->CreateProductIngredient($request);
-        }
-
+    if (!$product) {
         throw new \Exception("Failed to create product");
     }
+
+    $request->merge(['product' => $product]);
+    $this->productIngredientController->CreateProductIngredient($request);
+}
 
     public function InsertProduct(Request $request)
     {

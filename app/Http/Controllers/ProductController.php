@@ -113,32 +113,32 @@ class ProductController extends Controller
         ]);
     }
 
-private function createProductTransaction($request)
-{
-    $productCode = $this->GenerateProductCode();
-    $tenantId = Tenant::GetTenantIdByTenantCode($request->input('tenantCode'));
-    $branchId = Branch::GetBranchIdByBranchCode($request->input('branchCode'));
-    $productCategoryId = ProductCategory::GetProductCategoryIdByProductCategoryCode($request->input('productCategoryCode'));
+    private function createProductTransaction($request)
+    {
+        $productCode = $this->GenerateProductCode();
+        $tenantId = Tenant::GetTenantIdByTenantCode($request->input('tenantCode'));
+        $branchId = Branch::GetBranchIdByBranchCode($request->input('branchCode'));
+        $productCategoryId = ProductCategory::GetProductCategoryIdByProductCategoryCode($request->input('productCategoryCode'));
 
-    $product = Product::create([
-        'product_code' => $productCode,
-        'product_name' => $request->input('productName'),
-        'product_category_id' => $productCategoryId,
-        'tenant_id' => $tenantId,
-        'branch_id' => $branchId,
-        'product_price' => $request->input('productPrice'),
-        'is_active' => $request->input('isActive'),
-        'created_by' => Auth::id(),
-        'updated_by' => Auth::id()
-    ]);
+        $product = Product::create([
+            'product_code' => $productCode,
+            'product_name' => $request->input('productName'),
+            'product_category_id' => $productCategoryId,
+            'tenant_id' => $tenantId,
+            'branch_id' => $branchId,
+            'product_price' => $request->input('productPrice'),
+            'is_active' => $request->input('isActive'),
+            'created_by' => Auth::id(),
+            'updated_by' => Auth::id()
+        ]);
 
-    if (!$product) {
-        throw new \Exception("Failed to create product");
+        if (!$product) {
+            throw new \Exception("Failed to create product");
+        }
+
+        $request->merge(['product' => $product]);
+        $this->productIngredientController->CreateProductIngredient($request);
     }
-
-    $request->merge(['product' => $product]);
-    $this->productIngredientController->CreateProductIngredient($request);
-}
 
     public function InsertProduct(Request $request)
     {

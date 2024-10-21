@@ -140,27 +140,6 @@ class ProductController extends Controller
         $this->productIngredientController->CreateProductIngredient($request);
     }
 
-    public function InsertProduct(Request $request)
-    {
-        $validator = $this->validateProductRequest($request);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        try {
-            $response = DB::transaction(function () use ($request) {
-                return $this->createProductTransaction($request);
-            });
-
-            return $response;
-        } catch (\Exception $e) {
-            return redirect()->intended('/product')->with([
-                'status' => '500',
-                'message' => 'An Error Occurred During Registration : ' . $e->getMessage(),
-            ]);
-        }
-    }
 
     private static function GenerateProductCode()
     {

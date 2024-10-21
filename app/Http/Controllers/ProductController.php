@@ -25,66 +25,23 @@ class ProductController extends Controller
 
     public function InsertProduct(Request $request)
     {
-
-        $validator = Validator::make($request->all(), [
-            'productName' => 'required|string|max:255',
-            'tenantCode' => 'required|string|max:8|exists:tenants,tenant_code',
-            'branchCode' => 'required|string|max:8|exists:branches,branch_code',
-            'productCategoryCode' => 'required|string|exists:product_categories,prod_category_code',
-            'productPrice' => 'required|numeric',
-            'isActive' => 'required|boolean',
-            'ingredients' => 'required|array',
-            'ingredients.*.ingredient_code' => 'required|string|exists:ingredients,ingredient_code',
-            'ingredients.*.amount' => 'required|numeric|min:0',
-            'ingredients.*.metric_code' => 'required|string|exists:metrics,metric_code'
-        ]);
+        $validator = $this->validateProductRequest($request);
 
         if ($validator->fails()) {
-            dd($validator);
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
         try {
-
-            DB::transaction(function () use ($request, &$response) {
-                $productCode = $this->GenerateProductCode();
-                $tenantId = Tenant::GetTenantIdByTenantCode($request->input('tenantCode'));
-                $branchId = Branch::GetBranchIdByBranchCode($request->input('branchCode'));
-                $productCategoryId = ProductCategory::GetProductCategoryIdByProductCategoryCode($request->input('productCategoryCode'));
-
-                $product = Product::create([
-                    'product_code' => $productCode,
-                    'product_name' => $request->input('productName'),
-                    'product_category_id' => $productCategoryId,
-                    'tenant_id' => $tenantId,
-                    'branch_id' => $branchId,
-                    'product_price' => $request->input('productPrice'),
-                    'is_active' => $request->input('isActive'),
-                    'created_by' => Auth::id(),
-                    'updated_by' => Auth::id()
-                ]);
-
-                if ($product) {
-                    $request->merge(['product' => $product]);
-                    $response = new BaseResponseObj();
-                    $response = $this->productIngredientController->CreateProductIngredient($request);
-
-                    return $response;
-                }
+            $response = DB::transaction(function () use ($request) {
+                return $this->createProductTransaction($request);
             });
 
             return $response;
-
-        }catch(\Exception $e){
-            $response = new BaseResponseObj();
-            $response->statusCode = '500';
-            $response->message = 'An Error Occurred During Registration : ' . $e->getMessage();
-
+        } catch (\Exception $e) {
             return redirect()->intended('/product')->with([
-                'status' => $response->statusCode,
-                'message' => $response->message,
+                'status' => '500',
+                'message' => 'An Error Occurred During Registration : ' . $e->getMessage(),
             ]);
-
         }
     }
 
@@ -147,4 +104,45 @@ class ProductController extends Controller
 
     }
 
-}
+    private function validateProductRequest($request)
+    {
+        return Validator::make($request->all(), [
+            'productName' => 'required|string|max:255',
+            'tenantCode' => 'required|string|max:8|exists:tenants,tenant_code',
+            'branchCode' => 'required|string|max:8|exists:branches,branch_code',
+            'productCategoryCode' => 'required|string|exists:product_categories,prod_category_code',
+            'productPrice' => 'required|numeric',
+            'isActive' => 'required|boolean',
+            'ingredients' => 'required|array',
+            'ingredients.*.ingredient_code' => 'required|string|exists:ingredients,ingredient_code',
+            'ingredients.*.amount' => 'required|numeric|min:0',
+            'ingredients.*.metric_code' => 'required|string|exists:metrics,metric_code'
+        ]);
+    }
+
+    private function createProductTransaction($request)
+    {
+        $productCode = $this->GenerateProductCode();
+        $tenantId = Tenant::GetTenantIdByTenantCode($request->input('tenantCode'));
+        $branchId = Branch::GetBranchIdByBranchCode($request->input('branchCode'));
+        $productCategoryId = ProductCategory::GetProductCategoryIdByProductCategoryCode($request->input('productCategoryCode'));
+
+        $product = Product::create([
+            'product_code' => $productCode,
+            'product_name' => $request->input('productName'),
+            'product_category_id' => $productCategoryId,
+            'tenant_id' => $tenantId,
+            'branch_id' => $branchId,
+            'product_price' => $request->input('productPrice'),
+            'is_active' => $request->input('isActive'),
+            'created_by' => Auth::id(),
+            'updated_by' => Auth::id()
+        ]);
+
+        if ($product) {
+            $request->merge(['product' => $product]);
+            return $this->productIngredientController->CreateProductIngredient($request);
+        }
+
+        throw new \Exception("Failed to create product");
+    }

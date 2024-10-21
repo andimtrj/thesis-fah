@@ -21,7 +21,7 @@ AS $BODY$
    v_BusinessDate  TIMESTAMP DEFAULT(SELECT SYS_VALUE FROM public.FOUNDATION_SYS_CTRL_COY WHERE SYS_KEY = 'BusinessDate');
    v_offset INT := 0;
    v_row_count INT;
-   v_batch_size INT := 1000;
+   v_batch_size INT := 10000; -- Adjusted batch size for better performance
 BEGIN
 -- This procedure was converted on Fri Nov 03 15:18:18 2023 using Ispirer SQLWays 10.11 Build 7628 Revision 0 64bit Licensed to adins.udemy - Ispirer SQLWays Toolkit 10 Microsoft SQL Server to PostgreSQL Standart S License (1 month, 20231113).
 
@@ -54,7 +54,7 @@ BEGIN
 	WHERE is_active = TRUE
 	GROUP BY ZIPCODE,CITY,AREA_CODE_2,AREA_CODE_1,REF_PROV_DISTRICT_ID;
 
-	CREATE INDEX "ix_#zipcode_data_zipcode_area_code1_area_code2" ON tt_ZIPCODE_DATA (zipcode, area_code_1, area_code_2)
+	CREATE INDEX "ix_#zipcode_data_zipcode_area_code1_area_code2" ON tt_ZIPCODE_DATA (zipcode, area_code_1, area_code_2) WITH (FILLFACTOR = 70)
 	INCLUDE	(
 				ZIPCODE,
 				REF_PROV_DISTRICT_ID 
@@ -143,7 +143,7 @@ BEGIN
         v_offset := v_offset + batch_size;
 	END LOOP;
 	
-	CREATE INDEX "ix_#agrmnt_temp_contract_stat_code_default_stat_code" ON tt_agrmnt_temp (contract_stat_code, default_stat_code);
+	CREATE INDEX "ix_#agrmnt_temp_contract_stat_code_default_stat_code" ON tt_agrmnt_temp (contract_stat_code, default_stat_code) WITH (FILLFACTOR = 70);
 
 	CREATE INDEX "ix_#agrmnt_temp_agrmnt_id" ON tt_agrmnt_temp (agrmnt_id)
 	INCLUDE

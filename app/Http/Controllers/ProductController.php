@@ -30,17 +30,17 @@ class ProductController extends Controller
             'productName' => 'required|string|max:255',
             'tenantCode' => 'required|string|max:8|exists:tenants,tenant_code',
             'branchCode' => 'required|string|max:8|exists:branches,branch_code',
-            'productCategoryCode' => 'required|string|max:8|exists:product_categories,product_category_code',
+            'productCategoryCode' => 'required|string|exists:product_categories,prod_category_code',
             'productPrice' => 'required|numeric',
             'isActive' => 'required|boolean',
             'ingredients' => 'required|array',
-            'ingredients.*.ingredient_code' => 'required|integer|exists:ingredients,ingredient_code',
+            'ingredients.*.ingredient_code' => 'required|string|exists:ingredients,ingredient_code',
             'ingredients.*.amount' => 'required|numeric|min:0',
-            'ingredients.*.metric_code' => 'required|string|exists:metrics, metric_code'
+            'ingredients.*.metric_code' => 'required|string|exists:metrics,metric_code'
         ]);
 
-        dd($validator->fails());
         if ($validator->fails()) {
+            dd($validator); 
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -66,17 +66,14 @@ class ProductController extends Controller
 
                 if ($product) {
                     $request->merge(['product' => $product]);
-
+                    $response = new BaseResponseObj();
                     $response = $this->productIngredientController->CreateProductIngredient($request);
 
                     return $response;
                 }
             });
 
-            return redirect()->intended('/product')->with([
-                'status' => $response->statusCode,
-                'message' => $response->message,
-            ]);
+            return $response;
 
         }catch(\Exception $e){
             $response = new BaseResponseObj();
@@ -146,8 +143,6 @@ class ProductController extends Controller
         } else {
             throw new \Exception("Tenant Code Is Null");
         }
-
-
     }
 
 }

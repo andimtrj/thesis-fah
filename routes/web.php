@@ -24,11 +24,6 @@ Route::middleware('web')->group(function () {
     Route::middleware('auth')->group(function () {
         // Branch
         Route::get('/branch', [BranchController::class, 'showBranchPaging'])->name('branch');
-
-        Route::get('/product', function () {
-            return view('product');
-        })->name('product');
-
         Route::get('/landing', function () {
             return view('landing');
         })->name('landing');
@@ -53,6 +48,7 @@ Route::middleware('web')->group(function () {
 
         Route::get('/product', [ProductController::class, 'showProductPage'])->name('product');
         Route::get('/add-product', [ProductController::class, 'showAddProductPage'])->name('add-product');
+        Route::get('/edit-product', function () {return view('components.product.edit-product');})->name('edit-product');
         Route::post('/insert-product', [ProductController::class, 'InsertProduct'])->name('insert-product');
 
         Route::get('/get-metrics/{ingredient_code}', [IngredientController::class, 'getMetrics'])->name('get-metrics');

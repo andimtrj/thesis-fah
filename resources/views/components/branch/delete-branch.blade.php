@@ -1,14 +1,15 @@
-@props(['deleteTitle'=>'Delete Modal', 'deleteDesc'=>'Delete Desc Modal'])
+@props(['deleteTitle' => 'Delete Modal', 'deleteDesc' => 'Delete Desc Modal'])
 
 <div class="flex items-center">
-  <a data-modal-target="deleteModal" data-modal-toggle="deleteModal" class="border-2 w-fit p-1 rounded-lg cursor-pointer">
+  <a data-modal-target="deleteModal" data-modal-toggle="deleteModal" class="border-2 w-fit p-1 rounded-lg cursor-pointer"
+    href="" onclick="confirmation(event)">
     <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
       viewBox="0 0 24 24">
       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
         d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
     </svg>
   </a>
-
+  {{-- 
   <div id="deleteModal" tabindex="-1" aria-hidden="true"
     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-md max-h-full">
@@ -55,5 +56,6 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> --}}
 </div>
+

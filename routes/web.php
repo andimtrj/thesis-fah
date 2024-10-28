@@ -33,7 +33,6 @@ Route::middleware('web')->group(function () {
         })->name('add-branch');
 
         Route::get('/edit-branch/{id}', [BranchController:: class, 'DetailBranchPage'])->name('edit-branch');
-
         Route::post('/create-branch',  [BranchController::class, 'CreateBranch'])->name('create-branch');
         Route::post('/update-branch/{id}',  [BranchController::class, 'UpdateBranch'])->name('update-branch');
         Route::get('/get-paging-branch', [BranchController::class, 'GetPagingBranch'])->name('get-paging-branch');

@@ -22,6 +22,6 @@ class ProductIngredientH extends Model
     }
 
     public function productIngredientD(){
-        return $this->hasMany(ProductIngredientD::class);
+        return $this->hasMany(ProductIngredientD::class, 'prod_ing_h_id');
     }
 }

@@ -19,6 +19,10 @@ class ProductIngredientD extends Model
     ];
 
     public function ProductIngredientH(){
-        return $this->belongsTo(ProductIngredientH::class);
+        return $this->belongsTo(ProductIngredientH::class, 'prod_ing_h_id');
+    }
+
+    public function Ingredients(){
+        return $this->belongsTo(Ingredient::class, 'ingredient_id');
     }
 }

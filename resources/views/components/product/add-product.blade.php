@@ -172,7 +172,8 @@
     let branchCodeInput = document.getElementById('branches');
 
     const productCategory = document.getElementById('productCategoryCode');
-
+    const allIngredients = @json($ingredients ?? []);
+    console.log(allIngredients);
 
 
     // if (branchCodeInput && branchCodeInput.value) {
@@ -197,11 +198,12 @@
         if (!branchCodeInput.value) {
             branchRequiredText.hidden = false; // Show the required text if branchCode is empty
         }else{
-
             branchRequiredText.hidden = true; // Hide the required text if branchCode has a value
             let tableBody = document.getElementById('ingredient-table-body');
             let rowCount = tableBody.rows.length;
-
+            const selectedBranchCode = branchCodeInput.value;
+            const filteredIngredients = allIngredients.filter(ingredient => ingredient.branch.branch_code == selectedBranchCode);
+            console.log('filtered Ingredients', filteredIngredients);
             let newRow = document.createElement('tr');
             newRow.classList.add('bg-white', 'border-y', 'text-base', 'text-abu');
 
@@ -210,9 +212,9 @@
                 <select id="ingredients" name="ingredients[${rowCount}][ingredient_code]"
                     class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-primary">
                     <option value="" disabled selected>Select Ingredient</option>
-                    @foreach ($ingredients as $ingredient)
-                        <option value="{{ $ingredient->ingredient_code }}">{{ $ingredient->ingredient_name }}</option>
-                    @endforeach
+                    ${filteredIngredients.map(ingredient =>
+                        `<option value="${ingredient.ingredient_code}">${ingredient.ingredient_name}</option>`
+                    ).join('')}
                 </select>
                 </td>
                 <td class="px-2 w-full">

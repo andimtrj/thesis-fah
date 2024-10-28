@@ -26,9 +26,22 @@ class Product extends Model
         'updated_by'
     ];
 
-    public function ProductIngredient(){
+    public function ProductIngredientH(){
         return $this->hasOne(ProductIngredientH::class);
     }
+
+    public function Branch(){
+        return $this->belongsTo(Branch::class);
+    }
+
+    public function Tenant(){
+        return $this->belongsTo(Tenant::class);
+    }
+
+    public function ProductCategory(){
+        return $this->belongsTo(ProductCategory::class);
+    }
+
 
     public static function GetPagingProduct(Request $request)
     {
@@ -61,7 +74,7 @@ class Product extends Model
                 $query->where('i.product_name', 'like', '%' . $paramProductName . '%');
             }
 
-            $ingredients = $query->select('p.product_code', 'p.product_name', 'pih.total_ingredients', 'p.product_price')->paginate(10); // Paginate the results
+            $ingredients = $query->select('p.product_code', 'p.product_name', 'pih.total_ingredients', 'p.product_price', 'p.id')->paginate(10); // Paginate the results
         } else {
             throw new \Exception("Tenant Code Is Null");
         }

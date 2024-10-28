@@ -47,7 +47,7 @@
         @elseif ($ingredients->isEmpty())
         {{-- {{ dd($request->session()->all()) }} --}}
             <tr>
-                <td colspan="4" class="text-center py-4">No Ingredients found</td>
+                <td colspan="5" class="text-center py-4">No Ingredients Found</td>
             </tr>
         @endif
         </tr>

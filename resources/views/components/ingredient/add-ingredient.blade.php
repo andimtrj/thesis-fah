@@ -20,7 +20,7 @@
             @if(session('branch_code'))
                 <input type="hidden" name="branchCode" id="branchCode" value="{{ session('branch_code') }}">
             @else
-            <div>
+            <div class="mb-5">
               <label for="branches" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Branch</label>
               <select id="branches" name="branchCode"
                 class="bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-lg focus:ring-primary block w-full p-2.5">

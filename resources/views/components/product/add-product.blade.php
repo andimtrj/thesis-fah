@@ -173,7 +173,7 @@
 
     const productCategory = document.getElementById('productCategoryCode');
     const allIngredients = @json($ingredients ?? []);
-    console.log(allIngredients);
+    console.log('Ingredients', allIngredients);
 
 
     // if (branchCodeInput && branchCodeInput.value) {
@@ -228,7 +228,7 @@
                     <div>
                     <input type="number" name="ingredients[${rowCount}][amount]"
                         class="ingredient-amount bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1"
-                        value="0" required />
+                        value="0" step="0.01" required />
                     </div>
                     <button type="button" class="increase-value inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200">
                     <span class="sr-only">Quantity button</span>
@@ -316,7 +316,7 @@
         if (event.target && event.target.matches('select[name^="ingredients"][name$="[ingredient_code]"]')) {
             let row = event.target.closest('tr'); // Get the row where the select changed
             let ingredientCode = event.target.value; // Get selected ingredient code
-
+            console.log('Ingredient Code', ingredientCode);
             if (ingredientCode) {
                 fetchMetricsForIngredient(ingredientCode, row);
             }
@@ -324,30 +324,47 @@
     });
 
     function fetchMetricsForIngredient(ingredientCode, row) {
+
+        const allMetrics = @json($metrics ?? []);
+        const ingredient = allIngredients.find(ingredient => ingredient.ingredient_code == ingredientCode);
+        console.log('Ingredient', ingredient);
+        const filteredMetrics = allMetrics.filter(metric => metric.metric_group_id == ingredient.metric.metric_group_id);
+
+        let metricsSelect = row.querySelector('select[name^="ingredients"][name$="[metric_code]"]');
+        metricsSelect.innerHTML = ''; // Clear previous options
+
+        filteredMetrics.forEach(function (metric){
+            let option = document.createElement('option');
+            option.value = metric.metric_code;
+            option.textContent = metric.metric_unit;
+            metricsSelect.appendChild(option);
+
+        })
+
         console.log(ingredientCode);
         // Make an AJAX call to get metrics for the selected ingredient
-        fetch(`/get-metrics/${ingredientCode}`) // You can create this route in Laravel
-            .then(response => response.json())
-            .then(data => {
-                let metricsSelect = row.querySelector('select[name^="ingredients"][name$="[metric_code]"]');
-                metricsSelect.innerHTML = ''; // Clear previous options
+    //     fetch(`/get-metrics/${ingredientCode}`) // You can create this route in Laravel
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             let metricsSelect = row.querySelector('select[name^="ingredients"][name$="[metric_code]"]');
+    //             metricsSelect.innerHTML = ''; // Clear previous options
 
-                console.log('data : ', data);
-                if (data.metrics.length > 0) {
-                    data.metrics.forEach(metric => {
-                        let option = document.createElement('option');
-                        option.value = metric.metric_code;
-                        option.textContent = metric.metric_unit;
-                        metricsSelect.appendChild(option);
-                    });
-                } else {
-                    let option = document.createElement('option');
-                    option.value = '';
-                    option.textContent = 'No metrics available';
-                    metricsSelect.appendChild(option);
-                }
-            })
-            .catch(error => console.error('Error fetching metrics:', error));
+    //             console.log('data : ', data);
+    //             if (data.metrics.length > 0) {
+    //                 data.metrics.forEach(metric => {
+    //                     let option = document.createElement('option');
+    //                     option.value = metric.metric_code;
+    //                     option.textContent = metric.metric_unit;
+    //                     metricsSelect.appendChild(option);
+    //                 });
+    //             } else {
+    //                 let option = document.createElement('option');
+    //                 option.value = '';
+    //                 option.textContent = 'No metrics available';
+    //                 metricsSelect.appendChild(option);
+    //             }
+    //         })
+    //         .catch(error => console.error('Error fetching metrics:', error));
     }
 
   </script>

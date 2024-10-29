@@ -6,7 +6,7 @@
       </div>
       <div class="px-10 py-7 rounded-xl bg-white">
         <h2 class="text-xl font-medium mb-5 border-b-abu border-b-2">Product Details</h2>
-        <form action="" method="POST">
+        <form action="{{ route('update-product', ['id' => $product->id]) }}" method="POST">
           @csrf
           <div class="mb-5">
             <label for="productName" class="flex mb-1 text-sm font-medium text-gray-900 justify-between items-center">
@@ -15,9 +15,9 @@
               <label class="inline-flex items-center cursor-pointer">
                 <span class="text-sm font-medium text-gray-900 mr-2">Is Active</span>
                 <!-- Hidden input with value "false" -->
-                <input type="hidden" name="isActive" value="{{ $product->is_active }}">
+                <input type="hidden" name="isActive" value="0">
                 <!-- Checkbox, submitting "true" when checked -->
-                <input type="checkbox" value="{{ $product->is_active }}" class="sr-only peer" id="isActive" name="isActive">
+                <input type="checkbox" value="1" class="sr-only peer" id="isActive" name="isActive" {{ $product->is_active == '1' ? 'checked' : '' }}>
                 {{-- @if ($errors->has('isActive'))
                   <p class="text-red-500 text-sm">{{ $errors->first('isActive') }}</p>
                 @endif --}}
@@ -142,12 +142,14 @@ function populateProductIngredient(){
     console.log("Product Ingredient Detail : ", productIngredientD);
     if( productIngredientD.length > 0 ){
         console.log('filtered ingredients : ', filteredIngredients);
+        console.log('All Metrics : ', allMetrics);
         let rowCount = 0;
         productIngredientD.forEach(function (item){
             let newRow = document.createElement('tr');
             newRow.classList.add('bg-white', 'border-y', 'text-base', 'text-abu');
 
             newRow.innerHTML = `
+            <input type="hidden" name="ingredients[${rowCount}][prod_ing_d_no]" id="ProductIngredientDNo" value="${item.prod_ing_d_no}">
             <td class="px-2 py-3">
             <select id="ingredients" name="ingredients[${rowCount}][ingredient_code]"
                 class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-primary">
@@ -168,7 +170,7 @@ function populateProductIngredient(){
                 <div>
                 <input type="number" name="ingredients[${rowCount}][amount]"
                     class="ingredient-amount bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1"
-                    value="0" required />
+                    value="${item.converted_ingredient_amt}" step="0.01" required />
                 </div>
                 <button type="button" class="increase-value inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200">
                 <span class="sr-only">Quantity button</span>
@@ -183,7 +185,7 @@ function populateProductIngredient(){
                 class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-primary">
                     ${allMetrics.filter(metric => metric.metric_group_id == item.ingredients.metric.metric_group_id)
                         .map(metric =>
-                        `<option value="${metric.metric_code}" ${metric.metric_id == item.ingredients.metric_id ? 'selected' : ''}>${metric.metric_name}</option>`
+                        `<option value="${metric.metric_code}" ${metric.id == item.metric_id ? 'selected' : ''}>${metric.metric_unit}</option>`
                     ).join('')}
             </select>
             </td>
@@ -202,14 +204,13 @@ function populateProductIngredient(){
     let branchDropdown = document.getElementById('branches');
     let addRowButton = document.getElementById('add-row');
     let branchRequiredText = document.getElementById('required-text');
+    const allMetrics = @json($metrics ?? []);
 
     let branchCodeInput = document.getElementById('branches');
 
     const productCategory = document.getElementById('productCategoryCode');
     const allIngredients = @json($ingredients ?? []);
-    const allMetrics = @json($metrics ?? []);
-    console.log(allIngredients);
-    console.log(metrics);
+    console.log('Ingredients', allIngredients);
 
 
     // if (branchCodeInput && branchCodeInput.value) {
@@ -264,7 +265,7 @@ function populateProductIngredient(){
                     <div>
                     <input type="number" name="ingredients[${rowCount}][amount]"
                         class="ingredient-amount bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1"
-                        value="0" required />
+                        value="0" step="0.01" required />
                     </div>
                     <button type="button" class="increase-value inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200">
                     <span class="sr-only">Quantity button</span>
@@ -352,7 +353,7 @@ function populateProductIngredient(){
         if (event.target && event.target.matches('select[name^="ingredients"][name$="[ingredient_code]"]')) {
             let row = event.target.closest('tr'); // Get the row where the select changed
             let ingredientCode = event.target.value; // Get selected ingredient code
-
+            console.log('Ingredient Code', ingredientCode);
             if (ingredientCode) {
                 fetchMetricsForIngredient(ingredientCode, row);
             }
@@ -360,32 +361,48 @@ function populateProductIngredient(){
     });
 
     function fetchMetricsForIngredient(ingredientCode, row) {
+
+        const ingredient = allIngredients.find(ingredient => ingredient.ingredient_code == ingredientCode);
+        console.log('All Ingredient', allIngredients);
+        console.log('Ingredient', ingredient);
+        const filteredMetrics = allMetrics.filter(metric => metric.metric_group_id == ingredient.metric.metric_group_id);
+
+        let metricsSelect = row.querySelector('select[name^="ingredients"][name$="[metric_code]"]');
+        metricsSelect.innerHTML = ''; // Clear previous options
+
+        filteredMetrics.forEach(function (metric){
+            let option = document.createElement('option');
+            option.value = metric.metric_code;
+            option.textContent = metric.metric_unit;
+            metricsSelect.appendChild(option);
+
+        })
+
         console.log(ingredientCode);
         // Make an AJAX call to get metrics for the selected ingredient
-        fetch(`/get-metrics/${ingredientCode}`) // You can create this route in Laravel
-            .then(response => response.json())
-            .then(data => {
-                let metricsSelect = row.querySelector('select[name^="ingredients"][name$="[metric_code]"]');
-                metricsSelect.innerHTML = ''; // Clear previous options
+    //     fetch(`/get-metrics/${ingredientCode}`) // You can create this route in Laravel
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             let metricsSelect = row.querySelector('select[name^="ingredients"][name$="[metric_code]"]');
+    //             metricsSelect.innerHTML = ''; // Clear previous options
 
-                console.log('data : ', data);
-                if (data.metrics.length > 0) {
-                    data.metrics.forEach(metric => {
-                        let option = document.createElement('option');
-                        option.value = metric.metric_code;
-                        option.textContent = metric.metric_unit;
-                        metricsSelect.appendChild(option);
-                    });
-                } else {
-                    let option = document.createElement('option');
-                    option.value = '';
-                    option.textContent = 'No metrics available';
-                    metricsSelect.appendChild(option);
-                }
-            })
-            .catch(error => console.error('Error fetching metrics:', error));
+    //             console.log('data : ', data);
+    //             if (data.metrics.length > 0) {
+    //                 data.metrics.forEach(metric => {
+    //                     let option = document.createElement('option');
+    //                     option.value = metric.metric_code;
+    //                     option.textContent = metric.metric_unit;
+    //                     metricsSelect.appendChild(option);
+    //                 });
+    //             } else {
+    //                 let option = document.createElement('option');
+    //                 option.value = '';
+    //                 option.textContent = 'No metrics available';
+    //                 metricsSelect.appendChild(option);
+    //             }
+    //         })
+    //         .catch(error => console.error('Error fetching metrics:', error));
     }
-
   </script>
 
 

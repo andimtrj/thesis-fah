@@ -15,7 +15,8 @@ class ProductIngredientD extends Model
         'prod_ing_h_id',
         'ingredient_id',
         'ingredient_amt',
-        'metric_id'
+        'metric_id',
+        'prod_ing_d_no'
     ];
 
     public function ProductIngredientH(){

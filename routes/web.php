@@ -56,6 +56,21 @@ Route::middleware('web')->group(function () {
             return view('summary');
         })->name('summary');
 
+        // Usage
+        Route::get('/usage', function () {
+            return view('usage');
+        })->name('usage');
+
+        // Purchase
+        Route::get('/purchase', function () {
+            return view('purchase');
+        })->name('purchase');
+
+        //Adjustment
+        Route::get('/adjustment', function () {
+            return view('adjustment');
+        })->name('adjustment');
+
         Route::get('/landing', function () {Return view('landing');})->name('landing');
     });
 });

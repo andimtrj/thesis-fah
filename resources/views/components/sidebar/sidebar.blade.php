@@ -43,9 +43,8 @@
         </x-sidebar.sidebar-link>
 
         <li>
-          <button type="button"
-            class="flex items-center w-full p-2 text-baseflex group hover:bg-secondary transition duration-75 rounded-lg group"
-            aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+          <button type="button" id="transaction-btn"
+            class="flex items-center w-full p-2 text-baseflex group hover:bg-secondary transition duration-75 rounded-lg group {{ Request::routeIs('summary', 'adjustment', 'usage', 'purchase') ? 'bg-secondary text-white' : 'bg-primary text-white' }}">
             <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                 color="currentColor">
@@ -64,20 +63,20 @@
           </button>
           <ul id="dropdown-example" class="hidden py-2 space-y-2">
             <li>
-              <a href="#"
-                class="flex items-center w-full p-2 hover:bg-secondary transition duration-75 rounded-lg pl-11 group">Usage</a>
+              <a href="{{ route('usage') }}"
+                class="flex items-center w-full p-2 hover:bg-secondary transition duration-75 rounded-lg pl-11 group {{ request()->routeIs('usage') ? 'bg-secondary text-white' : 'bg-primary text-white' }}">Usage</a>
             </li>
             <li>
-              <a href="#"
-                class="flex items-center w-full p-2 hover:bg-secondary transition duration-75 rounded-lg pl-11 group">Purchase</a>
+              <a href="{{ route('purchase') }}"
+                class="flex items-center w-full p-2 hover:bg-secondary transition duration-75 rounded-lg pl-11 group {{ request()->routeIs('purchase') ? 'bg-secondary text-white' : 'bg-primary text-white' }}">Purchase</a>
             </li>
             <li>
-              <a href="#"
-                class="flex items-center w-full p-2 hover:bg-secondary transition duration-75 rounded-lg pl-11 group">Adjustment</a>
+              <a href="{{ route('adjustment') }}"
+                class="flex items-center w-full p-2 hover:bg-secondary transition duration-75 rounded-lg pl-11 group {{ request()->routeIs('adjustment') ? 'bg-secondary text-white' : 'bg-primary text-white' }}">Adjustment</a>
             </li>
             <li>
               <a href="{{ route('summary') }}"
-                class="flex items-center w-full p-2 hover:bg-secondary transition duration-75 rounded-lg pl-11 group">Summary</a>
+                class="flex items-center w-full p-2 hover:bg-secondary transition duration-75 rounded-lg pl-11 group {{ request()->routeIs('summary') ? 'bg-secondary text-white' : 'bg-primary text-white' }}">Summary</a>
             </li>
           </ul>
         </li>
@@ -96,10 +95,26 @@
         </svg>
       </button>
     </form>
-
   </div>
 </aside>
 
 <div class="p-5 sm:ml-64">
   {{ $slot }}
 </div>
+
+<script>
+  const transactionBtn = document.getElementById('transaction-btn');
+  const dropdown = document.getElementById('dropdown-example');
+
+  // Cek di localStorage apakah dropdown harus dibuka
+  if (localStorage.getItem('transactionDropdownOpen') === 'true') {
+    dropdown.classList.remove('hidden');
+  }
+
+  // Event listener untuk toggle dropdown dan menyimpan status ke localStorage
+  transactionBtn.addEventListener('click', function() {
+    dropdown.classList.toggle('hidden');
+    const isOpen = !dropdown.classList.contains('hidden');
+    localStorage.setItem('transactionDropdownOpen', isOpen);
+  });
+</script>

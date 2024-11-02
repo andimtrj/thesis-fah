@@ -41,6 +41,46 @@
               d="M3.743 2.816A.88.88 0 0 1 5.5 2.88v4.494a.625.625 0 1 0 1.25 0V2.75a.75.75 0 0 1 1.5 0v4.624a.625.625 0 1 0 1.25 0V2.88a.88.88 0 0 1 1.757-.064C11.3 3.428 11.5 6.37 11.5 8c0 1.35-.67 2.544-1.692 3.267c-.216.153-.268.315-.263.397c.123 1.878.455 7.018.455 7.833a2.5 2.5 0 0 1-5 0c0-.816.332-5.955.455-7.833c.005-.082-.047-.244-.263-.397A4 4 0 0 1 3.5 8c0-1.63.2-4.572.243-5.184M13 7.75A5.75 5.75 0 0 1 18.75 2a.75.75 0 0 1 .75.75v8.5c0 .318.106 1.895.225 3.642l.005.083c.13 1.908.27 3.983.27 4.522a2.5 2.5 0 0 1-5 0c0-.514.128-2.611.252-4.534c.062-.971.125-1.912.172-2.61l.023-.353h-.697A1.75 1.75 0 0 1 13 10.25z" />
           </svg>
         </x-sidebar.sidebar-link>
+
+        <li>
+          <button type="button"
+            class="flex items-center w-full p-2 text-baseflex group hover:bg-secondary transition duration-75 rounded-lg group"
+            aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                color="currentColor">
+                <path stroke-width="2"
+                  d="M4.58 8.607L2 8.454C3.849 3.704 9.158 1 14.333 2.344c5.513 1.433 8.788 6.918 7.314 12.25c-1.219 4.411-5.304 7.337-9.8 7.406" />
+                <path stroke-width="2"
+                  d="M12 22C6.5 22 2 17 2 11m11.604-1.278c-.352-.37-1.213-1.237-2.575-.62c-1.361.615-1.577 2.596.482 2.807c.93.095 1.537-.11 2.093.47c.556.582.659 2.198-.761 2.634s-2.341-.284-2.588-.509m1.653-6.484v.79m0 6.337v.873" />
+              </g>
+            </svg>
+            <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Transaction</span>
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 10 6">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="m1 1 4 4 4-4" />
+            </svg>
+          </button>
+          <ul id="dropdown-example" class="hidden py-2 space-y-2">
+            <li>
+              <a href="#"
+                class="flex items-center w-full p-2 hover:bg-secondary transition duration-75 rounded-lg pl-11 group">Usage</a>
+            </li>
+            <li>
+              <a href="#"
+                class="flex items-center w-full p-2 hover:bg-secondary transition duration-75 rounded-lg pl-11 group">Purchase</a>
+            </li>
+            <li>
+              <a href="#"
+                class="flex items-center w-full p-2 hover:bg-secondary transition duration-75 rounded-lg pl-11 group">Adjustment</a>
+            </li>
+            <li>
+              <a href="{{ route('summary') }}"
+                class="flex items-center w-full p-2 hover:bg-secondary transition duration-75 rounded-lg pl-11 group">Summary</a>
+            </li>
+          </ul>
+        </li>
       </ul>
     </div>
 

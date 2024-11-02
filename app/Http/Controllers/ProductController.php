@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Branch;
+use App\Models\Metric;
 use App\Models\Tenant;
 use App\Models\Product;
 use App\Models\Ingredient;
 use App\DTO\BaseResponseObj;
 use Illuminate\Http\Request;
 use App\Models\ProductCategory;
+use App\Models\ProductIngredientH;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -25,67 +27,17 @@ class ProductController extends Controller
 
     public function InsertProduct(Request $request)
     {
-
-        $validator = Validator::make($request->all(), [
-            'productName' => 'required|string|max:255',
-            'tenantCode' => 'required|string|max:8|exists:tenants,tenant_code',
-            'branchCode' => 'required|string|max:8|exists:branches,branch_code',
-            'productCategoryCode' => 'required|string|exists:product_categories,prod_category_code',
-            'productPrice' => 'required|numeric',
-            'isActive' => 'required|boolean',
-            'ingredients' => 'required|array',
-            'ingredients.*.ingredient_code' => 'required|string|exists:ingredients,ingredient_code',
-            'ingredients.*.amount' => 'required|numeric|min:0',
-            'ingredients.*.metric_code' => 'required|string|exists:metrics,metric_code'
-        ]);
+        $validator = $this->validateProductRequest($request);
 
         if ($validator->fails()) {
-            dd($validator); 
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        try {
+        DB::transaction(function () use ($request) {
+            $this->createProductTransaction($request);
+        });
 
-            DB::transaction(function () use ($request, &$response) {
-                $productCode = $this->GenerateProductCode();
-                $tenantId = Tenant::GetTenantIdByTenantCode($request->input('tenantCode'));
-                $branchId = Branch::GetBranchIdByBranchCode($request->input('branchCode'));
-                $productCategoryId = ProductCategory::GetProductCategoryIdByProductCategoryCode($request->input('productCategoryCode'));
-
-                $product = Product::create([
-                    'product_code' => $productCode,
-                    'product_name' => $request->input('productName'),
-                    'product_category_id' => $productCategoryId,
-                    'tenant_id' => $tenantId,
-                    'branch_id' => $branchId,
-                    'product_price' => $request->input('productPrice'),
-                    'is_active' => $request->input('isActive'),
-                    'created_by' => Auth::id(),
-                    'updated_by' => Auth::id()
-                ]);
-
-                if ($product) {
-                    $request->merge(['product' => $product]);
-                    $response = new BaseResponseObj();
-                    $response = $this->productIngredientController->CreateProductIngredient($request);
-
-                    return $response;
-                }
-            });
-
-            return $response;
-
-        }catch(\Exception $e){
-            $response = new BaseResponseObj();
-            $response->statusCode = '500';
-            $response->message = 'An Error Occurred During Registration : ' . $e->getMessage();
-
-            return redirect()->intended('/product')->with([
-                'status' => $response->statusCode,
-                'message' => $response->message,
-            ]);
-
-        }
+        return redirect('/product')->with('status', 'Product created successfully!');
     }
 
     private static function GenerateProductCode()
@@ -137,12 +89,101 @@ class ProductController extends Controller
             // Ambil tenant berdasarkan tenant_id user untuk display tenant_name
             $tenant = Tenant::find($authTenantId);
             $branches = Branch::where('tenant_id', '=', $authTenantId)->get();
-            $ingredients = Ingredient::where('tenant_id', '=', $authTenantId)->get();
+            $queryIngredient = Ingredient::with('branch')
+                                            ->where('tenant_id', '=', $authTenantId);
+
+            if(Auth::user()->branch_id){
+                $queryIngredient->where('branch_id', '=', Auth::user()->branch_id);
+            }
+            $ingredients = $queryIngredient->get();
             $productCategories = ProductCategory::where('tenant_id', '=', $authTenantId)->get();
             return view('components.product.add-product', compact('productCategories', 'tenant', 'branches', 'ingredients'));
         } else {
             throw new \Exception("Tenant Code Is Null");
         }
+    }
+
+
+    private function createProductTransaction($request)
+    {
+        $productCode = $this->GenerateProductCode();
+        $tenantId = Tenant::GetTenantIdByTenantCode($request->input('tenantCode'));
+        $branchId = Branch::GetBranchIdByBranchCode($request->input('branchCode'));
+        $productCategoryId = ProductCategory::GetProductCategoryIdByProductCategoryCode($request->input('productCategoryCode'));
+
+        $product = Product::create([
+            'product_code' => $productCode,
+            'product_name' => $request->input('productName'),
+            'product_category_id' => $productCategoryId,
+            'tenant_id' => $tenantId,
+            'branch_id' => $branchId,
+            'product_price' => $request->input('productPrice'),
+            'is_active' => $request->input('isActive'),
+            'created_by' => Auth::id(),
+            'updated_by' => Auth::id()
+        ]);
+
+        if (!$product) {
+            throw new \Exception("Failed to create product");
+        }
+
+        $request->merge(['product' => $product]);
+        $this->productIngredientController->CreateProductIngredient($request);
+    }
+
+    private function validateProductRequest($request)
+    {
+        return Validator::make($request->all(), [
+            'productName' => 'required|string|max:255',
+            'tenantCode' => 'required|string|max:8|exists:tenants,tenant_code',
+            'branchCode' => 'required|string|max:8|exists:branches,branch_code',
+            'productCategoryCode' => 'required|string|exists:product_categories,prod_category_code',
+            'productPrice' => 'required|numeric',
+            'isActive' => 'required|boolean',
+            'ingredients' => 'required|array',
+            'ingredients.*.ingredient_code' => 'required|string|exists:ingredients,ingredient_code',
+            'ingredients.*.amount' => 'required|numeric|min:0',
+            'ingredients.*.metric_code' => 'required|string|exists:metrics,metric_code'
+        ]);
+    }
+
+    public function showEditProductPage($id){
+
+
+        $authTenantId = Auth::user()->tenant_id;
+        if ($authTenantId) {
+            // Ambil tenant berdasarkan tenant_id user untuk display tenant_name
+            $tenant = Tenant::find($authTenantId);
+            $product = Product::findOrFail($id);
+            $branches = Branch::where('tenant_id', '=', $authTenantId)->get();
+            $queryIngredient = Ingredient::with('branch')
+                                        ->where('tenant_id', '=', $authTenantId);
+            $queryProductCategories = ProductCategory::where('tenant_id', '=', $authTenantId);
+
+            if(Auth::user()->branch_id){
+                $queryIngredient->where('branch_id', '=', Auth::user()->branch_id);
+                $queryProductCategories->where('branch_id', '=', $product->branch_id);
+            }
+            $ingredients = $queryIngredient->get();
+            $productCategories = $queryProductCategories->get();
+
+            $productIngredient = ProductIngredientH::with([
+                'productIngredientD' => function ($query) {
+                    $query->with([
+                        'ingredients' => function ($query){
+                            $query->with('metric');
+                        }
+                    ]);
+                }
+            ])->where('product_id', '=', $product->id)->firstOrFail();
+            $metrics = Metric::get();
+        } else {
+            throw new \Exception("Tenant Code Is Null");
+        }
+
+
+        // Pass the branch to the view
+        return view('components.product.edit-product', compact('tenant', 'product', 'branches', 'productCategories', 'productIngredient', 'ingredients', 'metrics'));
     }
 
 }

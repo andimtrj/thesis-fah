@@ -47,10 +47,14 @@ Route::middleware('web')->group(function () {
 
         Route::get('/product', [ProductController::class, 'showProductPage'])->name('product');
         Route::get('/add-product', [ProductController::class, 'showAddProductPage'])->name('add-product');
-        Route::get('/edit-product', function () {return view('components.product.edit-product');})->name('edit-product');
+        Route::get('/edit-product/{id}', [ProductController::class, 'showEditProductPage'])->name('edit-product');
         Route::post('/insert-product', [ProductController::class, 'InsertProduct'])->name('insert-product');
-
         Route::get('/get-metrics/{ingredient_code}', [IngredientController::class, 'getMetrics'])->name('get-metrics');
+
+        // Summary
+        Route::get('/summary', function () {
+            return view('summary');
+        })->name('summary');
 
         Route::get('/landing', function () {Return view('landing');})->name('landing');
     });

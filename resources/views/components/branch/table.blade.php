@@ -32,7 +32,7 @@
             @elseif ($branches->isEmpty())
             {{-- {{ dd($request->session()->all()) }} --}}
                 <tr>
-                    <td colspan="4" class="text-center py-4">No branches found</td>
+                    <td colspan="4" class="text-center py-4">No Branches Found</td>
                 </tr>
             @endif
         </tbody>

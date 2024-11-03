@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class Ingredient extends Model
 {
@@ -30,6 +31,7 @@ class Ingredient extends Model
         return $this->belongsTo(Metric::class);
     }
 
+
     public function tenant(): BelongsTo
     {
         return $this->belongsTo(Tenant::class);
@@ -48,6 +50,10 @@ class Ingredient extends Model
         return $this->belongsTo(User::class, 'updated_by');
     }
 
+    public function productIngredientD(){
+        return $this->hasMany(productIngredientD::class);
+    }
+
     public static function GetPagingIngredient(Request $request)
     {
         $authTenantId = Auth::user()->tenant_id;
@@ -57,12 +63,18 @@ class Ingredient extends Model
                                 ->join('tenants as t', 'i.tenant_id', '=', 't.id')
                                 ->join('branches as b', 'i.branch_id', '=', 'b.id')
                                 ->join('metrics as m', 'i.metric_id', '=', 'm.id')
-                                ->select('i.ingredient_code', 'i.ingredient_name', 'i.ingredient_amt', 'm.metric_unit as metric_unit')
+                                ->select('i.id',
+                                        'i.ingredient_code',
+                                        'i.ingredient_name',
+                                        DB::raw('FORMAT(i.ingredient_amt / POWER(10, m.metric_seq_no - 1), 2) as ingredient_amt'),
+                                        'm.metric_unit as metric_unit')
+                                ->orderBy('i.created_at', 'desc')
                                 ->where('i.tenant_id', '=', $authTenantId);
             // dd($query, $request);
             // dd($authBranchId, $request->input('branch_code'), $request);
             if($request->has('branchCode'))
             {
+                $query->where('b.branch_code', '=', $request->input('branchCode'));
                 $query->where('b.branch_code', '=', $request->input('branchCode'));
             }
             else

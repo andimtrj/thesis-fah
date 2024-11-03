@@ -27,16 +27,19 @@
         <div class="flex items-end gap-5 px-10 bg-white pt-5 rounded-b-xl">
           <form id="ingredientForm" action="{{ route('ingredient') }}" method="GET" class="flex gap-5 mb-5">
             <div class="w-[15vw]">
-              <label for="branchCode" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Select a branch</label>
-              <select id="branchCode" name="branchCode" required
-                class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary">
-                <option value="" disabled selected>Choose a branch</option>
-                @foreach ($branches as $branch)
-                  <option value="{{ $branch->branch_code }}">{{ $branch->branch_name }}</option>
-                @endforeach
-              </select>
-            </div>
+                <label for="branchCode" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Select a branch</label>
+                <select id="branchCode" name="branchCode" required
+                    class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary">
+                    <option value="" disabled {{ !request('branchCode') ? 'selected' : '' }}>Choose a branch</option>
 
+                    @foreach ($branches as $branch)
+                        <option value="{{ $branch->branch_code }}"
+                            {{ request('branchCode') == $branch->branch_code ? 'selected' : '' }}>
+                            {{ $branch->branch_name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
             <div class="w-[15vw]">
               <label for="ingredientCode" class="block mb-1 text-sm font-medium text-gray-900">Ingredient Code</label>
               <input type="text" id="ingredientCode" name="ingredientCode"

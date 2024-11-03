@@ -11,7 +11,7 @@ class ProductCategory extends Model
 
     public static function GetProductCategoryIdByProductCategoryCode(string $productCategoryCode){
 
-        $producCategory = ProductCategory::where('product_category_code', $productCategoryCode)->firstOrFail();
+        $producCategory = ProductCategory::where('prod_category_code', $productCategoryCode)->firstOrFail();
         return $producCategory->id;
     }
 

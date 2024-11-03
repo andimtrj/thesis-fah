@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Tenant;
-use Illuminate\Http\RedirectResponse;
+use App\DTO\BaseResponseObj;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-
 use function Laravel\Prompts\error;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -26,39 +27,64 @@ class AuthController extends Controller
         }
         $credentials = $request->only('email', 'password');
 
-
         if (!Auth::attempt($credentials)) {
-            return redirect()->back()->withErrors([
-                'email' => 'Invalid Login.',
+            $response = new BaseResponseObj();
+            $response->statusCode = '400';
+            $response->message = 'Authentication Failed!';
+
+            return redirect()->back()->with([
+                'status' => $response->statusCode,
+                'message' => $response->message,
             ])->withInput();
         }
+
         if(Auth::attempt($credentials)){
-            $request->session()->regenerate();
-            $authTenantId = Auth::user()->tenant_id;
-            $authTenant = Tenant::find($authTenantId);
-            $authTenantCode = $authTenant->tenant_code;
 
-            session(
-                [
-                    'tenant_code' => $authTenantCode
-                ]
-            );
+            try{
+                $request->session()->regenerate();
+                $authTenantId = Auth::user()->tenant_id;
+                $authTenant = Tenant::find($authTenantId);
+                $authTenantCode = $authTenant->tenant_code;
 
-            $authBranchId = Auth::user()->branch_id;
-            $authBranch = Branch::find($authBranchId);
-
-            if($authBranch){
-                $authBranchCode = $authBranch->branch_code ?? "";
                 session(
                     [
-                        'branch_code' => $authBranchCode
+                        'tenant_code' => $authTenantCode
                     ]
                 );
+
+                $authBranchId = Auth::user()->branch_id;
+                $authBranch = Branch::find($authBranchId);
+
+                if($authBranch){
+                    $authBranchCode = $authBranch->branch_code ?? "";
+                    session(
+                        [
+                            'branch_code' => $authBranchCode
+                        ]
+                    );
+                }
+
+                $response = new BaseResponseObj();
+                $response->statusCode = '200';
+                $response->message = 'Login Success!';
+
+                return redirect()->intended('/branch')->with([
+                    'status' => $response->statusCode,
+                    'message' => $response->message,
+                ]);
+
+            }catch(\Exception $e){
+                $response = new BaseResponseObj();
+                $response->statusCode = '500';
+                $response->message = 'An Error Occurred During Authentication : ' . $e->getMessage();
+
+                return redirect()->intended('/')->with([
+                    'status' => $response->statusCode,
+                    'message' => $response->message,
+                ]);
+
+
             }
-
-
-
-            return redirect()->intended('/branch');
         }
 
         return redirect('/login')->withErrors($validator)->withInput();

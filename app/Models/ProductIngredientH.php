@@ -12,7 +12,7 @@ class ProductIngredientH extends Model
     protected $table = 'product_ingredient_h';
 
     protected $fillable = [
-        'prod_h_ing_code',
+        'prod_ing_h_no',
         'product_id',
         'total_ingredients'
     ];
@@ -22,6 +22,6 @@ class ProductIngredientH extends Model
     }
 
     public function productIngredientD(){
-        return $this->hasMany(ProductIngredientD::class);
+        return $this->hasMany(ProductIngredientD::class, 'prod_ing_h_id');
     }
 }

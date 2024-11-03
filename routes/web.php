@@ -24,11 +24,6 @@ Route::middleware('web')->group(function () {
     Route::middleware('auth')->group(function () {
         // Branch
         Route::get('/branch', [BranchController::class, 'showBranchPaging'])->name('branch');
-
-        Route::get('/product', function () {
-            return view('product');
-        })->name('product');
-
         Route::get('/landing', function () {
             return view('landing');
         })->name('landing');
@@ -43,13 +38,21 @@ Route::middleware('web')->group(function () {
         Route::post('/update-branch/{id}',  [BranchController::class, 'UpdateBranch'])->name('update-branch');
         Route::get('/get-paging-branch', [BranchController::class, 'GetPagingBranch'])->name('get-paging-branch');
 
+
         // Ingredient
         Route::get('/ingredient', [IngredientController::class, 'showIngredientPage'])->name('ingredient');
         Route::get('/add-ingredient', [IngredientController::class, 'showAddIngredientPage'])->name('add-ingredient');
-        Route::get('/edit-ingredient', function () {return view('components.ingredient.edit-ingredient');})->name('edit-ingredient');
+        Route::get('/edit-ingredient/{id}', [IngredientController::class, 'DetailIngredientPage'])->name('edit-ingredient');
         Route::post('/insert-ingredient', [IngredientController::class, 'InsertIngredient'])->name('insert-ingredient');
+        Route::post('/update-ingredient/{id}', [IngredientController::class, 'UpdateIngredient'])->name('update-ingredient');
 
-        Route::get('/product', [ProductController::class, 'showProduct'])->name('product');
+        Route::get('/product', [ProductController::class, 'showProductPage'])->name('product');
+        Route::get('/add-product', [ProductController::class, 'showAddProductPage'])->name('add-product');
+        Route::get('/edit-product/{id}', [ProductController::class, 'showEditProductPage'])->name('edit-product');
+        Route::post('/insert-product', [ProductController::class, 'InsertProduct'])->name('insert-product');
+        Route::post('/update-product/{id}', [ProductController::class, 'UpdateProduct'])->name('update-product');
+
+        Route::get('/get-metrics/{ingredient_code}', [IngredientController::class, 'getMetrics'])->name('get-metrics');
 
         Route::get('/landing', function () {Return view('landing');})->name('landing');
     });

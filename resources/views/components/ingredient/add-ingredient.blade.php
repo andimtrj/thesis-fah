@@ -20,7 +20,7 @@
             @if(session('branch_code'))
                 <input type="hidden" name="branchCode" id="branchCode" value="{{ session('branch_code') }}">
             @else
-            <div>
+            <div class="mb-5">
               <label for="branches" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Branch</label>
               <select id="branches" name="branchCode"
                 class="bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-lg focus:ring-primary block w-full p-2.5">
@@ -47,15 +47,8 @@
               <label for="metricCode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Metrics</label>
               <select id="metrics" name="metricCode"
                 class="bg-gray-50 border border-gray-300 text-sm text-gray-900 rounded-lg focus:ring-primary block w-full p-2.5">
-                <option selected>Select matric</option>
+                <option value="" selected>Select metric</option>
               </select>
-            </div>
-            <div>
-              <label for="number-input"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Amount</label>
-              <input type="number" id="number-input" name="ingredientAmt" aria-describedby="helper-text-explanation"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary block w-full p-2.5"
-                placeholder="Type a number" step="0.01" required />
             </div>
             <input type="hidden" name="tenantCode" id="tenantCode" value="{{ session('tenant_code') }}">
           </div>
@@ -107,5 +100,6 @@
         }
     });
 </script>
+
 
 </x-master>

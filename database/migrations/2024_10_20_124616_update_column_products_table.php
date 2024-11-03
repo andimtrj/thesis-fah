@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('metrics', function(Blueprint $table){
-            $table->foreignId('created_by')->change()->constrained('users');
-            $table->foreignId('updated_by')->change()->constrained('users');
+        Schema::table('products', function(Blueprint $table){
+            $table->decimal('product_price', 17, 2)->change();
         });
 
     }
@@ -23,9 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('metrics', function(Blueprint $table){
-            $table->dropColumn('created_by');
-            $table->dropColumn('updated_by');
+        Schema::table('products', function(Blueprint $table){
+            $table->decimal('product_price', 8, 2)->change();
         });
 
     }

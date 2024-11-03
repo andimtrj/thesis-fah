@@ -45,19 +45,22 @@ class UserController extends Controller
         date_default_timezone_set(config('constants.DEFAULT_TIMEZONE'));
 
         $request['emailVerifiedTime'] = date('Y-m-d H:i:s');
-        if($validator->fails()){
+        if($validator->fails()) {
             $response = new BaseResponseObj();
             $response->statusCode = '400';
-            $response->message = $validator->errors();
+            // Flatten the error messages and get only the values
+            $response->message = "Invalid Registration : " . implode(', ', $validator->errors()->all());
             $response->data = $validator;
 
-            return $response;
+            return redirect()->intended('/')->with([
+                'status' => $response->statusCode,
+                'message' => $response->message,
+            ]);
         }
 
         try{
             DB::transaction(function() use($request, &$response){
                 $tenant = $this->tenantController->CreateTenant($request);
-
                 $role = Role::where('role_code', $request->roleCode)->firstOrFail();
                 User::create([
                     'email' => $request->email,
@@ -75,16 +78,26 @@ class UserController extends Controller
                 $response->message = 'Registration Success!';
 
                 return $response;
-            });
 
-            return $response;
+            });
+            $this->authController->Authenticate($request);
+
+            return redirect()->intended('/branch')->with([
+                'status' => $response->statusCode,
+                'message' => $response->message,
+            ]);
+
 
         }catch(\Exception $e){
             $response = new BaseResponseObj();
             $response->statusCode = '500';
-            $response->message = 'An Error Occurred During Registration. ' . $e->getMessage();
+            $response->message = 'An Error Occurred During Registration : ' . $e->getMessage();
 
-            return $response;
+            return redirect()->intended('/')->with([
+                'status' => $response->statusCode,
+                'message' => $response->message,
+            ]);
+
 
         }
     }
@@ -106,7 +119,11 @@ class UserController extends Controller
             $response->statusCode = '400';
             $response->message = $validator->errors();
 
-            return $response;
+            return redirect()->intended('/')->with([
+                'status' => $response->statusCode,
+                'message' => $response->message,
+            ]);
+
 
         }
 
@@ -141,16 +158,25 @@ class UserController extends Controller
                 $response->message = 'Registration Success!';
 
                 return $response;
+
             });
 
-            return $response;
+            return redirect()->intended('/branch')->with([
+                'status' => $response->statusCode,
+                'message' => $response->message,
+            ]);
+
 
         }catch(\Exception $e){
             $response = new BaseResponseObj();
             $response->statusCode = '500';
-            $response->message = 'An Error Occurred During Registration. ' . $e->getMessage();
+            $response->message = 'An Error Occurred During Registration : ' . $e->getMessage();
 
-            return $response;
+            return redirect()->intended('/')->with([
+                'status' => $response->statusCode,
+                'message' => $response->message,
+            ]);
+
 
         }
 

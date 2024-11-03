@@ -26,9 +26,22 @@ class Product extends Model
         'updated_by'
     ];
 
-    public function ProductIngredient(){
+    public function ProductIngredientH(){
         return $this->hasOne(ProductIngredientH::class);
     }
+
+    public function Branch(){
+        return $this->belongsTo(Branch::class);
+    }
+
+    public function Tenant(){
+        return $this->belongsTo(Tenant::class);
+    }
+
+    public function ProductCategory(){
+        return $this->belongsTo(ProductCategory::class);
+    }
+
 
     public static function GetPagingProduct(Request $request)
     {
@@ -41,13 +54,9 @@ class Product extends Model
                                 ->join('branches as b', 'p.branch_id', '=', 'b.id')
                                 ->join('product_ingredient_h as pih', 'pih.product_id', '=', 'p.id')
                                 ->where('p.tenant_id', '=', $authTenantId);
-            if($authBranchId)
+            if($request->has('branchCode'))
             {
-                $query->where('p.branch_id', '=', $authBranchId);
-            }
-            else if($request->has('branch_code'))
-            {
-                $query->where('b.branch_code', '=', $request->input('branch_code'));
+                $query->where('b.branch_code', '=', $request->input('branchCode'));
             }
             else
             {
@@ -65,7 +74,7 @@ class Product extends Model
                 $query->where('i.product_name', 'like', '%' . $paramProductName . '%');
             }
 
-            $ingredients = $query->select('p.product_code', 'p.product_name', 'pih.total_ingredients', 'p.product_price')->paginate(10); // Paginate the results
+            $ingredients = $query->select('p.product_code', 'p.product_name', 'pih.total_ingredients', 'p.product_price', 'p.id')->paginate(10); // Paginate the results
         } else {
             throw new \Exception("Tenant Code Is Null");
         }

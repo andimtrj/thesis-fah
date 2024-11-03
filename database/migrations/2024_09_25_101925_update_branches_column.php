@@ -24,8 +24,11 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('branches', function(Blueprint $table){
+            $table->dropForeign(['created_by']);
+            $table->dropForeign(['updated_by']);
             $table->string('created_by', 258)->change();
             $table->string('updated_by', 258)->change();
+
         });
 
     }

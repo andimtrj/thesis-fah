@@ -60,6 +60,9 @@ Route::middleware('web')->group(function () {
         Route::get('/usage', function () {
             return view('usage');
         })->name('usage');
+        Route::get('/add-usage', function () {
+            return view('components.usage.add-usage');
+        })->name('add-usage');
 
         // Purchase
         Route::get('/purchase', function () {

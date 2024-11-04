@@ -2,17 +2,17 @@
   <x-sidebar.sidebar>
     {{-- Page Title --}}
     <div>
-      <h1 class="text-3xl font-bold mb-2 text-secondary">Transaction Page</h1>
+      <h1 class="text-3xl font-bold mb-2 text-secondary">Summary Page</h1>
     </div>
     {{-- SubTitle, Search --}}
-    <div class="shadow-md rounded-xl">
+    <div class="shadow-md rounded-t-xl">
       <div class="flex justify-between gap-3 items-center px-10 py-5 bg-primary rounded-t-xl">
         <div class="flex items-center">
           <h1 class="text-3xl font-medium text-white">tenant_name</h1>
         </div>
       </div>
 
-      <div class="flex items-end gap-5 px-10 bg-white pt-5 rounded-b-xl">
+      <div class="flex items-end gap-5 px-10 bg-white pt-5">
         <form action="{{ route('branch') }}" method="GET" class="flex gap-5 mb-5">
           {{-- Date Picker --}}
           <div id="date-range-picker" date-rangepicker class="flex items-center">

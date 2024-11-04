@@ -175,24 +175,6 @@
     const allIngredients = @json($ingredients ?? []);
     console.log(allIngredients);
 
-
-    // if (branchCodeInput && branchCodeInput.value) {
-    //     addRowButton.disabled = false; // Enable button if branchCode exists
-    // } else {
-    //     addRowButton.disabled = true; // Keep button disabled if no branchCode
-    // }
-
-    // Listen for changes in the branch dropdown
-    // if (branchDropdown) {
-    //     branchDropdown.addEventListener('change', function() {
-    //         if (branchDropdown.value) {
-    //             addRowButton.disabled = false; // Enable the button if a branch is selected
-    //         } else {
-    //             addRowButton.disabled = true; // Disable the button if no branch is selected
-    //         }
-    //     });
-    // }
-
     document.getElementById('add-row').addEventListener('click', function() {
         console.log("BranchCodeInput : ", branchCodeInput);
         if (!branchCodeInput.value) {
@@ -351,5 +333,4 @@
     }
 
   </script>
-
 </x-master>

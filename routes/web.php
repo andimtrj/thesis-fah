@@ -78,6 +78,9 @@ Route::middleware('web')->group(function () {
         Route::get('/adjustment', function () {
             return view('adjustment');
         })->name('adjustment');
+        Route::get('/add-adjustment', function () {
+            return view('components.adjustment.add-adjustment');
+        })->name('add-adjustment');
 
         Route::get('/landing', function () {Return view('landing2');})->name('landing');
     });

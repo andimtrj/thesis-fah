@@ -50,6 +50,10 @@ class Ingredient extends Model
         return $this->belongsTo(User::class, 'updated_by');
     }
 
+    public function productIngredientD(){
+        return $this->hasMany(productIngredientD::class);
+    }
+
     public static function GetPagingIngredient(Request $request)
     {
         $authTenantId = Auth::user()->tenant_id;

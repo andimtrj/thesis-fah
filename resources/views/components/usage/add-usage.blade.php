@@ -46,8 +46,8 @@
               </thead>
 
               {{-- Table Body --}}
-              <tbody id="ingredient-table-body">
-                <tr class="bg-white border-y text-base text-abu">
+              <tbody id="table-body-addrow">
+                {{-- <tr class="bg-white border-y text-base text-abu">
                   <td class="px-2 py-3">
                     <select id="countries"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary focus:border-primaring-primary block w-full p-2">
@@ -92,7 +92,7 @@
                     <button type="button"
                       class="text-sm delete-row bg-danger bg-opacity-10 text-danger hover:underline underline-offset-2 px-4 py-2 rounded-lg">Remove</button>
                   </td>
-                </tr>
+                </tr> --}}
               </tbody>
             </table>
             <div class="flex justify-end mt-2">
@@ -103,7 +103,7 @@
           </div>
 
           <div class="flex justify-end gap-5">
-            <a href="{{ route('product') }}"
+            <a href="{{ route('usage') }}"
               class="flex items-center text-white bg-danger hover:shadow-container lg:px-10 md:px-1 py-2 font-medium rounded-lg gap-1 flex-shrink-0 w-fit md:text-xs lg:text-base">
               <span>Cancel</span>
             </a>
@@ -119,18 +119,20 @@
   </x-sidebar.sidebar>
 
   <script>
+      let rowCount = 0; // Initialize row count to 0
+
     document.getElementById("add-row").addEventListener("click", function() {
       // Get the table body element
-      const tableBody = document.getElementById("ingredient-table-body");
+      const tableBody = document.getElementById("table-body-addrow");
 
       // Create a new table row
       const newRow = document.createElement("tr");
       newRow.classList.add("bg-white", "border-y", "text-base", "text-abu");
 
-      // Set the inner HTML of the new row
+      // Set the inner HTML of the new row with dynamic rowCount
       newRow.innerHTML = `
       <td class="px-2 py-3">
-        <select
+        <select name="products[${rowCount}][product_name]"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary focus:border-primary block w-full p-2"
           required>
           <option selected>Select a product</option>
@@ -138,7 +140,7 @@
       </td>
       <td class="px-2 w-full">
         <div class="flex items-center justify-center">
-          <button onclick="decreaseValue()"
+          <button onclick="decreaseValue(event)"
             class="inline-flex items-center justify-center p-1 me-3 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200"
             type="button">
             <span class="sr-only">Quantity button</span>
@@ -146,10 +148,10 @@
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
             </svg>
           </button>
-          <input type="number" name="ingredients[][amount]"
+          <input type="number" name="products[${rowCount}][amount]"
             class="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block px-2.5 py-1"
             value="0" required />
-          <button onclick="increaseValue()"
+          <button onclick="increaseValue(event)"
             class="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200"
             type="button">
             <span class="sr-only">Quantity button</span>
@@ -160,7 +162,7 @@
         </div>
       </td>
       <td class="px-2">
-        <input type="text" name="ingredients[][metrics]"
+        <input type="text" name="products[${rowCount}][notes]"
           class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-primary"
           placeholder="Type ingredient name">
       </td>
@@ -176,16 +178,12 @@
       newRow.querySelector(".delete-row").addEventListener("click", function() {
         newRow.remove();
       });
+
+      // Increment row count for the next row
+      rowCount++;
     });
 
-    // Add event listener to all existing delete buttons
-    document.querySelectorAll(".delete-row").forEach(button => {
-      button.addEventListener("click", function() {
-        button.closest("tr").remove();
-      });
-    });
-
-    function increaseValue() {
+    function increaseValue(event) {
       // Get the input element for the amount
       const inputElement = event.target.closest('div').querySelector('input[type="number"]');
       let currentValue = parseInt(inputElement.value);
@@ -194,7 +192,7 @@
       inputElement.value = currentValue + 1;
     }
 
-    function decreaseValue() {
+    function decreaseValue(event) {
       // Get the input element for the amount
       const inputElement = event.target.closest('div').querySelector('input[type="number"]');
       let currentValue = parseInt(inputElement.value);

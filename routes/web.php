@@ -49,6 +49,8 @@ Route::middleware('web')->group(function () {
         Route::get('/add-product', [ProductController::class, 'showAddProductPage'])->name('add-product');
         Route::get('/edit-product/{id}', [ProductController::class, 'showEditProductPage'])->name('edit-product');
         Route::post('/insert-product', [ProductController::class, 'InsertProduct'])->name('insert-product');
+        Route::post('/update-product/{id}', [ProductController::class, 'UpdateProduct'])->name('update-product');
+
         Route::get('/get-metrics/{ingredient_code}', [IngredientController::class, 'getMetrics'])->name('get-metrics');
 
         // Summary
@@ -68,13 +70,16 @@ Route::middleware('web')->group(function () {
         Route::get('/purchase', function () {
             return view('purchase');
         })->name('purchase');
+        Route::get('/add-purchase', function () {
+            return view('components.purchase.add-purchase');
+        })->name('add-purchase');
 
         //Adjustment
         Route::get('/adjustment', function () {
             return view('adjustment');
         })->name('adjustment');
 
-        Route::get('/landing', function () {Return view('landing');})->name('landing');
+        Route::get('/landing', function () {Return view('landing2');})->name('landing');
     });
 });
 

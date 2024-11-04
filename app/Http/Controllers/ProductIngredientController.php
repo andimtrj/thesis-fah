@@ -82,12 +82,14 @@ class ProductIngredientController extends Controller
 
                     // Correct power calculation
                     $ingredientAmount = $ingredient['amount'] * pow(10, $factor);
+                    $prodIngredientDNo = $this->GenerateProductIngredientDNo();
 
                     ProductIngredientD::create([
                         'prod_ing_h_id' => $productIngredientH->id,
                         'ingredient_id' => $ingredientId->id,  // Correctly accessing the id property
                         'ingredient_amt' => $ingredientAmount,
-                        'metric_id' => $metric->id  // Assuming you want to save the metric id
+                        'metric_id' => $metric->id,  // Assuming you want to save the metric id
+                        'prod_ing_d_no' => $prodIngredientDNo
                     ]);
                 }
 
@@ -140,4 +142,27 @@ class ProductIngredientController extends Controller
         return $newProductIngredientCode;
 
     }
+
+    public static function GenerateProductIngredientDNo(){
+        $lastProductIngredientCode = DB::table('product_ingredient_d')
+        ->orderBy('prod_ing_d_no', 'desc')
+        ->first()
+        ->prod_ing_d_no ?? null;
+
+
+        if($lastProductIngredientCode == null){
+            $newProductIngredientCode = 'PID000000001';
+        }
+        else{
+            $lastProductIngredientCodeNum = (int) substr($lastProductIngredientCode, 3);
+
+            $newNumber = ++$lastProductIngredientCodeNum;
+
+            $newProductIngredientCode = 'PID' . str_pad($newNumber, 9, '0', STR_PAD_LEFT);
+        }
+
+        return $newProductIngredientCode;
+
+    }
+
 }

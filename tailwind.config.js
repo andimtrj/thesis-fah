@@ -12,6 +12,7 @@ export default {
       colors: {
         primary: '#003049',
         secondary: '#1A4D7C',
+        secondary2: '#3498DB',
         accent: '#F65A11',
         cream: '#EFEDE7',
         creamTerang: '#FBF9F2',

@@ -24,35 +24,22 @@
 
         {{-- Table Body --}}
         <tbody>
-          {{-- Table Body --}}
-          <tr class="bg-white border-y text-base text-abu">
-            <th scope="row" class="px-4 py-3 font-medium text-center">AAAA1</th>
-            <td class="px-4 py-3 text-center">Asdasd1</td>
-            <td class="px-4 py-3 text-center">12</td>
-            <td class="px-4 py-3 text-center">Kipli - Branch Admin</td>
-            <td class="px-4 py-3 text-center">10/10/24</td>
-          </tr>
-          <tr class="bg-white border-y text-base text-abu">
-            <th scope="row" class="px-4 py-3 font-medium text-center">AAAA1</th>
-            <td class="px-4 py-3 text-center">Asdasd1</td>
-            <td class="px-4 py-3 text-center">12</td>
-            <td class="px-4 py-3 text-center">Kipli - Branch Admin</td>
-            <td class="px-4 py-3 text-center">10/10/24</td>
-          </tr>
-          <tr class="bg-white border-y text-base text-abu">
-            <th scope="row" class="px-4 py-3 font-medium text-center">AAAA1</th>
-            <td class="px-4 py-3 text-center">Asdasd1</td>
-            <td class="px-4 py-3 text-center">12</td>
-            <td class="px-4 py-3 text-center">Kipli - Branch Admin</td>
-            <td class="px-4 py-3 text-center">10/10/24</td>
-          </tr>
-          <tr class="bg-white border-y text-base text-abu">
-            <th scope="row" class="px-4 py-3 font-medium text-center">AAAA1</th>
-            <td class="px-4 py-3 text-center">Asdasd1</td>
-            <td class="px-4 py-3 text-center">12</td>
-            <td class="px-4 py-3 text-center">Kipli - Branch Admin</td>
-            <td class="px-4 py-3 text-center">10/10/24</td>
-          </tr>
+            @if(isset($usages) && $usages->isNotEmpty())
+            @foreach ($usages as $usage)
+            <tr class="bg-white border-y text-base text-abu">
+                <th scope="row" class="px-4 py-3 font-medium text-center">{{ $usage->usage_trx_no }}</th>
+                <td class="px-4 py-3 text-center">{{ $usage->branch_name }}</td>
+                <td class="px-4 py-3 text-center">{{ $usage->total_product }}</td>
+                <td class="px-4 py-3 text-center">{{ $usage->submitted_by }}</td>
+                <td class="px-4 py-3 text-center">{{ $usage->trx_date }}</td>
+              </tr>
+            @endforeach
+            @elseif ($usages->isEmpty())
+            {{-- {{ dd($request->session()->all()) }} --}}
+                <tr>
+                    <td colspan="5" class="text-center py-4">No Usage Transactions Found</td>
+                </tr>
+            @endif
         </tbody>
       </table>
     </div>

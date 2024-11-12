@@ -321,7 +321,12 @@
             option.textContent = metric.metric_unit;
             metricsSelect.appendChild(option);
 
-        })
+            if(metric.id == ingredient.metric_id){
+                option.selected = true;
+            }
+
+
+    })
 
         console.log(ingredientCode);
         // Make an AJAX call to get metrics for the selected ingredient

@@ -11,7 +11,7 @@
               Branch Name
             </th>
             <th scope="col" class="px-4 py-4 text-center">
-              Total Product
+              Total Ingredient
             </th>
             <th scope="col" class="px-4 py-4 text-center">
               Submitted By
@@ -24,35 +24,22 @@
 
         {{-- Table Body --}}
         <tbody>
-          {{-- Table Body --}}
-          <tr class="bg-white border-y text-base text-abu">
-            <th scope="row" class="px-4 py-3 font-medium text-center">AAAA1</th>
-            <td class="px-4 py-3 text-center">Asdasd1</td>
-            <td class="px-4 py-3 text-center">12</td>
-            <td class="px-4 py-3 text-center">Kipli - Branch Admin</td>
-            <td class="px-4 py-3 text-center">10/10/24</td>
-          </tr>
-          <tr class="bg-white border-y text-base text-abu">
-            <th scope="row" class="px-4 py-3 font-medium text-center">AAAA1</th>
-            <td class="px-4 py-3 text-center">Asdasd1</td>
-            <td class="px-4 py-3 text-center">12</td>
-            <td class="px-4 py-3 text-center">Kipli - Branch Admin</td>
-            <td class="px-4 py-3 text-center">10/10/24</td>
-          </tr>
-          <tr class="bg-white border-y text-base text-abu">
-            <th scope="row" class="px-4 py-3 font-medium text-center">AAAA1</th>
-            <td class="px-4 py-3 text-center">Asdasd1</td>
-            <td class="px-4 py-3 text-center">12</td>
-            <td class="px-4 py-3 text-center">Kipli - Branch Admin</td>
-            <td class="px-4 py-3 text-center">10/10/24</td>
-          </tr>
-          <tr class="bg-white border-y text-base text-abu">
-            <th scope="row" class="px-4 py-3 font-medium text-center">AAAA1</th>
-            <td class="px-4 py-3 text-center">Asdasd1</td>
-            <td class="px-4 py-3 text-center">12</td>
-            <td class="px-4 py-3 text-center">Kipli - Branch Admin</td>
-            <td class="px-4 py-3 text-center">10/10/24</td>
-          </tr>
+            @if(isset($purchases) && $purchases->isNotEmpty())
+            @foreach ($purchases as $purchase)
+            <tr class="bg-white border-y text-base text-abu">
+                <th scope="row" class="px-4 py-3 font-medium text-center">{{ $purchase->purchase_trx_no }}</th>
+                <td class="px-4 py-3 text-center">{{ $purchase->branch_name }}</td>
+                <td class="px-4 py-3 text-center">{{ $purchase->total_ingredient }}</td>
+                <td class="px-4 py-3 text-center">{{ $purchase->submitted_by }}</td>
+                <td class="px-4 py-3 text-center">{{ $purchase->trx_date }}</td>
+              </tr>
+            @endforeach
+            @elseif ($purchases->isEmpty())
+            {{-- {{ dd($request->session()->all()) }} --}}
+                <tr>
+                    <td colspan="5" class="text-center py-4">No Purchase Transactions Found</td>
+                </tr>
+            @endif
         </tbody>
       </table>
     </div>

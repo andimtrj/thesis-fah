@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class UsageTrxDAlloc extends Model
 {
     use HasFactory;
+    protected $table = 'usage_trx_d_alloc';
 
     protected $fillable = [
         'ingredient_id',

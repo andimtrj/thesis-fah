@@ -1,11 +1,17 @@
 <?php
 
+use App\Http\Controllers\AdjustmentPageController;
+use App\Http\Controllers\AdjustmentTrxHController;
 use App\Http\Controllers\ApiWebController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\IngredientController;
+use App\Http\Controllers\PurchasePageController;
+use App\Http\Controllers\PurchaseTrxHController;
+use App\Http\Controllers\UsagePageController;
+use App\Http\Controllers\UsageTrxHController;
 use App\Models\Branch;
 
 // Route::get('/', function () {
@@ -59,28 +65,19 @@ Route::middleware('web')->group(function () {
         })->name('summary');
 
         // Usage
-        Route::get('/usage', function () {
-            return view('usage');
-        })->name('usage');
-        Route::get('/add-usage', function () {
-            return view('components.usage.add-usage');
-        })->name('add-usage');
+        Route::get('/usage', [UsagePageController::class, 'ShowUsagePage'])->name('usage');
+        Route::get('/add-usage', [UsagePageController::class, 'ShowAddUsagePage'])->name('add-usage');
+        Route::post('/insert-usage', [UsageTrxHController::class, 'InsertUsageTrxH'])->name('insert-usage');
 
         // Purchase
-        Route::get('/purchase', function () {
-            return view('purchase');
-        })->name('purchase');
-        Route::get('/add-purchase', function () {
-            return view('components.purchase.add-purchase');
-        })->name('add-purchase');
+        Route::get('/purchase', [PurchasePageController::class, 'ShowPurchasePage'])->name('purchase');
+        Route::get('/add-purchase', [PurchasePageController::class, 'ShowAddPurchasePage'])->name('add-purchase');
+        Route::post('/insert-purchase', [PurchaseTrxHController::class, 'InsertPurchaseTrxH'])->name('insert-purchase');
 
         //Adjustment
-        Route::get('/adjustment', function () {
-            return view('adjustment');
-        })->name('adjustment');
-        Route::get('/add-adjustment', function () {
-            return view('components.adjustment.add-adjustment');
-        })->name('add-adjustment');
+        Route::get('/adjustment', [AdjustmentPageController::class, 'ShowAdjustmentPage'])->name('adjustment');
+        Route::get('/add-adjustment', [AdjustmentPageController::class, 'ShowAddAdjustmentPage'])->name('add-adjustment');
+        Route::post('/insert-adjustment', [AdjustmentTrxHController::class, 'InsertAdjustmentTrxH'])->name('insert-adjustment');
 
         Route::get('/landing', function () {Return view('landing2');})->name('landing');
     });

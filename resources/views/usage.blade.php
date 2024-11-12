@@ -9,7 +9,7 @@
     <div class="shadow-md rounded-t-xl">
       <div class="flex justify-between gap-3 items-center px-10 py-5 bg-primary rounded-t-xl">
         <div class="flex items-center">
-          <h1 class="text-3xl font-medium text-white">tenant_name</h1>
+          <h1 class="text-3xl font-medium text-white">{{ $tenant->tenant_name }}</h1>
         </div>
         <div class="flex gap-3">
           <a href="{{ route('add-usage') }}"
@@ -25,15 +25,22 @@
       </div>
 
       <div class="flex items-end gap-5 px-10 bg-white pt-5">
-        <form action="{{ route('branch') }}" method="GET" class="flex flex-col gap-5 mb-5 w-full">
+        <form action="{{ route('usage') }}" method="GET" class="flex flex-col gap-5 mb-5 w-full">
           <div>
             <div class="flex gap-2">
-              <input type="text" id="branchCode" name="branchCode"
+                <select id="branchCode" name="branchCode" required
+                    class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary">
+                    <option value="" disabled {{ !request('branchCode') ? 'selected' : '' }}>Choose a branch</option>
+                    @foreach ($branches as $branch)
+                        <option value="{{ $branch->branch_code }}"
+                            {{ request('branchCode') == $branch->branch_code ? 'selected' : '' }}>
+                            {{ $branch->branch_name }}
+                        </option>
+                    @endforeach
+                </select>
+              <input type="text" id="trxNo" name="trxNo"
                 class="block w-full p-2.5 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-primary focus:border-primary"
-                placeholder="Search by branch code" value="">
-              <input type="text" id="branchCode" name="branchCode"
-                class="block w-full p-2.5 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-primary focus:border-primary"
-                placeholder="Search by transaction number" value="">
+                placeholder="Search by transaction number" value="{{ request('trxNo') }}">
             </div>
           </div>
           {{-- Date Picker --}}
@@ -47,9 +54,9 @@
                       d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                   </svg>
                 </div>
-                <input id="datepicker-range-start" name="start" type="text"
+                <input id="datepicker-range-start" name="startDate" type="text"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Select date start">
+                  placeholder="Select date start" value="{{ request('startDate') }}">
               </div>
               <span class="mx-4 text-gray-500">to</span>
               <div class="relative">
@@ -60,9 +67,9 @@
                       d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                   </svg>
                 </div>
-                <input id="datepicker-range-end" name="end" type="text"
+                <input id="datepicker-range-end" name="endDate" type="text"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Select date end">
+                  placeholder="Select date end" value="{{ request('endDate') }}">
               </div>
             </div>
 
@@ -76,7 +83,7 @@
                 </svg>
                 <span>Search</span>
               </button>
-              <a href="{{ route('branch') }}"
+              <a href="{{ route('usage') }}"
                 class="bg-danger bg-opacity-10 rounded-lg px-5 py-2 text-danger flex items-center gap-1">
                 <span>Clear Search</span>
               </a>
@@ -86,8 +93,10 @@
       </div>
     </div>
 
+    @if (isset($formSubmitted) && $formSubmitted)
     <div class="mt-4">
-      <x-usage.table/>
+        <x-usage.table :usages="$usages"/>
     </div>
+    @endif
   </x-sidebar.sidebar>
 </x-master>

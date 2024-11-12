@@ -77,13 +77,13 @@ class AdjustmentTrxH extends Model
             if ($request->input('startDate')) {
                 $paramStartDate = $request->input('startDate', null);
                 $startDate = Carbon::createFromFormat('m/d/Y', $paramStartDate)->format('Y-m-d');
-                $query->where('adjustment_trx_h.trx_date', '>=', $paramStartDate);
+                $query->where('adjustment_trx_h.trx_date', '>=', $startDate);
             }
 
             if ($request->input('endDate')) {
                 $paramEndDate = $request->input('endDate', null);
                 $endDate = Carbon::createFromFormat('m/d/Y', $paramEndDate)->format('Y-m-d');
-                $query->where('adjustment_trx_h.trx_date', '<=', $paramEndDate);
+                $query->where('adjustment_trx_h.trx_date', '<=', $endDate);
             }
 
             $usageTrx = $query->select(

@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import flowbitePlugin from 'flowbite/plugin';
+
 export default {
   content: [
     "./resources/**/*.blade.php",
@@ -33,8 +35,6 @@ export default {
     },
   },
   plugins: [
-    require('flowbite/plugin')
-],
-}
-
-
+    flowbitePlugin,
+  ],
+};

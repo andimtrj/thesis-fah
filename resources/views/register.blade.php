@@ -28,6 +28,13 @@
         <div id="formStep1">
           <h1 class="text-3xl font-semibold mb-6">Register your restaurant</h1>
 
+          {{-- Username --}}
+          <x-input type="username" name="username" id="username" label="Username" value="{{ old('username') }}">
+            @if ($errors->has('username'))
+              <p class="text-red-500 text-sm">{{ $errors->first('username') }}</p>
+            @endif
+          </x-input>
+
           {{-- Email --}}
           <x-input type="email" name="email" id="email" label="Email" value="{{ old('email') }}">
             @if ($errors->has('email'))

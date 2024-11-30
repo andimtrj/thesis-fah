@@ -30,6 +30,7 @@ class UserController extends Controller
 //#region Register
     public function RegisterTenantOwner(Request $request){
         $validator = Validator::make($request->all(), [
+            'username' => 'required|string|unique:users,username',
             'email' => 'required|email:rfc,dns|unique:users,email',
             'password' => 'required|string|min:8',
             'phoneNumber' => 'required|string|max:16',
@@ -63,6 +64,7 @@ class UserController extends Controller
                 $tenant = $this->tenantController->CreateTenant($request);
                 $role = Role::where('role_code', $request->roleCode)->firstOrFail();
                 User::create([
+                    'username' => $request->username,
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
                     'phone_number' => $request->phoneNumber,
@@ -103,6 +105,7 @@ class UserController extends Controller
     }
     public function RegisterBranchAdmin(Request $request){
         $validator = Validator::make($request->all(), [
+            'username' => 'required|string|unique:users,username',
             'email' => 'required|email:rfc,dns|unique:users,email',
             'password' => 'required|string|min:8',
             'phoneNumber' => 'required|string|max:16',
@@ -142,6 +145,7 @@ class UserController extends Controller
                 }
 
                 User::create([
+                    'username' => $request->username,
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
                     'phone_number' => $request->phoneNumber,

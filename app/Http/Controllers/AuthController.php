@@ -18,14 +18,14 @@ class AuthController extends Controller
 
     public function Authenticate(Request $request){
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email:rfc,dns|exists:users,email',
+            'username' => 'required|exists:users,username',
             'password' => 'required|string'
         ]);
 
         if($validator->fails()){
             return redirect('/login')->withErrors($validator)->withInput();
         }
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('username', 'password');
 
         if (!Auth::attempt($credentials)) {
             $response = new BaseResponseObj();

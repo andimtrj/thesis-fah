@@ -80,6 +80,7 @@ Route::middleware('web')->group(function () {
         Route::post('/insert-adjustment', [AdjustmentTrxHController::class, 'InsertAdjustmentTrxH'])->name('insert-adjustment');
 
         Route::get('/landing', function () {Return view('landing2');})->name('landing');
+        Route::post('/logout', [AuthController::class, 'Logout'])->name('logout');
     });
 });
 
@@ -87,5 +88,4 @@ Route::middleware('web')->group(function () {
 #region Authenticate
 Route::post('/auth', [AuthController::class, 'Authenticate'])->name('auth');
 Route::post('/registration', [ApiWebController::class, 'Registration'])->name('registration');
-Route::post('/logout', [AuthController::class, 'Logout'])->name('logout');
 #endregion

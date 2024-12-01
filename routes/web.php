@@ -79,6 +79,11 @@ Route::middleware('web')->group(function () {
         Route::get('/add-adjustment', [AdjustmentPageController::class, 'ShowAddAdjustmentPage'])->name('add-adjustment');
         Route::post('/insert-adjustment', [AdjustmentTrxHController::class, 'InsertAdjustmentTrxH'])->name('insert-adjustment');
 
+        //Branch Admin
+        Route::get('/branchAdmin', function () {
+            return view('branchAdmin');
+        })->name('branchAdmin');
+
         Route::get('/landing', function () {Return view('landing2');})->name('landing');
         Route::post('/logout', [AuthController::class, 'Logout'])->name('logout');
     });

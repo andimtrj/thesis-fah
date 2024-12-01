@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import flowbitePlugin from 'flowbite/plugin';
+
 export default {
   content: [
     "./resources/**/*.blade.php",
@@ -12,6 +14,7 @@ export default {
       colors: {
         primary: '#003049',
         secondary: '#1A4D7C',
+        secondary2: '#3498DB',
         accent: '#F65A11',
         cream: '#EFEDE7',
         creamTerang: '#FBF9F2',
@@ -32,8 +35,6 @@ export default {
     },
   },
   plugins: [
-    require('flowbite/plugin')
-],
-}
-
-
+    flowbitePlugin,
+  ],
+};

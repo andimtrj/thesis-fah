@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 
 class ApiWebController extends Controller
 {

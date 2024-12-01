@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class AdjustmentTrxD extends Model
 {
     use HasFactory;
+    protected $table = 'adjustment_trx_d';
 
     protected $fillable = [
         'ingredient_id',
@@ -15,6 +16,7 @@ class AdjustmentTrxD extends Model
         'ingredient_name',
         'notes',
         'adjustment_trx_h_id',
+        'metric_id'
     ];
 
     public function Ingredient(){

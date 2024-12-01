@@ -26,7 +26,7 @@
       <h1>Monitor stock accurately and in real-time from anywhere. </h1>
     </div>
     <div class="w-72 h-72 flex justify-center items-center bg-cream shadow-2xl rounded-2xl px-4 py-2">
-      <h1>Reduce errors in stock calculations with automation.</h1>
+      <h1>Reduce errors in stock calculations with automation. </h1>
     </div>
   </div>
   

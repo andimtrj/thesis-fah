@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class UsageTrxD extends Model
 {
     use HasFactory;
+    protected $table = 'usage_trx_d';
 
     protected $fillable = [
         'product_id',

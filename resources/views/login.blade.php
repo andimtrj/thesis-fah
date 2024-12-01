@@ -5,9 +5,9 @@
       <form class="w-[32vw]"action="/auth" method="POST">
         @csrf
         <h1 class="text-3xl font-semibold mb-6">Welcome back!</h1>
-        <x-input type="email" name="email" id="email" label="Email address" />
-        @if ($errors->has('email'))
-            <p class="text-red-500 text-sm mb-2">{{ $errors->first('email') }}</p>
+        <x-input type="username" name="username" id="username" label="Username" />
+        @if ($errors->has('username'))
+            <p class="text-red-500 text-sm mb-2">{{ $errors->first('username') }}</p>
         @endif
 
         <x-input type="password" name="password" id="password" label="Password" />

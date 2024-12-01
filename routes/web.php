@@ -1,11 +1,17 @@
 <?php
 
+use App\Http\Controllers\AdjustmentPageController;
+use App\Http\Controllers\AdjustmentTrxHController;
 use App\Http\Controllers\ApiWebController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\IngredientController;
+use App\Http\Controllers\PurchasePageController;
+use App\Http\Controllers\PurchaseTrxHController;
+use App\Http\Controllers\UsagePageController;
+use App\Http\Controllers\UsageTrxHController;
 use App\Models\Branch;
 
 // Route::get('/', function () {
@@ -33,7 +39,6 @@ Route::middleware('web')->group(function () {
         })->name('add-branch');
 
         Route::get('/edit-branch/{id}', [BranchController:: class, 'DetailBranchPage'])->name('edit-branch');
-
         Route::post('/create-branch',  [BranchController::class, 'CreateBranch'])->name('create-branch');
         Route::post('/update-branch/{id}',  [BranchController::class, 'UpdateBranch'])->name('update-branch');
         Route::get('/get-paging-branch', [BranchController::class, 'GetPagingBranch'])->name('get-paging-branch');
@@ -54,7 +59,33 @@ Route::middleware('web')->group(function () {
 
         Route::get('/get-metrics/{ingredient_code}', [IngredientController::class, 'getMetrics'])->name('get-metrics');
 
-        Route::get('/landing', function () {Return view('landing');})->name('landing');
+        // Summary
+        Route::get('/summary', function () {
+            return view('summary');
+        })->name('summary');
+
+        // Usage
+        Route::get('/usage', [UsagePageController::class, 'ShowUsagePage'])->name('usage');
+        Route::get('/add-usage', [UsagePageController::class, 'ShowAddUsagePage'])->name('add-usage');
+        Route::post('/insert-usage', [UsageTrxHController::class, 'InsertUsageTrxH'])->name('insert-usage');
+
+        // Purchase
+        Route::get('/purchase', [PurchasePageController::class, 'ShowPurchasePage'])->name('purchase');
+        Route::get('/add-purchase', [PurchasePageController::class, 'ShowAddPurchasePage'])->name('add-purchase');
+        Route::post('/insert-purchase', [PurchaseTrxHController::class, 'InsertPurchaseTrxH'])->name('insert-purchase');
+
+        //Adjustment
+        Route::get('/adjustment', [AdjustmentPageController::class, 'ShowAdjustmentPage'])->name('adjustment');
+        Route::get('/add-adjustment', [AdjustmentPageController::class, 'ShowAddAdjustmentPage'])->name('add-adjustment');
+        Route::post('/insert-adjustment', [AdjustmentTrxHController::class, 'InsertAdjustmentTrxH'])->name('insert-adjustment');
+
+        //Branch Admin
+        Route::get('/branchAdmin', function () {
+            return view('branchAdmin');
+        })->name('branchAdmin');
+
+        Route::get('/landing', function () {Return view('landing2');})->name('landing');
+        Route::post('/logout', [AuthController::class, 'Logout'])->name('logout');
     });
 });
 
@@ -62,5 +93,4 @@ Route::middleware('web')->group(function () {
 #region Authenticate
 Route::post('/auth', [AuthController::class, 'Authenticate'])->name('auth');
 Route::post('/registration', [ApiWebController::class, 'Registration'])->name('registration');
-Route::post('/logout', [AuthController::class, 'Logout'])->name('logout');
 #endregion

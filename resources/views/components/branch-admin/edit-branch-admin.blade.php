@@ -11,8 +11,8 @@
             <div class="mb-5">
               <label for="adminUsername" class="block mb-1 text-sm font-medium text-gray-900">Username</label>
               <input type="text" name="adminUsername" id="adminUsername"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary block w-full p-2.5"
-                placeholder="Current admin username" required="">
+                class="bg-gray-50 border border-gray-300 text-gray-400 text-sm rounded-lg focus:ring-primary block w-full p-2.5"
+                value="Current admin username" required="" disabled>
             </div>
             <div class="mb-5">
               <label for="adminEmail" class="block mb-1 text-sm font-medium text-gray-900">Email</label>

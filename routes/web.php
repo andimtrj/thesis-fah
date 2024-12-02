@@ -83,6 +83,12 @@ Route::middleware('web')->group(function () {
         Route::get('/branchAdmin', function () {
             return view('branchAdmin');
         })->name('branchAdmin');
+        Route::get('/add-branchAdmin', function () {
+            return view('components.branch-admin.add-branch-admin');
+        })->name('add-branchAdmin');
+        Route::get('/edit-branchAdmin', function () {
+            return view('components.branch-admin.edit-branch-admin');
+        })->name('edit-branchAdmin');
 
         Route::get('/landing', function () {Return view('landing2');})->name('landing');
         Route::post('/logout', [AuthController::class, 'Logout'])->name('logout');

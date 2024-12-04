@@ -95,7 +95,7 @@ class Ingredient extends Model
 
             $ingredients = $query->paginate(10); // Paginate the results
         } else {
-            throw new \Exception("Tenant Code Is Null");
+            abort(500, "Invalid Tenant");
         }
 
         // dd($ingredients);

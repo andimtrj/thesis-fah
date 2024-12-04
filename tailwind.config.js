@@ -31,7 +31,7 @@ export default {
       },
       boxShadow: {
         'container': '0 5px 10px 0px rgb(0,0,0,0.2)',
-        'button': '0 0 4px 0px rgb(0,0,0,0.5)'
+        'button': '0 0 3px 0px rgb(0,0,0,0.5)'
       }
     },
   },

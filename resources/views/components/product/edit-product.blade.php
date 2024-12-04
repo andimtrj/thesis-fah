@@ -37,9 +37,9 @@
 
           </div>
           <input type="hidden" name="tenantCode" id="tenantCode" value="{{ session('tenant_code') }}">
-          @if (session('branch_code'))
-            <input type="hidden" name="branchCode" id="branches" value="{{ session('branch_code') }}">
-          @else
+            @if(Auth::user()->role->role_code === "BA")
+                <input id="branches" type="hidden" name="branchCode" id="branchCode" value="{{ Auth::user()->branch->branch_code }}">
+            @else
             <div class="mb-5">
               <label for="branches" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Branch</label>
               <select id="branches" name="branchCode"
@@ -116,11 +116,11 @@
 
           <div class="flex justify-end gap-5">
             <a href="{{ route('product') }}"
-              class="flex items-center text-white bg-danger hover:shadow-container lg:px-10 md:px-1 py-2 font-medium rounded-lg gap-1 flex-shrink-0 w-fit md:text-xs lg:text-base">
+              class="flex items-center text-white bg-danger lg:px-10 md:px-1 py-2 font-medium rounded-lg gap-1 flex-shrink-0 w-fit md:text-xs lg:text-base hover:shadow-button hover:shadow-danger">
               <span>Cancel</span>
             </a>
             <button type="submit"
-              class="flex items-center text-white bg-secondary hover:shadow-container lg:px-10 md:px-1 py-2 font-medium rounded-lg gap-1 flex-shrink-0 w-fit md:text-xs lg:text-base">
+              class="flex items-center text-white bg-secondary lg:px-10 md:px-1 py-2 font-medium rounded-lg gap-1 flex-shrink-0 w-fit md:text-xs lg:text-base hover:shadow-button hover:shadow-danger">
               <span>Submit</span>
             </button>
           </div>
@@ -131,75 +131,7 @@
   </x-sidebar.sidebar>
 <script>
 
-window.addEventListener('DOMContentLoaded', populateProductIngredient);
 
-function populateProductIngredient(){
-    let tableBody = document.getElementById('ingredient-table-body');
-    const productIngredientD = @json($productIngredient->productIngredientD);
-    const selectedBranchCode = branchCodeInput.value;
-    const filteredIngredients = allIngredients.filter(ingredient => ingredient.branch.branch_code == selectedBranchCode);
-
-    console.log("Product Ingredient Detail : ", productIngredientD);
-    if( productIngredientD.length > 0 ){
-        console.log('filtered ingredients : ', filteredIngredients);
-        console.log('All Metrics : ', allMetrics);
-        let rowCount = 0;
-        productIngredientD.forEach(function (item){
-            let newRow = document.createElement('tr');
-            newRow.classList.add('bg-white', 'border-y', 'text-base', 'text-abu');
-
-            newRow.innerHTML = `
-            <input type="hidden" name="ingredients[${rowCount}][prod_ing_d_no]" id="ProductIngredientDNo" value="${item.prod_ing_d_no}">
-            <td class="px-2 py-3">
-            <select id="ingredients" name="ingredients[${rowCount}][ingredient_code]"
-                class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-primary">
-                    ${filteredIngredients.map(ingredient =>
-                        `<option value="${ingredient.ingredient_code}" ${ingredient.ingredient_code == item.ingredients.ingredient_code ? 'selected' : ''}>${ingredient.ingredient_name}</option>`
-                    ).join('')}
-
-            </select>
-            </td>
-            <td class="px-2 w-full">
-            <div class="flex items-center justify-center">
-                <button type="button" class="decrease-value inline-flex items-center justify-center p-1 me-3 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200">
-                <span class="sr-only">Quantity button</span>
-                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
-                </svg>
-                </button>
-                <div>
-                <input type="number" name="ingredients[${rowCount}][amount]"
-                    class="ingredient-amount bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1"
-                    value="${item.converted_ingredient_amt}" step="0.01" required />
-                </div>
-                <button type="button" class="increase-value inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200">
-                <span class="sr-only">Quantity button</span>
-                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
-                </svg>
-                </button>
-            </div>
-            </td>
-            <td class="px-2">
-            <select id="metrics" name="ingredients[${rowCount}][metric_code]"
-                class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-primary">
-                    ${allMetrics.filter(metric => metric.metric_group_id == item.ingredients.metric.metric_group_id)
-                        .map(metric =>
-                        `<option value="${metric.metric_code}" ${metric.id == item.metric_id ? 'selected' : ''}>${metric.metric_unit}</option>`
-                    ).join('')}
-            </select>
-            </td>
-            <td class="px-2 text-center">
-            <button type="button" class="text-sm delete-row bg-danger bg-opacity-10 text-danger hover:underline underline-offset-2 px-4 py-2 rounded-lg">Remove</button>
-            </td>
-            `;
-
-            tableBody.appendChild(newRow);
-            bindRowButtons(newRow);
-            rowCount++;
-        });
-    }
-}
 
     let branchDropdown = document.getElementById('branches');
     let addRowButton = document.getElementById('add-row');
@@ -210,6 +142,77 @@ function populateProductIngredient(){
 
     const productCategory = document.getElementById('productCategoryCode');
     const allIngredients = @json($ingredients ?? []);
+    function populateProductIngredient(){
+        let tableBody = document.getElementById('ingredient-table-body');
+        const productIngredientD = @json($productIngredient->productIngredientD);
+        const selectedBranchCode = branchCodeInput.value;
+        const filteredIngredients = allIngredients.filter(ingredient => ingredient.branch.branch_code == selectedBranchCode);
+
+        console.log("Product Ingredient Detail : ", productIngredientD);
+        if( productIngredientD.length > 0 ){
+            console.log("Product Ingredient : ", productIngredientD);
+            console.log('filtered ingredients : ', filteredIngredients);
+            console.log('All Metrics : ', allMetrics);
+            let rowCount = 0;
+            productIngredientD.forEach(function (item){
+                let newRow = document.createElement('tr');
+                newRow.classList.add('bg-white', 'border-y', 'text-base', 'text-abu');
+
+                newRow.innerHTML = `
+                <input type="hidden" name="ingredients[${rowCount}][prod_ing_d_no]" id="ProductIngredientDNo" value="${item.prod_ing_d_no}">
+                <td class="px-2 py-3">
+                <select id="ingredients" name="ingredients[${rowCount}][ingredient_code]"
+                    class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-primary">
+                        ${filteredIngredients.map(ingredient =>
+                            `<option value="${ingredient.ingredient_code}" ${ingredient.ingredient_code == item.ingredients.ingredient_code ? 'selected' : ''}>${ingredient.ingredient_name}</option>`
+                        ).join('')}
+
+                </select>
+                </td>
+                <td class="px-2 w-full">
+                <div class="flex items-center justify-center">
+                    <button type="button" class="decrease-value inline-flex items-center justify-center p-1 me-3 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200">
+                    <span class="sr-only">Quantity button</span>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
+                    </svg>
+                    </button>
+                    <div>
+                    <input type="number" name="ingredients[${rowCount}][amount]"
+                        class="ingredient-amount bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1"
+                        value="${item.converted_ingredient_amt}" step="0.01" required />
+                    </div>
+                    <button type="button" class="increase-value inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200">
+                    <span class="sr-only">Quantity button</span>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
+                    </svg>
+                    </button>
+                </div>
+                </td>
+                <td class="px-2">
+                <select id="metrics" name="ingredients[${rowCount}][metric_code]"
+                    class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-primary">
+                        ${allMetrics.filter(metric => metric.metric_group_id == item.ingredients.metric.metric_group_id)
+                            .map(metric =>
+                            `<option value="${metric.metric_code}" ${metric.id == item.metric_id ? 'selected' : ''}>${metric.metric_unit}</option>`
+                        ).join('')}
+                </select>
+                </td>
+                <td class="px-2 text-center">
+                <button type="button" class="text-sm delete-row bg-danger bg-opacity-10 text-danger hover:underline underline-offset-2 px-4 py-2 rounded-lg">Remove</button>
+                </td>
+                `;
+
+                tableBody.appendChild(newRow);
+                bindRowButtons(newRow);
+                rowCount++;
+            });
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', populateProductIngredient());
+
     console.log('Ingredients', allIngredients);
 
 

@@ -76,7 +76,7 @@ class Product extends Model
 
             $ingredients = $query->select('p.product_code', 'p.product_name', 'pih.total_ingredients', 'p.product_price', 'p.id')->paginate(10); // Paginate the results
         } else {
-            throw new \Exception("Tenant Code Is Null");
+            abort(500, "Invalid Tenant");
         }
 
         return $ingredients;

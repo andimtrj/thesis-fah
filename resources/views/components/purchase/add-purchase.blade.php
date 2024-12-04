@@ -10,8 +10,9 @@
           @csrf
           <div class="grid md:grid-cols-2 md:gap-6 mb-5 items-center">
             <input type="hidden" name="tenantCode" id="tenantCode" value="{{ session('tenant_code') }}">
-            @if(session('branch_code'))
-                <input type="hidden" name="branchCode" id="branches" value="{{ session('branch_code') }}">
+            @if(Auth::user()->role->role_code === "BA")
+                <input id="branches" type="hidden" name="branchCode" id="branchCode" value="{{ Auth::user()->branch->branch_code }}">
+                <p class="text-red-500 text-sm" id="required-text" hidden>Branch Is Required</p>
             @else
             <div>
               <select id="branches" name="branchCode"
@@ -114,11 +115,11 @@
 
           <div class="flex justify-end gap-5">
             <a href="{{ route('purchase') }}"
-              class="flex items-center text-white bg-danger hover:shadow-container lg:px-10 md:px-1 py-2 font-medium rounded-lg gap-1 flex-shrink-0 w-fit md:text-xs lg:text-base">
+              class="flex items-center text-white bg-danger lg:px-10 md:px-1 py-2 font-medium rounded-lg gap-1 flex-shrink-0 w-fit md:text-xs lg:text-base hover:shadow-button hover:shadow-danger">
               <span>Cancel</span>
             </a>
             <button type="submit"
-              class="flex items-center text-white bg-secondary hover:shadow-container lg:px-10 md:px-1 py-2 font-medium rounded-lg gap-1 flex-shrink-0 w-fit md:text-xs lg:text-base">
+              class="flex items-center text-white bg-secondary lg:px-10 md:px-1 py-2 font-medium rounded-lg gap-1 flex-shrink-0 w-fit md:text-xs lg:text-base hover:shadow-button hover:shadow-secondary">
               <span>Submit</span>
             </button>
           </div>

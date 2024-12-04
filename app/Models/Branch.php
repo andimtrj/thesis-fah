@@ -96,7 +96,7 @@ class Branch extends Model
 
             $branches = $query->paginate(10); // Paginate the results
         } else {
-            throw new \Exception("Tenant Code Is Null");
+            abort(500, "Invalid Tenant");
         }
 
         return $branches;

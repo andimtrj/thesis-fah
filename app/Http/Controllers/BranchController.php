@@ -123,7 +123,7 @@ class BranchController extends Controller
 
             $tenant = Tenant::find($authTenantId); // Ambil tenant berdasarkan tenant_id user untuk display tenant_name
         } else {
-            throw new \Exception("Tenant Code Is Null");
+            abort(500, "Invalid Tenant");
         }
 
         return view('branch', compact('branches', 'formSubmitted', 'tenant'));

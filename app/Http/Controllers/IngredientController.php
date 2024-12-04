@@ -114,7 +114,7 @@ class IngredientController extends Controller
 
             }
         } else {
-            throw new \Exception("Tenant Code Is Null");
+            abort(500, "Invalid Tenant");
         }
 
         return view('ingredient', compact('tenant', 'branches', 'formSubmitted')); // Pass tenant variable to view
@@ -130,7 +130,7 @@ class IngredientController extends Controller
             $tenant = Tenant::find($authTenantId);
             $branches = Branch::where('tenant_id', '=', $authTenantId)->get();
         } else {
-            throw new \Exception("Tenant Code Is Null");
+            abort(500, "Invalid Tenant");
         }
 
 
@@ -149,7 +149,7 @@ class IngredientController extends Controller
             $metrics = Metric::get();
             $branches = Branch::where('tenant_id', '=', $authTenantId)->get();
         } else {
-            throw new \Exception("Tenant Code Is Null");
+            abort(500, "Invalid Tenant");
         }
 
 

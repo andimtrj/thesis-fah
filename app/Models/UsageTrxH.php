@@ -97,7 +97,7 @@ class UsageTrxH extends Model
                                 ->groupBy('usage_trx_h.usage_trx_no', 'b.branch_name', 'u.first_name', 'u.last_name', 'r.role_name', 'usage_trx_h.trx_date')
                                 ->orderBy('usage_trx_h.created_at', 'desc');
         } else {
-            throw new \Exception("Tenant Code Is Null");
+            abort(500, "Invalid Tenant");
         }
         return $usageTrx->paginate(10);
 

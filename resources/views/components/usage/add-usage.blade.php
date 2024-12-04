@@ -10,8 +10,9 @@
           @csrf
           <div class="grid md:grid-cols-2 md:gap-6 mb-5 items-center">
             <input type="hidden" name="tenantCode" id="tenantCode" value="{{ session('tenant_code') }}">
-            @if(session('branch_code'))
-                <input type="hidden" name="branchCode" id="branches" value="{{ session('branch_code') }}">
+            @if(Auth::user()->role->role_code === "BA")
+                <input id="branches" type="hidden" name="branchCode" id="branchCode" value="{{ Auth::user()->branch->branch_code }}">
+                <p class="text-red-500 text-sm" id="required-text" hidden>Branch Is Required</p>
             @else
             <div>
               <select id="branches" name="branchCode"
@@ -134,7 +135,6 @@
       const allProducts = @json($products ?? []);
 
     document.getElementById("add-row").addEventListener("click", function() {
-        console.log("BranchCodeInput : ", branchCodeInput);
         if (!branchCodeInput.value) {
             branchRequiredText.hidden = false; // Show the required text if branchCode is empty
         }else{

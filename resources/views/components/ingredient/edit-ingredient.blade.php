@@ -31,9 +31,9 @@
                     <p class="text-red-500 text-sm">{{ $errors->first('ingredientName') }}</p>
                 @endif
             </div>
-              @if(session('branch_code'))
-                  <input type="hidden" name="branchCode" id="branchCode" value="{{ session('branch_code') }}">
-              @else
+            @if(Auth::user()->role->role_code === "BA")
+                <input id="branches" type="hidden" name="branchCode" id="branchCode" value="{{ Auth::user()->branch->branch_code }}">
+            @else
               <div class="mb-5">
                 <label for="branches" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Branch</label>
                 <select id="branches" name="branchCode"

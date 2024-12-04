@@ -17,8 +17,8 @@
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary block w-full p-2.5"
               placeholder="Type ingredient name" required="">
           </div>
-            @if(session('branch_code'))
-                <input type="hidden" name="branchCode" id="branchCode" value="{{ session('branch_code') }}">
+            @if(Auth::user()->role->role_code === "BA")
+                <input type="hidden" name="branchCode" id="branchCode" value="{{ Auth::user()->branch->branch_code }}">
             @else
             <div class="mb-5">
               <label for="branches" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Branch</label>

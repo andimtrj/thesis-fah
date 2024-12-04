@@ -28,16 +28,20 @@
         <form action="{{ route('usage') }}" method="GET" class="flex flex-col gap-5 mb-5 w-full">
           <div>
             <div class="flex gap-2">
-                <select id="branchCode" name="branchCode" required
-                    class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary">
-                    <option value="" disabled {{ !request('branchCode') ? 'selected' : '' }}>Choose a branch</option>
-                    @foreach ($branches as $branch)
-                        <option value="{{ $branch->branch_code }}"
-                            {{ request('branchCode') == $branch->branch_code ? 'selected' : '' }}>
-                            {{ $branch->branch_name }}
-                        </option>
-                    @endforeach
-                </select>
+                @if(Auth::user()->role->role_code === "BA")
+                    <input id="branchCode" type="hidden" name="branchCode" id="branchCode" value="{{ Auth::user()->branch->branch_code }}">
+                @else
+                    <select id="branchCode" name="branchCode" required
+                        class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary">
+                        <option value="" disabled {{ !request('branchCode') ? 'selected' : '' }}>Choose a branch</option>
+                        @foreach ($branches as $branch)
+                            <option value="{{ $branch->branch_code }}"
+                                {{ request('branchCode') == $branch->branch_code ? 'selected' : '' }}>
+                                {{ $branch->branch_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                @endif
               <input type="text" id="trxNo" name="trxNo"
                 class="block w-full p-2.5 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-primary focus:border-primary"
                 placeholder="Search by transaction number" value="{{ request('trxNo') }}">

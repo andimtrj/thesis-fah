@@ -28,6 +28,9 @@
         <form action="{{ route('purchase') }}" method="GET" class="flex flex-col gap-5 mb-5 w-full">
           <div>
             <div class="flex gap-2">
+                @if(Auth::user()->role->role_code === "BA")
+                    <input id="branchCode" type="hidden" name="branchCode" id="branchCode" value="{{ Auth::user()->branch->branch_code }}">
+                @else
                 <select id="branchCode" name="branchCode" required
                     class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary">
                     <option value="" disabled {{ !request('branchCode') ? 'selected' : '' }}>Choose a branch</option>
@@ -38,6 +41,7 @@
                         </option>
                     @endforeach
                 </select>
+                @endif
               <input type="text" id="branchCode" name="trxNo"
                 class="block w-full p-2.5 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-primary focus:border-primary"
                 placeholder="Search by transaction number" value="{{ request('trxNo') }}">

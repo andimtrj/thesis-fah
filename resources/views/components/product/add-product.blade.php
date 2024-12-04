@@ -36,8 +36,9 @@
 
           </div>
           <input type="hidden" name="tenantCode" id="tenantCode" value="{{ session('tenant_code') }}">
-            @if(session('branch_code'))
-                <input type="hidden" name="branchCode" id="branches" value="{{ session('branch_code') }}">
+            @if(Auth::user()->role->role_code === "BA")
+                <input id="branches" type="hidden" name="branchCode" id="branchCode" value="{{ Auth::user()->branch->branch_code }}">
+                <p class="text-red-500 text-sm" id="required-text" hidden>Branch Is Required</p>
             @else
             <div class="mb-5">
                 <label for="branches" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Branch</label>

@@ -26,6 +26,9 @@
 
         <div class="flex items-end gap-5 px-10 bg-white pt-5 rounded-b-xl">
           <form id="ingredientForm" action="{{ route('ingredient') }}" method="GET" class="flex gap-5 mb-5">
+            @if(Auth::user()->role->role_code === "BA")
+                <input type="hidden" name="branchCode" id="branchCode" value="{{ Auth::user()->branch->branch_code }}">
+            @else
             <div class="w-[15vw]">
                 <label for="branchCode" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Select a branch</label>
                 <select id="branchCode" name="branchCode" required
@@ -40,6 +43,8 @@
                     @endforeach
                 </select>
             </div>
+            @endif
+
             <div class="w-[15vw]">
               <label for="ingredientCode" class="block mb-1 text-sm font-medium text-gray-900">Ingredient Code</label>
               <input type="text" id="ingredientCode" name="ingredientCode"

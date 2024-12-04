@@ -36,7 +36,7 @@ class BranchAdminController extends Controller
     public function showAddBranchAdminPage($branchId){
         $authTenantId = Auth::user()->tenant_id;
         $branch = Branch::find($branchId);
-        if ($authTenantId) {
+        if ($authTenantId && $branch) {
             // Ambil tenant berdasarkan tenant_id user untuk display tenant_name
             $tenant = Tenant::find($authTenantId);
 

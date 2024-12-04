@@ -68,7 +68,7 @@ class AuthController extends Controller
                 $response->statusCode = '200';
                 $response->message = 'Login Success!';
 
-                return redirect()->intended('/branch')->with([
+                return redirect()->intended('/dashboard')->with([
                     'status' => $response->statusCode,
                     'message' => $response->message,
                 ]);

@@ -36,8 +36,9 @@
 
           </div>
           <input type="hidden" name="tenantCode" id="tenantCode" value="{{ session('tenant_code') }}">
-            @if(session('branch_code'))
-                <input type="hidden" name="branchCode" id="branches" value="{{ session('branch_code') }}">
+            @if(Auth::user()->role->role_code === "BA")
+                <input id="branches" type="hidden" name="branchCode" id="branchCode" value="{{ Auth::user()->branch->branch_code }}">
+                <p class="text-red-500 text-sm" id="required-text" hidden>Branch Is Required</p>
             @else
             <div class="mb-5">
                 <label for="branches" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Branch</label>
@@ -151,11 +152,11 @@
 
           <div class="flex justify-end gap-5">
             <a href="{{ route('product') }}"
-              class="flex items-center text-white bg-danger hover:shadow-container lg:px-10 md:px-1 py-2 font-medium rounded-lg gap-1 flex-shrink-0 w-fit md:text-xs lg:text-base">
+              class="flex items-center text-white bg-danger lg:px-10 md:px-1 py-2 font-medium rounded-lg gap-1 flex-shrink-0 w-fit md:text-xs lg:text-base hover:shadow-button hover:shadow-danger">
               <span>Cancel</span>
             </a>
             <button type="submit"
-              class="flex items-center text-white bg-secondary hover:shadow-container lg:px-10 md:px-1 py-2 font-medium rounded-lg gap-1 flex-shrink-0 w-fit md:text-xs lg:text-base">
+              class="flex items-center text-white bg-secondary lg:px-10 md:px-1 py-2 font-medium rounded-lg gap-1 flex-shrink-0 w-fit md:text-xs lg:text-base hover:shadow-button hover:shadow-secondary">
               <span>Submit</span>
             </button>
           </div>

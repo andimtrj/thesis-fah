@@ -30,7 +30,8 @@ export default {
         'page-gradient': 'linear-gradient(130deg, hsl(220deg 14% 96%) 0%, hsl(218deg 13% 79%) 40%, hsl(215deg 13% 63%) 61%, hsl(212deg 15% 47%) 74%, hsl(209deg 29% 32%) 86%, hsl(201deg 100% 14%) 100%)'
       },
       boxShadow: {
-        'container': '0 3px 10px rgb(0,0,0,0.2)'
+        'container': '0 5px 10px 0px rgb(0,0,0,0.2)',
+        'button': '0 0 3px 0px rgb(0,0,0,0.5)'
       }
     },
   },

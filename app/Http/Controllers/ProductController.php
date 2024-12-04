@@ -104,7 +104,7 @@ class ProductController extends Controller
 
             }
         } else {
-            throw new \Exception("Tenant Code Is Null");
+            abort(500, "Invalid Tenant");
         }
 
         return view('product', compact('tenant', 'branches', 'formSubmitted')); // Pass tenant variable to view
@@ -129,7 +129,7 @@ class ProductController extends Controller
             $productCategories = ProductCategory::where('tenant_id', '=', $authTenantId)->get();
             return view('components.product.add-product', compact('productCategories', 'tenant', 'branches', 'ingredients', 'metrics'));
         } else {
-            throw new \Exception("Tenant Code Is Null");
+            abort(500, "Invalid Tenant");
         }
     }
 
@@ -216,7 +216,7 @@ class ProductController extends Controller
             ->firstOrFail();
             $metrics = Metric::get();
         } else {
-            throw new \Exception("Tenant Code Is Null");
+            abort(500, "Invalid Tenant");
         }
 
 

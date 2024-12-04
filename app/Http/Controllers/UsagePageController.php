@@ -27,7 +27,7 @@ class UsagePageController extends Controller
             $products = $queryProducts->get();
             return view('components.usage.add-usage', compact('tenant', 'branches', 'products'));
         } else {
-            throw new \Exception("Tenant Code Is Null");
+            abort(500, "Invalid Tenant");
         }
 
     }
@@ -50,7 +50,7 @@ class UsagePageController extends Controller
 
             }
         } else {
-            throw new \Exception("Tenant Code Is Null");
+            abort(500, "Invalid Tenant");
         }
 
         return view('usage', compact('tenant', 'branches', 'formSubmitted')); // Pass tenant variable to view

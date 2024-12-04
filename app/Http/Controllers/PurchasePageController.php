@@ -30,7 +30,7 @@ class PurchasePageController extends Controller
             $ingredients = $queryIngredients->get();
             return view('components.purchase.add-purchase', compact('tenant', 'branches', 'ingredients', 'metrics'));
         } else {
-            throw new \Exception("Tenant Code Is Null");
+            abort(500, "Invalid Tenant");
         }
 
     }
@@ -53,7 +53,7 @@ class PurchasePageController extends Controller
 
             }
         } else {
-            throw new \Exception("Tenant Code Is Null");
+            abort(500, "Invalid Tenant");
         }
 
         return view('purchase', compact('tenant', 'branches', 'formSubmitted')); // Pass tenant variable to view

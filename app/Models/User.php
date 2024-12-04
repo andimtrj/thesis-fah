@@ -8,6 +8,8 @@ use App\Models\Role;
 use App\Models\Tenant;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -86,4 +88,39 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Branch::class);
     }
+
+    public static function GetPagingBranchAdmin($request, $branchId){
+        $authTenantId = Auth::user()->tenant_id;
+
+        if ($authTenantId | $branchId) {
+            $query = User::join('branches as b', 'users.branch_id', '=', 'b.id')
+                        ->join('roles as r', 'users.role_id', '=', 'r.id')
+                        ->where('b.id', '=', $branchId)
+                        ->where('r.role_code', '=', 'BA');
+            if($request->input('name')){
+                $query = $query->where('users.first_name', 'like', '%' . $request->input('name') . '%');
+                $query = $query->orWhere('users.last_name', 'like', '%' . $request->input('name') . '%');
+            }
+
+            if($request->input('username')){
+                $query = $query->where('users.username', 'like', '%' . $request->input('username') . '%');
+            }
+            // Apply filters if branchCode or branchName is provided
+            $user = $query->select(
+                                        'users.id',
+                                        DB::raw("CONCAT(users.first_name, ' ', users.last_name) as name"),
+                                        'users.username',
+                                        'users.email'
+                                    )
+                                ->orderBy('users.username')
+                                ->paginate(10);
+
+        } else {
+            abort(500, "Invalid Tenant");
+        }
+        return $user;
+
+
+    }
+
 }

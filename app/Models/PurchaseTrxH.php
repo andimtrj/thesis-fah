@@ -96,7 +96,7 @@ class PurchaseTrxH extends Model
                                 ->groupBy('purchase_trx_h.purchase_trx_no', 'b.branch_name', 'u.first_name', 'u.last_name', 'r.role_name', 'purchase_trx_h.trx_date')
                                 ->orderBy('purchase_trx_h.created_at', 'desc');
         } else {
-            throw new \Exception("Tenant Code Is Null");
+            abort(500, "Invalid Tenant");
         }
         return $purchaseTrxH->paginate(10);
 

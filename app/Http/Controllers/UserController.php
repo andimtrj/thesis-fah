@@ -84,7 +84,7 @@ class UserController extends Controller
             });
             $this->authController->Authenticate($request);
 
-            return redirect()->intended('/branch')->with([
+            return redirect()->intended('/dashbord')->with([
                 'status' => $response->statusCode,
                 'message' => $response->message,
             ]);
@@ -122,27 +122,19 @@ class UserController extends Controller
             $response->statusCode = '400';
             $response->message = $validator->errors();
 
-            return redirect()->intended('/')->with([
-                'status' => $response->statusCode,
-                'message' => $response->message,
-            ]);
-
+            return redirect()->back()->withErrors($validator)->withInput()
+                    ->with([
+                        'status' => $response->statusCode,
+                        'message' => $response->message
+                        ]
+                    );
 
         }
 
         try{
 
             DB::transaction(function() use($request ,&$response){
-                $role = Role::where('role_code', $request->roleCode)->firstOrFail();
-                $user = Auth::user();
-
-                if ($user) {
-                    // User is authenticated
-                    echo $user->name;
-                } else {
-                    // No user is logged in
-                    echo 'No user is logged in.';
-                }
+                $role = Role::where('role_code', $request->roleCode)->select('id')->firstOrFail();
 
                 User::create([
                     'username' => $request->username,
@@ -165,7 +157,7 @@ class UserController extends Controller
 
             });
 
-            return redirect()->intended('/branch')->with([
+            return redirect()->route('branch-admin', ['branchId' => $request->branchId])->with([
                 'status' => $response->statusCode,
                 'message' => $response->message,
             ]);
@@ -176,7 +168,7 @@ class UserController extends Controller
             $response->statusCode = '500';
             $response->message = 'An Error Occurred During Registration : ' . $e->getMessage();
 
-            return redirect()->intended('/')->with([
+            return redirect()->back()->with([
                 'status' => $response->statusCode,
                 'message' => $response->message,
             ]);
@@ -186,5 +178,72 @@ class UserController extends Controller
 
     }
 //#endregion
+
+    public function UpdateBranchAdmin(Request $request){
+        $validator = Validator::make($request->all(), [
+            'branchAdminId' => 'required|integer|exists:users,id',
+            'email' => 'required|email:rfc,dns',
+            'phoneNumber' => 'required|string|max:16',
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'roleCode' => 'required|string|in:BA',
+            'branchId' => 'required|string|max:255|exists:branches,id',
+            'tenantId' => 'required|string|max:255|exists:tenants,id'
+        ]);
+
+        $request['emailVerifiedTime'] = date('Y-m-d H:i:s');
+        if($validator->fails()){
+            $response = new BaseResponseObj();
+            $response->statusCode = '400';
+            $response->message = $validator->errors();
+
+            return redirect()->back()->withErrors($validator)->withInput()
+                    ->with([
+                        'status' => $response->statusCode,
+                        'message' => $response->message
+                        ]
+                    );
+        }
+
+        try{
+
+            DB::transaction(function() use($request ,&$response){
+
+                $branchAdmin = User::find($request->input('branchAdminId'));
+                $branchAdmin->email = $request->input('email');
+                $branchAdmin->phone_number = $request->input('phoneNumber');
+                $branchAdmin->first_name = $request->input('firstName');
+                $branchAdmin->last_name = $request->input('lastName');
+                $branchAdmin->save();
+
+                $response = new BaseResponseObj();
+                $response->statusCode = '200';
+                $response->message = 'Registration Success!';
+
+                return $response;
+
+            });
+
+            return redirect()->route('branch-admin', ['branchId' => $request->branchId])->with([
+                'status' => $response->statusCode,
+                'message' => $response->message,
+            ]);
+
+
+        }catch(\Exception $e){
+            $response = new BaseResponseObj();
+            $response->statusCode = '500';
+            $response->message = 'An Error Occurred During Registration : ' . $e->getMessage();
+
+            return redirect()->back()->with([
+                'status' => $response->statusCode,
+                'message' => $response->message,
+            ]);
+
+
+        }
+
+
+    }
 
 }

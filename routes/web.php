@@ -5,6 +5,7 @@ use App\Http\Controllers\AdjustmentTrxHController;
 use App\Http\Controllers\ApiWebController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BranchAdminController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\IngredientController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\PurchasePageController;
 use App\Http\Controllers\PurchaseTrxHController;
 use App\Http\Controllers\UsagePageController;
 use App\Http\Controllers\UsageTrxHController;
+use App\Http\Controllers\UserController;
 use App\Models\Branch;
 
 // Route::get('/', function () {
@@ -28,20 +30,25 @@ Route::middleware('web')->group(function () {
 
 
     Route::middleware('auth')->group(function () {
+        Route::get('/dashboard', function() {
+            return view('dashboard');
+        })->name('dashboard');
+
+        Route::middleware(App\Http\Middleware\CheckRole::class . ':TO')->group(function(){
+            Route::get('/branch', [BranchController::class, 'showBranchPaging'])->name('branch');
+            Route::get('/add-branch', function () {
+                return view('components.branch.add-branch');
+            })->name('add-branch');
+
+            Route::get('/edit-branch/{id}', [BranchController:: class, 'DetailBranchPage'])->name('edit-branch');
+            Route::post('/create-branch',  [BranchController::class, 'CreateBranch'])->name('create-branch');
+            Route::post('/update-branch/{id}',  [BranchController::class, 'UpdateBranch'])->name('update-branch');
+            Route::get('/get-paging-branch', [BranchController::class, 'GetPagingBranch'])->name('get-paging-branch');
+        });
         // Branch
-        Route::get('/branch', [BranchController::class, 'showBranchPaging'])->name('branch');
         Route::get('/landing', function () {
             return view('landing');
         })->name('landing');
-
-        Route::get('/add-branch', function () {
-            return view('components.branch.add-branch');
-        })->name('add-branch');
-
-        Route::get('/edit-branch/{id}', [BranchController:: class, 'DetailBranchPage'])->name('edit-branch');
-        Route::post('/create-branch',  [BranchController::class, 'CreateBranch'])->name('create-branch');
-        Route::post('/update-branch/{id}',  [BranchController::class, 'UpdateBranch'])->name('update-branch');
-        Route::get('/get-paging-branch', [BranchController::class, 'GetPagingBranch'])->name('get-paging-branch');
 
 
         // Ingredient
@@ -80,9 +87,12 @@ Route::middleware('web')->group(function () {
         Route::post('/insert-adjustment', [AdjustmentTrxHController::class, 'InsertAdjustmentTrxH'])->name('insert-adjustment');
 
         //Branch Admin
-        Route::get('/branchAdmin', function () {
-            return view('branchAdmin');
-        })->name('branchAdmin');
+        Route::get('/branch-admin/{branchId}', [BranchAdminController::class, 'showBranchAdminPaging'])->name('branch-admin');
+        Route::get('/add-branch-admin/{branchId}', [BranchAdminController::class, 'showAddBranchAdminPage'])->name('add-branch-admin');
+        Route::get('/edit-branch-admin/{branchAdminId}', [BranchAdminController::class, 'showEditBranchAdminPage'])->name('edit-branch-admin');
+        Route::post('/insert-branch-admin', [UserController::class, 'RegisterBranchAdmin'])->name('insert-branch-admin');
+        Route::post('/update-branch-admin', [UserController::class, 'UpdateBranchAdmin'])->name('update-branch-admin');
+
 
         Route::get('/landing', function () {Return view('landing2');})->name('landing');
         Route::post('/logout', [AuthController::class, 'Logout'])->name('logout');

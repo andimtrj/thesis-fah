@@ -96,51 +96,6 @@
 
               {{-- Table Body --}}
               <tbody id="ingredient-table-body">
-                {{-- <tr class="bg-white border-y text-base text-abu">
-                  <td class="px-2 py-3">
-                    <input type="text" id="small-input" name="ingredients[0][name]"
-                      class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-primary"
-                      placeholder="Type ingredient name">
-                  </td>
-                  <td class="px-2 w-full">
-                    <div class="flex items-center justify-center">
-                      <button onclick="decreaseValue()"
-                        class="inline-flex items-center justify-center p-1 me-3 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-                        type="button">
-                        <span class="sr-only">Quantity button</span>
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                          viewBox="0 0 18 2">
-                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M1 1h16" />
-                        </svg>
-                      </button>
-                      <div>
-                        <input type="number" id="first_product" name="ingredients[0][amount]"
-                          class="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          value="0" required />
-                      </div>
-                      <button onclick="increaseValue()"
-                        class="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-                        type="button">
-                        <span class="sr-only">Quantity button</span>
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                          viewBox="0 0 18 18">
-                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 1v16M1 9h16" />
-                        </svg>
-                      </button>
-                    </div>
-                  </td>
-                  <td class="px-2">
-                    <input type="text" id="small-input" name="ingredients[0][metrics]"
-                      class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-primary"
-                      placeholder="Type ingredient name">
-                  </td>
-                  <td class="px-2 text-center">
-                    <button type="button"
-                      class="delete-row text-danger hover:underline underline-offset-2 px-2 py-1 rounded">Remove</button>
-                  </td>
-                </tr> --}}
               </tbody>
             </table>
             <div class="flex justify-end mt-2">
@@ -171,10 +126,42 @@
     let branchRequiredText = document.getElementById('required-text');
 
     let branchCodeInput = document.getElementById('branches');
+    const allProductCategories = @json($productCategories ?? []); // Provide a default empty array if $metrics is not available
 
     const productCategory = document.getElementById('productCategoryCode');
     const allIngredients = @json($ingredients ?? []);
     console.log('Ingredients', allIngredients);
+
+    window.addEventListener('DOMContentLoaded', populateProductCategory());
+
+    function populateProductCategory(){
+        if(branches){
+            const selectedBranchCode = branchDropdown.value;
+            console.log(allProductCategories);
+            const branches = @json($branches ?? []);
+            const selectedBranch = branches.filter(branch => branch.branch_code == selectedBranchCode);
+            console.log('selected branch', selectedBranch);
+            const filteredProductCategories = allProductCategories.filter(productCategory => productCategory.branch_id == selectedBranch[0].id);
+            console.log('Filtered Product Categories', filteredProductCategories);
+            if(filteredProductCategories.length > 0){
+                filteredProductCategories.forEach(function (product_category) {
+                    const option = document.createElement('option');
+                    option.value = product_category.prod_category_code;
+                    option.textContent = product_category.prod_category_name;
+                    productCategory.appendChild(option);
+                    console.log('Product Category Change : ', productCategory);
+                    localStorage.setItem('selectedProductCategoryValue', option.value);
+                });
+
+            } else {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'No Product Category available';
+                productCategory.appendChild(option);
+            }
+
+        }
+    }
 
     document.getElementById('add-row').addEventListener('click', function() {
         console.log("BranchCodeInput : ", branchCodeInput);
@@ -261,7 +248,6 @@
     // Bind buttons for the initial row if any
     document.querySelectorAll('#ingredient-table-body tr').forEach(bindRowButtons);
 
-    const allProductCategories = @json($productCategories ?? []); // Provide a default empty array if $metrics is not available
 
     document.getElementById('branches').addEventListener('change', function(event){
         let tableBody = document.getElementById('ingredient-table-body');
@@ -330,29 +316,6 @@
     })
 
         console.log(ingredientCode);
-        // Make an AJAX call to get metrics for the selected ingredient
-    //     fetch(`/get-metrics/${ingredientCode}`) // You can create this route in Laravel
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             let metricsSelect = row.querySelector('select[name^="ingredients"][name$="[metric_code]"]');
-    //             metricsSelect.innerHTML = ''; // Clear previous options
-
-    //             console.log('data : ', data);
-    //             if (data.metrics.length > 0) {
-    //                 data.metrics.forEach(metric => {
-    //                     let option = document.createElement('option');
-    //                     option.value = metric.metric_code;
-    //                     option.textContent = metric.metric_unit;
-    //                     metricsSelect.appendChild(option);
-    //                 });
-    //             } else {
-    //                 let option = document.createElement('option');
-    //                 option.value = '';
-    //                 option.textContent = 'No metrics available';
-    //                 metricsSelect.appendChild(option);
-    //             }
-    //         })
-    //         .catch(error => console.error('Error fetching metrics:', error));
     }
 
   </script>

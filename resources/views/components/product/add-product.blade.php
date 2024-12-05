@@ -131,11 +131,12 @@
     const productCategory = document.getElementById('productCategoryCode');
     const allIngredients = @json($ingredients ?? []);
     console.log('Ingredients', allIngredients);
+    const isBA = @json(auth()->user()->role->role_code === 'BA');
 
     window.addEventListener('DOMContentLoaded', populateProductCategory());
 
     function populateProductCategory(){
-        if(branches){
+        if(isBA){
             const selectedBranchCode = branchDropdown.value;
             console.log(allProductCategories);
             const branches = @json($branches ?? []);

@@ -45,7 +45,7 @@
         </x-sidebar.sidebar-link>
 
         <li>
-          <button type="button" id="transaction-btn"
+          <button type="button" id="transaction-btn" onclick="toggleArrow()"
             class="flex items-center w-full p-2 text-baseflex group hover:bg-secondary transition duration-75 rounded-lg group {{ Request::routeIs('summary', 'adjustment', 'usage', 'purchase') ? 'bg-secondary text-white' : 'bg-primary text-white' }}">
             <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -57,10 +57,15 @@
               </g>
             </svg>
             <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Transaction</span>
-            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+            {{-- arrow down --}}
+            <svg id="arrow-down" class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
               viewBox="0 0 10 6">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="m1 1 4 4 4-4" />
+            </svg>
+            {{-- arrow right --}}
+            <svg id="arrow-right" class="w-3 h-3 hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4-4 4" />
             </svg>
           </button>
           <ul id="dropdown-example" class="hidden py-2 space-y-2">
@@ -119,4 +124,14 @@
     const isOpen = !dropdown.classList.contains('hidden');
     localStorage.setItem('transactionDropdownOpen', isOpen);
   });
+
+  function toggleArrow() {
+        const arrowDown = document.getElementById('arrow-down');
+        const arrowRight = document.getElementById('arrow-right');
+
+        // Toggle arrow visibility
+        arrowDown.classList.toggle('hidden');
+        arrowRight.classList.toggle('hidden');
+    }
+
 </script>

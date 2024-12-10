@@ -1,12 +1,7 @@
 <x-master>
   <x-sidebar.sidebar>
-    {{-- Page Title --}}
-    <div>
-      <h1 class="text-3xl font-bold mb-2 text-secondary">Usage Page</h1>
-    </div>
-
     {{-- SubTitle, Search --}}
-    <div class="shadow-md rounded-t-xl">
+    <div class="shadow-md rounded-b-xl mt-3">
       <div class="flex justify-between gap-3 items-center px-10 py-5 bg-primary rounded-t-xl">
         <div class="flex items-center">
           <h1 class="text-3xl font-medium text-white">{{ $tenant->tenant_name }}</h1>
@@ -24,7 +19,7 @@
         </div>
       </div>
 
-      <div class="flex items-end gap-5 px-10 bg-white pt-5">
+      <div class="flex items-end gap-5 px-10 bg-white pt-5 rounded-b-xl">
         <form action="{{ route('usage') }}" method="GET" class="flex flex-col gap-5 mb-5 w-full">
           <div>
             <div class="flex gap-2">

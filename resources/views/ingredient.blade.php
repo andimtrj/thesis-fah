@@ -1,12 +1,7 @@
 <x-master>
     <x-sidebar.sidebar>
-      {{-- Page Title --}}
-      <div>
-        <h1 class="text-3xl font-bold mb-2 text-secondary">Ingredient Page</h1>
-      </div>
-
       {{-- SubTitle, Add, Search --}}
-      <div class="shadow-md rounded-xl">
+      <div class="shadow-md rounded-xl mt-3">
         <div class="flex justify-between gap-3 items-center px-10 py-5 bg-primary rounded-t-xl">
           <div class="flex items-center">
             <h1 class="text-3xl font-medium text-white">{{ $tenant->tenant_name }}</h1>

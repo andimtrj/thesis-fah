@@ -11,10 +11,10 @@
 <aside id="logo-sidebar"
   class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
   aria-label="Sidebar">
-  <div class="h-full px-3 py-4 overflow-y-auto flex flex-col justify-between bg-primary shadow-xl text-cream">
+  <div class="h-full px-3 py-4 overflow-y-auto flex flex-col justify-between bg-new-gradient shadow-xl text-cream">
     <!-- Logo Section -->
-    <a href="{{ route('dashboard') }}" class="flex items-center ps-2.5 mb-5">
-      <span class="self-center text-xl font-semibold whitespace-nowrap">Emity</span>
+    <a href="{{ route('dashboard') }}" class="flex items-center ps-2.5 mb-5 pt-5">
+      <img src="{{ asset('build/assets/logo.svg') }}" alt="" class="w-28">
     </a>
 
     <!-- Sidebar Links Section -->
@@ -45,8 +45,8 @@
         </x-sidebar.sidebar-link>
 
         <li>
-          <button type="button" id="transaction-btn"
-            class="flex items-center w-full p-2 text-baseflex group hover:bg-secondary transition duration-75 rounded-lg group {{ Request::routeIs('summary', 'adjustment', 'usage', 'purchase') ? 'bg-secondary text-white' : 'bg-primary text-white' }}">
+          <button type="button" id="transaction-btn" onclick="toggleArrow()"
+            class="flex items-center w-full p-2 text-baseflex group hover:bg-primary transition duration-75 rounded-lg group {{ Request::routeIs('summary', 'adjustment', 'usage', 'purchase') ? 'bg-primary text-white' : 'bg-none text-white' }}">
             <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                 color="currentColor">
@@ -57,28 +57,33 @@
               </g>
             </svg>
             <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Transaction</span>
-            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+            {{-- arrow down --}}
+            <svg id="arrow-down" class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
               viewBox="0 0 10 6">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="m1 1 4 4 4-4" />
             </svg>
+            {{-- arrow right --}}
+            <svg id="arrow-right" class="w-3 h-3 hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4-4 4" />
+            </svg>
           </button>
           <ul id="dropdown-example" class="hidden py-2 space-y-2">
             <li>
-              <a href="{{ route('usage') }}"
-                class="flex items-center w-full p-2 hover:bg-secondary transition duration-75 rounded-lg pl-11 group {{ request()->routeIs('usage') ? 'bg-secondary text-white' : 'bg-primary text-white' }}">Usage</a>
-            </li>
+                <a href="{{ route('purchase') }}"
+                  class="flex items-center w-full p-2 hover:bg-primary transition duration-75 rounded-lg pl-11 group {{ request()->routeIs('purchase') ? 'bg-primary text-white' : 'bg-none text-white' }}">Purchase</a>
+              </li>
             <li>
-              <a href="{{ route('purchase') }}"
-                class="flex items-center w-full p-2 hover:bg-secondary transition duration-75 rounded-lg pl-11 group {{ request()->routeIs('purchase') ? 'bg-secondary text-white' : 'bg-primary text-white' }}">Purchase</a>
+              <a href="{{ route('usage') }}"
+                class="flex items-center w-full p-2 hover:bg-primary transition duration-75 rounded-lg pl-11 group {{ request()->routeIs('usage') ? 'bg-primary text-white' : 'bg-none text-white' }}">Usage</a>
             </li>
             <li>
               <a href="{{ route('adjustment') }}"
-                class="flex items-center w-full p-2 hover:bg-secondary transition duration-75 rounded-lg pl-11 group {{ request()->routeIs('adjustment') ? 'bg-secondary text-white' : 'bg-primary text-white' }}">Adjustment</a>
+                class="flex items-center w-full p-2 hover:bg-primary transition duration-75 rounded-lg pl-11 group {{ request()->routeIs('adjustment') ? 'bg-primary text-white' : 'bg-none text-white' }}">Adjustment</a>
             </li>
             <li>
               <a href="{{ route('summary') }}"
-                class="flex items-center w-full p-2 hover:bg-secondary transition duration-75 rounded-lg pl-11 group {{ request()->routeIs('summary') ? 'bg-secondary text-white' : 'bg-primary text-white' }}">Summary</a>
+                class="flex items-center w-full p-2 hover:bg-primary transition duration-75 rounded-lg pl-11 group {{ request()->routeIs('summary') ? 'bg-primary text-white' : 'bg-none text-white' }}">Summary</a>
             </li>
           </ul>
         </li>
@@ -119,4 +124,14 @@
     const isOpen = !dropdown.classList.contains('hidden');
     localStorage.setItem('transactionDropdownOpen', isOpen);
   });
+
+  function toggleArrow() {
+        const arrowDown = document.getElementById('arrow-down');
+        const arrowRight = document.getElementById('arrow-right');
+
+        // Toggle arrow visibility
+        arrowDown.classList.toggle('hidden');
+        arrowRight.classList.toggle('hidden');
+    }
+
 </script>

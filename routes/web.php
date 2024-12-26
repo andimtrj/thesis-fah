@@ -35,6 +35,7 @@ Route::middleware('web')->group(function () {
         })->name('dashboard');
 
         Route::middleware(App\Http\Middleware\CheckRole::class . ':TO')->group(function(){
+            // Branch
             Route::get('/branch', [BranchController::class, 'showBranchPaging'])->name('branch');
             Route::get('/add-branch', function () {
                 return view('components.branch.add-branch');
@@ -44,8 +45,8 @@ Route::middleware('web')->group(function () {
             Route::post('/create-branch',  [BranchController::class, 'CreateBranch'])->name('create-branch');
             Route::post('/update-branch/{id}',  [BranchController::class, 'UpdateBranch'])->name('update-branch');
             Route::get('/get-paging-branch', [BranchController::class, 'GetPagingBranch'])->name('get-paging-branch');
+            Route::post('/delete-branch/{id}', [BranchController::class, 'DeleteBranch'])->name('delete-branch');
         });
-        // Branch
         Route::get('/landing', function () {
             return view('landing');
         })->name('landing');

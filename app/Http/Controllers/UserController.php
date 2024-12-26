@@ -17,8 +17,6 @@ use App\Http\Controllers\Api\TenantController;
 class UserController extends Controller
 {
     private $tenantController;
-    private $roleController;
-    private $branchController;
     private $authController;
 
     public function __construct(TenantController $tenantController
@@ -244,6 +242,23 @@ class UserController extends Controller
         }
 
 
+    }
+
+    public function DeleteBranchAdmin($id){
+        try{
+            $branchAdmin = User::findOrFail($id);
+            $branchAdmin->delete();
+        } catch(\Exception $e){
+            $response = new BaseResponseObj();
+            $response->statusCode = '500';
+            $response->message = 'An Error Occurred During Delete : ' . $e->getMessage();
+
+            return redirect()->intended('/branch-admin')->with([
+                'status' => $response->statusCode,
+                'message' => $response->message,
+            ]);
+
+        }
     }
 
 }

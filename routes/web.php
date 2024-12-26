@@ -35,6 +35,7 @@ Route::middleware('web')->group(function () {
         })->name('dashboard');
 
         Route::middleware(App\Http\Middleware\CheckRole::class . ':TO')->group(function(){
+            // Branch
             Route::get('/branch', [BranchController::class, 'showBranchPaging'])->name('branch');
             Route::get('/add-branch', function () {
                 return view('components.branch.add-branch');
@@ -44,8 +45,16 @@ Route::middleware('web')->group(function () {
             Route::post('/create-branch',  [BranchController::class, 'CreateBranch'])->name('create-branch');
             Route::post('/update-branch/{id}',  [BranchController::class, 'UpdateBranch'])->name('update-branch');
             Route::get('/get-paging-branch', [BranchController::class, 'GetPagingBranch'])->name('get-paging-branch');
+            Route::post('/delete-branch/{id}', [BranchController::class, 'DeleteBranch'])->name('delete-branch');
+
+            //Branch Admin
+            Route::get('/branch-admin/{branchId}', [BranchAdminController::class, 'showBranchAdminPaging'])->name('branch-admin');
+            Route::get('/add-branch-admin/{branchId}', [BranchAdminController::class, 'showAddBranchAdminPage'])->name('add-branch-admin');
+            Route::get('/edit-branch-admin/{branchAdminId}', [BranchAdminController::class, 'showEditBranchAdminPage'])->name('edit-branch-admin');
+            Route::post('/insert-branch-admin', [UserController::class, 'RegisterBranchAdmin'])->name('insert-branch-admin');
+            Route::post('/update-branch-admin', [UserController::class, 'UpdateBranchAdmin'])->name('update-branch-admin');
+            Route::post('/delete-branch-admin/{id}', [UserController::class, 'DeleteBranchAdmin'])->name('delete-branch-admin');
         });
-        // Branch
         Route::get('/landing', function () {
             return view('landing');
         })->name('landing');
@@ -57,12 +66,15 @@ Route::middleware('web')->group(function () {
         Route::get('/edit-ingredient/{id}', [IngredientController::class, 'DetailIngredientPage'])->name('edit-ingredient');
         Route::post('/insert-ingredient', [IngredientController::class, 'InsertIngredient'])->name('insert-ingredient');
         Route::post('/update-ingredient/{id}', [IngredientController::class, 'UpdateIngredient'])->name('update-ingredient');
+        Route::post('/delete-ingredient/{id}', [IngredientController::class, 'DeleteIngredient'])->name('delete-ingredient');
 
         Route::get('/product', [ProductController::class, 'showProductPage'])->name('product');
         Route::get('/add-product', [ProductController::class, 'showAddProductPage'])->name('add-product');
         Route::get('/edit-product/{id}', [ProductController::class, 'showEditProductPage'])->name('edit-product');
         Route::post('/insert-product', [ProductController::class, 'InsertProduct'])->name('insert-product');
         Route::post('/update-product/{id}', [ProductController::class, 'UpdateProduct'])->name('update-product');
+        Route::post('/delete-product/{id}', [ProductController::class, 'DeleteProduct'])->name('delete-product');
+
 
         Route::get('/get-metrics/{ingredient_code}', [IngredientController::class, 'getMetrics'])->name('get-metrics');
 
@@ -86,12 +98,6 @@ Route::middleware('web')->group(function () {
         Route::get('/add-adjustment', [AdjustmentPageController::class, 'ShowAddAdjustmentPage'])->name('add-adjustment');
         Route::post('/insert-adjustment', [AdjustmentTrxHController::class, 'InsertAdjustmentTrxH'])->name('insert-adjustment');
 
-        //Branch Admin
-        Route::get('/branch-admin/{branchId}', [BranchAdminController::class, 'showBranchAdminPaging'])->name('branch-admin');
-        Route::get('/add-branch-admin/{branchId}', [BranchAdminController::class, 'showAddBranchAdminPage'])->name('add-branch-admin');
-        Route::get('/edit-branch-admin/{branchAdminId}', [BranchAdminController::class, 'showEditBranchAdminPage'])->name('edit-branch-admin');
-        Route::post('/insert-branch-admin', [UserController::class, 'RegisterBranchAdmin'])->name('insert-branch-admin');
-        Route::post('/update-branch-admin', [UserController::class, 'UpdateBranchAdmin'])->name('update-branch-admin');
 
 
         Route::get('/landing', function () {Return view('landing2');})->name('landing');

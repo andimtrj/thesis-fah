@@ -340,5 +340,22 @@ class ProductController extends Controller
         ]);
     }
 
+    public function DeleteProduct($id){
+        try{
+            $product = Product::findOrFail($id);
+            $product->delete();
+        } catch(\Exception $e){
+            $response = new BaseResponseObj();
+            $response->statusCode = '500';
+            $response->message = 'An Error Occurred During Delete : ' . $e->getMessage();
+
+            return redirect()->intended('/product')->with([
+                'status' => $response->statusCode,
+                'message' => $response->message,
+            ]);
+
+        }
+    }
+
 
 }

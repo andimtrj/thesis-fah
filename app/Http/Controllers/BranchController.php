@@ -176,4 +176,21 @@ class BranchController extends Controller
         }
     }
 
+    public function DeleteBranch($id){
+        try{
+            $branch = Branch::findOrFail($id);
+            $branch->delete();
+        } catch(\Exception $e){
+            $response = new BaseResponseObj();
+            $response->statusCode = '500';
+            $response->message = 'An Error Occurred During Delete : ' . $e->getMessage();
+
+            return redirect()->intended('/branch')->with([
+                'status' => $response->statusCode,
+                'message' => $response->message,
+            ]);
+
+        }
+    }
+
 }

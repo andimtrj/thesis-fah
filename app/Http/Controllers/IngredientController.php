@@ -279,5 +279,22 @@ class IngredientController extends Controller
         // Find the ingredient with its metrics and their metric group
     }
 
+    public function DeleteIngredient($id){
+        try{
+            $ingredient = Ingredient::findOrFail($id);
+            $ingredient->delete();
+        } catch(\Exception $e){
+            $response = new BaseResponseObj();
+            $response->statusCode = '500';
+            $response->message = 'An Error Occurred During Delete : ' . $e->getMessage();
+
+            return redirect()->intended('/ingredient')->with([
+                'status' => $response->statusCode,
+                'message' => $response->message,
+            ]);
+
+        }
+    }
+
 
 }

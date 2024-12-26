@@ -1,18 +1,14 @@
 <x-master>
   <x-sidebar.sidebar>
-    {{-- Page Title --}}
-    <div>
-      <h1 class="text-3xl font-bold mb-2 text-secondary">Summary Page</h1>
-    </div>
     {{-- SubTitle, Search --}}
-    <div class="shadow-md rounded-t-xl">
+    <div class="shadow-md rounded-xl mt-3">
       <div class="flex justify-between gap-3 items-center px-10 py-5 bg-primary rounded-t-xl">
         <div class="flex items-center">
           <h1 class="text-3xl font-medium text-white">tenant_name</h1>
         </div>
       </div>
 
-      <div class="flex items-end gap-5 px-10 bg-white pt-5">
+      <div class="flex items-end gap-5 px-10 bg-white pt-5 rounded-b-xl">
         <form action="{{ route('branch') }}" method="GET" class="flex gap-5 mb-5">
           {{-- Date Picker --}}
           <div id="date-range-picker" date-rangepicker class="flex items-center">
@@ -51,7 +47,7 @@
           </div>
           <div class="flex gap-2 items-end">
             <button type="submit"
-              class="bg-secondary bg-opacity-10 rounded-lg px-5 py-2 text-secondary flex items-center gap-1">
+              class="bg-secondary bg-opacity-10 rounded-lg px-5 py-2 text-secondary flex items-center gap-1 hover:shadow-button hover:shadow-secondary">
               <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                 fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
@@ -60,7 +56,7 @@
               <span>Search</span>
             </button>
             <a href="{{ route('branch') }}"
-              class="bg-danger bg-opacity-10 rounded-lg px-5 py-2 text-danger flex items-center gap-1">
+              class="bg-danger bg-opacity-10 rounded-lg px-5 py-2 text-danger flex items-center gap-1 hover:shadow-button hover:shadow-danger">
               <span>Clear Search</span>
             </a>
           </div>

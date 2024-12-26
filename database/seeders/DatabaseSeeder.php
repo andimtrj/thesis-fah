@@ -10,11 +10,11 @@ class DatabaseSeeder extends Seeder
     {
         // Call the Branch seeder
         $this->call([
-            // MetricGroupsSeeder::class,
-            // MetricsSeeder::class,
-            // TransactionTypesSeeder::class,
-            // RolesSeeder::class,
-            BranchSeeder::class
+            MetricGroupsSeeder::class,
+            MetricsSeeder::class,
+            TransactionTypesSeeder::class,
+            RolesSeeder::class,
+            // BranchSeeder::class
         ]);
     }
 }

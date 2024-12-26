@@ -33,7 +33,7 @@
                     <td class="px-4 py-3 text-right">{{ $product->total_ingredients }}</td>
                     <td class="px-4 py-3 text-center">{{ 'Rp' . number_format($product->product_price, 0, ',', '.') }}</td>
                     <td class="px-4 py-3 flex gap-4 items-center justify-center">
-                    <a href="{{ route('edit-product',  ['id' => $product->id]) }}" class="border-2 w-fit p-1 rounded-lg cursor-pointer">
+                    <a href="{{ route('edit-product',  ['id' => $product->id]) }}" class="border-2 w-fit p-1 rounded-lg cursor-pointer hover:shadow-button hover:shadow-gray-400">
                         <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                         fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

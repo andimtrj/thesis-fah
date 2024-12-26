@@ -52,7 +52,6 @@ Route::middleware('web')->group(function () {
         })->name('landing');
 
 
-
         // Ingredient
         Route::get('/ingredient', [IngredientController::class, 'showIngredientPage'])->name('ingredient');
         Route::get('/add-ingredient', [IngredientController::class, 'showAddIngredientPage'])->name('add-ingredient');

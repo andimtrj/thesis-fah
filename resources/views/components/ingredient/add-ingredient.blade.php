@@ -54,11 +54,11 @@
           </div>
           <div class="flex justify-end gap-5">
             <a href="{{ route('ingredient') }}"
-              class="flex items-center text-white bg-danger hover:shadow-container lg:px-10 md:px-1 py-2 font-medium rounded-lg gap-1 flex-shrink-0 w-fit md:text-xs lg:text-base">
+              class="flex items-center text-white bg-danger lg:px-10 md:px-1 py-2 font-medium rounded-lg gap-1 flex-shrink-0 w-fit md:text-xs lg:text-base hover:shadow-button hover:shadow-danger">
               <span>Cancel</span>
             </a>
             <button type="submit"
-              class="flex items-center text-white bg-secondary hover:shadow-container lg:px-10 md:px-1 py-2 font-medium rounded-lg gap-1 flex-shrink-0 w-fit md:text-xs lg:text-base">
+              class="flex items-center text-white bg-secondary lg:px-10 md:px-1 py-2 font-medium rounded-lg gap-1 flex-shrink-0 w-fit md:text-xs lg:text-base hover:shadow-button hover:shadow-secondary">
               <span>Submit</span>
             </button>
           </div>

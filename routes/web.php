@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\PurchasePageController;
 use App\Http\Controllers\PurchaseTrxHController;
+use App\Http\Controllers\SummaryPageController;
 use App\Http\Controllers\UsagePageController;
 use App\Http\Controllers\UsageTrxHController;
 use App\Http\Controllers\UserController;
@@ -44,7 +45,6 @@ Route::middleware('web')->group(function () {
             Route::get('/edit-branch/{id}', [BranchController:: class, 'DetailBranchPage'])->name('edit-branch');
             Route::post('/create-branch',  [BranchController::class, 'CreateBranch'])->name('create-branch');
             Route::post('/update-branch/{id}',  [BranchController::class, 'UpdateBranch'])->name('update-branch');
-            Route::get('/get-paging-branch', [BranchController::class, 'GetPagingBranch'])->name('get-paging-branch');
             Route::post('/delete-branch/{id}', [BranchController::class, 'DeleteBranch'])->name('delete-branch');
 
             //Branch Admin
@@ -79,9 +79,8 @@ Route::middleware('web')->group(function () {
         Route::get('/get-metrics/{ingredient_code}', [IngredientController::class, 'getMetrics'])->name('get-metrics');
 
         // Summary
-        Route::get('/summary', function () {
-            return view('summary');
-        })->name('summary');
+        Route::get('/summary', [SummaryPageController::class, 'ShowSummaryPage'])->name('summary');
+        Route::get('/export-summary', [SummaryPageController::class, 'ExportToExcel'])->name('export-summary');
 
         // Usage
         Route::get('/usage', [UsagePageController::class, 'ShowUsagePage'])->name('usage');

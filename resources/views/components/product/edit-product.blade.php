@@ -144,7 +144,7 @@
     const allIngredients = @json($ingredients ?? []);
     function populateProductIngredient(){
         let tableBody = document.getElementById('ingredient-table-body');
-        const productIngredientD = @json($productIngredient->productIngredientD);
+        const productIngredientD = @json($productIngredient->productIngredientD ?? null);
         const selectedBranchCode = branchCodeInput.value;
         const filteredIngredients = allIngredients.filter(ingredient => ingredient.branch.branch_code == selectedBranchCode);
 
@@ -382,29 +382,12 @@
         })
 
         console.log(ingredientCode);
-        // Make an AJAX call to get metrics for the selected ingredient
-    //     fetch(`/get-metrics/${ingredientCode}`) // You can create this route in Laravel
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             let metricsSelect = row.querySelector('select[name^="ingredients"][name$="[metric_code]"]');
-    //             metricsSelect.innerHTML = ''; // Clear previous options
 
-    //             console.log('data : ', data);
-    //             if (data.metrics.length > 0) {
-    //                 data.metrics.forEach(metric => {
-    //                     let option = document.createElement('option');
-    //                     option.value = metric.metric_code;
-    //                     option.textContent = metric.metric_unit;
-    //                     metricsSelect.appendChild(option);
-    //                 });
-    //             } else {
-    //                 let option = document.createElement('option');
-    //                 option.value = '';
-    //                 option.textContent = 'No metrics available';
-    //                 metricsSelect.appendChild(option);
-    //             }
-    //         })
-    //         .catch(error => console.error('Error fetching metrics:', error));
+        const selectedOption = metricsSelect.querySelector(`option[value="${ingredient.metric.metric_code}"]`);
+        if (selectedOption) {
+            selectedOption.selected = true; // Set the option as selected
+        }
+
     }
   </script>
 

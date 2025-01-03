@@ -6,10 +6,11 @@ use Exception;
 use App\Models\Ingredient;
 use Illuminate\Http\Request;
 use App\Models\ProductIngredientH;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
@@ -52,7 +53,7 @@ class Product extends Model
         if ($authTenantId) {
             $query = Product::join('tenants as t', 'products.tenant_id', '=', 't.id')
                                 ->join('branches as b', 'products.branch_id', '=', 'b.id')
-                                ->join('product_ingredient_h as pih', 'pih.product_id', '=', 'products.id')
+                                ->leftJoin('product_ingredient_h as pih', 'pih.product_id', '=', 'products.id')
                                 ->where('products.tenant_id', '=', $authTenantId);
             if($request->has('branchCode'))
             {
@@ -74,7 +75,7 @@ class Product extends Model
                 $query->where('products.product_name', 'like', '%' . $paramProductName . '%');
             }
 
-            $ingredients = $query->select('products.product_code', 'products.product_name', 'pih.total_ingredients', 'products.product_price', 'products.id')->paginate(10); // Paginate the results
+            $ingredients = $query->select('products.product_code', 'products.product_name', DB::raw('COALESCE(pih.total_ingredients, 0) as total_ingredients'), 'products.product_price', 'products.id')->paginate(10); // Paginate the results
         } else {
             abort(500, "Invalid Tenant");
         }

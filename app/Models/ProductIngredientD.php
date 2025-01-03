@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProductIngredientD extends Model
 {
@@ -19,11 +20,13 @@ class ProductIngredientD extends Model
         'prod_ing_d_no'
     ];
 
-    public function ProductIngredientH(){
+    public function ProductIngredientH() : BelongsTo
+    {
         return $this->belongsTo(ProductIngredientH::class, 'prod_ing_h_id');
     }
 
-    public function Ingredients(){
+    public function Ingredients() : BelongsTo
+    {
         return $this->belongsTo(Ingredient::class, 'ingredient_id');
     }
 }

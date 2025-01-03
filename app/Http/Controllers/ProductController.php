@@ -213,8 +213,14 @@ class ProductController extends Controller
                 }
             ])
             ->where('product_id', '=', $product->id)
-            ->firstOrFail();
+            ->first();
+
+            if($productIngredient == null){
+                $productIngredient = new ProductIngredientH();
+                $productIngredient->productIngredientD = new ProductIngredientD();
+            }
             $metrics = Metric::get();
+
         } else {
             abort(500, "Invalid Tenant");
         }
@@ -246,69 +252,76 @@ class ProductController extends Controller
 
                 $requestProductIngredient = $request->input('ingredients', []);
                 $productIngredient = ProductIngredientH::with('productIngredientD')
-                                                        ->where('product_id', '=', $product->id)->firstOrFail();
+                                                        ->where('product_id', '=', $product->id)->first();
 
+                if($productIngredient == null){
+                    $request->merge(['product' => $product]);
+                    $this->productIngredientController->CreateProductIngredient($request);
+                }
+                else{
+                    // Extract the prod_ing_d_no values from the request
+                    $requestProductIngredientDNo = array_column($requestProductIngredient, 'prod_ing_d_no');
 
-                // Extract the prod_ing_d_no values from the request
-                $requestProductIngredientDNo = array_column($requestProductIngredient, 'prod_ing_d_no');
+                    // Get all existing prod_ing_d_no values in the database
+                    $existingProductIngredientD = $productIngredient->productIngredientD->pluck('prod_ing_d_no')->all();
 
-                // Get all existing prod_ing_d_no values in the database
-                $existingProductIngredientD = $productIngredient->productIngredientD->pluck('prod_ing_d_no')->all();
+                    // Find the prod_ing_d_no values to delete
+                    $prodIngDNoToDelete = array_diff($existingProductIngredientD, $requestProductIngredientDNo);
 
-                // Find the prod_ing_d_no values to delete
-                $prodIngDNoToDelete = array_diff($existingProductIngredientD, $requestProductIngredientDNo);
+                    // Delete the ProductIngredientD entries that are not in the request
+                    ProductIngredientD::whereIn('prod_ing_d_no', $prodIngDNoToDelete)->delete();
 
-                // Delete the ProductIngredientD entries that are not in the request
-                ProductIngredientD::whereIn('prod_ing_d_no', $prodIngDNoToDelete)->delete();
+                    foreach($requestProductIngredient as $item){
+                        $productIngredientDNo = $item['prod_ing_d_no'] ?? null;
+                        $metric = Metric::where('metric_code', '=', $item['metric_code'])->firstOrFail();
+                        $ingredient = Ingredient::where('ingredient_code', '=', $item['ingredient_code'])->firstOrFail();
+                        if ($metric) {  // Ensure metric exists
+                            $factor = $metric->metric_seq_no - 1;
+                        } else {
+                            // Handle the case where metric is not found, if necessary
+                            $response = new BaseResponseObj();
+                            $response->statusCode = '500';
+                            $response->message = 'An Error Occurred During Registration : Metric not exists!';
 
-                foreach($requestProductIngredient as $item){
-                    $productIngredientDNo = $item['prod_ing_d_no'] ?? null;
-                    $metric = Metric::where('metric_code', '=', $item['metric_code'])->firstOrFail();
-                    $ingredient = Ingredient::where('ingredient_code', '=', $item['ingredient_code'])->firstOrFail();
-                    if ($metric) {  // Ensure metric exists
-                        $factor = $metric->metric_seq_no - 1;
-                    } else {
-                        // Handle the case where metric is not found, if necessary
-                        $response = new BaseResponseObj();
-                        $response->statusCode = '500';
-                        $response->message = 'An Error Occurred During Registration : Metric not exists!';
+                            return redirect()->intended('/product')->with([
+                                'status' => $response->statusCode,
+                                'message' => $response->message,
+                            ]);
+                        }
 
-                        return redirect()->intended('/product')->with([
-                            'status' => $response->statusCode,
-                            'message' => $response->message,
-                        ]);
+                        if($productIngredientDNo){
+                            $productIngredientD = $productIngredient->productIngredientD()->where('prod_ing_d_no', '=', $productIngredientDNo)->firstOrNew([]);
+                            $productIngredientD->ingredient_id = $ingredient->id;
+                            $ingredientAmount = $item['amount'] * pow(10, $factor);
+
+                            $productIngredientD->ingredient_amt = $ingredientAmount;
+                            $productIngredientD->metric_id = $metric->id;
+
+                            $productIngredientD->save();
+                        }
+                        else
+                        {
+
+                            $ingredientAmount = $item['amount'] * pow(10, $factor);
+                            $prodIngredientDNo = $this->productIngredientController->GenerateProductIngredientDNo();
+
+                            ProductIngredientD::create([
+                                'prod_ing_h_id' => $productIngredient->id,
+                                'ingredient_id' => $ingredient->id,  // Correctly accessing the id property
+                                'ingredient_amt' => $ingredientAmount,
+                                'metric_id' => $metric->id,  // Assuming you want to save the metric id
+                                'prod_ing_d_no' => $prodIngredientDNo
+                            ]);
+
+                        }
+
                     }
-
-                    if($productIngredientDNo){
-                        $productIngredientD = $productIngredient->productIngredientD()->where('prod_ing_d_no', '=', $productIngredientDNo)->firstOrNew([]);
-                        $productIngredientD->ingredient_id = $ingredient->id;
-                        $ingredientAmount = $item['amount'] * pow(10, $factor);
-
-                        $productIngredientD->ingredient_amt = $ingredientAmount;
-                        $productIngredientD->metric_id = $metric->id;
-
-                        $productIngredientD->save();
-                    }
-                    else
-                    {
-
-                        $ingredientAmount = $item['amount'] * pow(10, $factor);
-                        $prodIngredientDNo = $this->productIngredientController->GenerateProductIngredientDNo();
-
-                        ProductIngredientD::create([
-                            'prod_ing_h_id' => $productIngredient->id,
-                            'ingredient_id' => $ingredient->id,  // Correctly accessing the id property
-                            'ingredient_amt' => $ingredientAmount,
-                            'metric_id' => $metric->id,  // Assuming you want to save the metric id
-                            'prod_ing_d_no' => $prodIngredientDNo
-                        ]);
-
-                    }
+                    $productIngredient->total_ingredients = count($requestProductIngredient);
+                    $productIngredient->save();
+                    $product->save();
 
                 }
-                $productIngredient->total_ingredients = count($requestProductIngredient);
-                $productIngredient->save();
-                $product->save();
+
 
                 $response = new BaseResponseObj();
                 $response->statusCode = '200';

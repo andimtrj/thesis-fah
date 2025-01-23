@@ -248,6 +248,11 @@ class UserController extends Controller
         try{
             $branchAdmin = User::findOrFail($id);
             $branchAdmin->delete();
+
+            return redirect()->back()->with([
+                'status' => '200',
+                'message' => 'Branch Admin deleted successfully.',
+            ]);
         } catch(\Exception $e){
             $response = new BaseResponseObj();
             $response->statusCode = '500';

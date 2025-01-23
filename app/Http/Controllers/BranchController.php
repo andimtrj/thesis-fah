@@ -181,7 +181,7 @@ class BranchController extends Controller
             $branch = Branch::findOrFail($id);
             $branch->delete();
 
-            return redirect()->to('/branch')->with([
+            return redirect()->back()->with([
                 'status' => '200',
                 'message' => 'Branch deleted successfully.',
             ]);

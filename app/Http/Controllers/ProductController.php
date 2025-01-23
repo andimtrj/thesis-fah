@@ -357,6 +357,11 @@ class ProductController extends Controller
         try{
             $product = Product::findOrFail($id);
             $product->delete();
+
+            return redirect()->back()->with([
+                'status' => '200',
+                'message' => 'Product deleted successfully.',
+            ]);
         } catch(\Exception $e){
             $response = new BaseResponseObj();
             $response->statusCode = '500';

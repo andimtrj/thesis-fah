@@ -18,7 +18,7 @@
         <div
           class="flex items-center justify-between px-4 py-3 md:px-4 md:py-3 border-b rounded-t-xl bg-primary text-white">
           <h3 class="text-lg font-semibold">
-            Delete Branch
+            Delete Ingredient
           </h3>
           <button type="button"
             class="text-gray-300 bg-transparent hover:bg-secondary rounded-xl text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"

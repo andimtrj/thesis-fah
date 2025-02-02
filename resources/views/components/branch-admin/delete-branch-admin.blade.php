@@ -1,8 +1,10 @@
 @props(['deleteTitle' => 'Delete Modal', 'deleteDesc' => 'Delete Desc Modal', 'branchAdmin'])
 
 <div class="flex items-center">
-  <div data-modal-target="deleteModal" data-modal-toggle="deleteModal" class="border-2 w-fit p-1 rounded-lg cursor-pointer hover:shadow-button hover:shadow-gray-400"
-    href="" onclick="confirmation(event)">
+  <!-- Delete Button -->
+  <div data-modal-target="deleteModal-{{ $branchAdmin->id }}" data-modal-toggle="deleteModal-{{ $branchAdmin->id }}"
+    class="border-2 w-fit p-1 rounded-lg cursor-pointer hover:shadow-button hover:shadow-gray-400" href=""
+    onclick="confirmation(event)">
     <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
       viewBox="0 0 24 24">
       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -10,7 +12,8 @@
     </svg>
   </div>
 
-  <div id="deleteModal" tabindex="-1" aria-hidden="true"
+  <!-- Modal -->
+  <div id="deleteModal-{{ $branchAdmin->id }}" tabindex="-1" aria-hidden="true"
     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-md max-h-full">
       <!-- Modal content -->
@@ -23,7 +26,7 @@
           </h3>
           <button type="button"
             class="text-gray-300 bg-transparent hover:bg-secondary rounded-xl text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
-            data-modal-toggle="deleteModal">
+            data-modal-toggle="deleteModal-{{ $branchAdmin->id }}"> 
             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
               viewBox="0 0 14 14">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -38,7 +41,7 @@
             cannot be undone.</h1>
           <form method="POST" action="{{ route('delete-branch-admin', ['id' => $branchAdmin->id]) }}" class="flex gap-4 w-full">
             @csrf
-            <a data-modal-toggle="deleteModal"
+            <a data-modal-toggle="deleteModal-{{ $branchAdmin->id }}" 
               class="flex items-center w-full bg-none border border-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 justify-center cursor-pointer ">
               <span>Cancel</span>
             </a>
@@ -46,10 +49,9 @@
               class="text-white flex items-center w-full bg-danger font-medium rounded-lg text-sm px-5 py-2.5 justify-center cursor-pointer">
               <span>Delete</span>
             </button>
+          </form> <!-- Ensure the form tag is properly closed -->
         </div>
-        </form>
       </div>
     </div>
   </div>
-</div>
 </div>

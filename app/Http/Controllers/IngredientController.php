@@ -283,6 +283,11 @@ class IngredientController extends Controller
         try{
             $ingredient = Ingredient::findOrFail($id);
             $ingredient->delete();
+
+            return redirect()->back()->with([
+                'status' => '200',
+                'message' => 'Ingredient deleted successfully.',
+            ]);
         } catch(\Exception $e){
             $response = new BaseResponseObj();
             $response->statusCode = '500';

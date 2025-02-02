@@ -1,4 +1,4 @@
-@props(['deleteTitle' => 'Delete Modal', 'deleteDesc' => 'Delete Desc Modal', 'ingredient'])
+@props(['deleteTitle' => 'Delete Modal', 'deleteDesc' => 'Delete Desc Modal', 'product'])
 
 <div class="flex items-center">
   <div data-modal-target="deleteModal" data-modal-toggle="deleteModal"
@@ -35,11 +35,9 @@
         </div>
         <!-- Modal body -->
         <div class="flex flex-col p-4 ">
-          <h1 class="text-lg text-black mb-4 text-center"> Are you sure want to delete this ingredient? <br> This
-            action
+          <h1 class="text-lg text-black mb-4 text-center"> Are you sure want to delete this product? <br> This action
             cannot be undone.</h1>
-          <form method="POST" action="{{ route('delete-ingredient', ['id' => $ingredient->id]) }}"
-            class="flex gap-4 w-full">
+          <form method="POST" action="{{ route('delete-product', ['id' => $product->id]) }}" class="flex gap-4 w-full">
             @csrf
             <a data-modal-toggle="deleteModal"
               class="flex items-center w-full bg-none border border-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 justify-center cursor-pointer ">
@@ -56,3 +54,4 @@
   </div>
 </div>
 </div>
+

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\TenantController;
+use App\Models\DeletedUserModel;
 
 class UserController extends Controller
 {
@@ -247,12 +248,30 @@ class UserController extends Controller
     public function DeleteBranchAdmin($id){
         try{
             $branchAdmin = User::findOrFail($id);
-            $branchAdmin->delete();
+
+            $user = Auth::user();
+
+            DB::transaction(function () use ($user, $branchAdmin, &$response) {
+                DeletedUserModel::create([
+                    'username' => $branchAdmin->username,
+                    'email' => $branchAdmin->email,
+                    'role_id' => $branchAdmin->role_id,
+                    'tenant_id' => $branchAdmin->tenant_id,
+                    'branch_id' => $branchAdmin->branch_id,
+                    'deleted_by' => $user->username,
+                    'deleted_at'=> now()
+                ]);
+
+                $branchAdmin->forceDelete();
+
+            });
+
 
             return redirect()->back()->with([
                 'status' => '200',
                 'message' => 'Branch Admin deleted successfully.',
             ]);
+
         } catch(\Exception $e){
             $response = new BaseResponseObj();
             $response->statusCode = '500';

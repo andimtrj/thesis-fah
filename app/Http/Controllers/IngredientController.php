@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\ProductIngredientD;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -282,7 +283,20 @@ class IngredientController extends Controller
     public function DeleteIngredient($id){
         try{
             $ingredient = Ingredient::findOrFail($id);
+
+            $productIngredientCount = ProductIngredientD::where('ingredient_id', $ingredient->id)->count();
+
+
+            if($productIngredientCount > 0){
+                return redirect()->back()->with([
+                    'status' => '400',
+                    'message' => 'Ingredient is used in one or more Product',
+                ]);
+
+            }
+
             $ingredient->delete();
+
 
             return redirect()->back()->with([
                 'status' => '200',

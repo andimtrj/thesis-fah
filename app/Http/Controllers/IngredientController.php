@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\ProductIngredientD;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -277,6 +278,41 @@ class IngredientController extends Controller
             return response()->json(['response' => $response]);
         }
         // Find the ingredient with its metrics and their metric group
+    }
+
+    public function DeleteIngredient($id){
+        try{
+            $ingredient = Ingredient::findOrFail($id);
+
+            $productIngredientCount = ProductIngredientD::where('ingredient_id', $ingredient->id)->count();
+
+
+            if($productIngredientCount > 0){
+                return redirect()->back()->with([
+                    'status' => '400',
+                    'message' => 'Ingredient is used in one or more Product',
+                ]);
+
+            }
+
+            $ingredient->delete();
+
+
+            return redirect()->back()->with([
+                'status' => '200',
+                'message' => 'Ingredient deleted successfully.',
+            ]);
+        } catch(\Exception $e){
+            $response = new BaseResponseObj();
+            $response->statusCode = '500';
+            $response->message = 'An Error Occurred During Delete : ' . $e->getMessage();
+
+            return redirect()->intended('/ingredient')->with([
+                'status' => $response->statusCode,
+                'message' => $response->message,
+            ]);
+
+        }
     }
 
 

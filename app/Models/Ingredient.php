@@ -9,10 +9,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Ingredient extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'ingredient_code',
@@ -59,17 +60,16 @@ class Ingredient extends Model
         $authTenantId = Auth::user()->tenant_id;
 
         if ($authTenantId) {
-            $query = Ingredient::from('ingredients as i')
-                                ->join('tenants as t', 'i.tenant_id', '=', 't.id')
-                                ->join('branches as b', 'i.branch_id', '=', 'b.id')
-                                ->join('metrics as m', 'i.metric_id', '=', 'm.id')
-                                ->select('i.id',
-                                        'i.ingredient_code',
-                                        'i.ingredient_name',
-                                        DB::raw('FORMAT(i.ingredient_amt / POWER(10, m.metric_seq_no - 1), 2) as ingredient_amt'),
+            $query = Ingredient::join('tenants as t', 'ingredients.tenant_id', '=', 't.id')
+                                ->join('branches as b', 'ingredients.branch_id', '=', 'b.id')
+                                ->join('metrics as m', 'ingredients.metric_id', '=', 'm.id')
+                                ->select('ingredients.id',
+                                        'ingredients.ingredient_code',
+                                        'ingredients.ingredient_name',
+                                        DB::raw('FORMAT(ingredients.ingredient_amt / POWER(10, m.metric_seq_no - 1), 2) as ingredient_amt'),
                                         'm.metric_unit as metric_unit')
-                                ->orderBy('i.created_at', 'desc')
-                                ->where('i.tenant_id', '=', $authTenantId);
+                                ->orderBy('ingredients.created_at', 'desc')
+                                ->where('ingredients.tenant_id', '=', $authTenantId);
             // dd($query, $request);
             // dd($authBranchId, $request->input('branch_code'), $request);
             if($request->has('branchCode'))
@@ -85,12 +85,12 @@ class Ingredient extends Model
             // Apply filters if branchCode or branchName is provided
             if ($request->input('ingredientCode')) {
                 $paramIngredientCode = $request->input('ingredientCode', null);
-                $query->where('i.ingredient_code', 'like', '%' . $paramIngredientCode . '%');
+                $query->where('ingredients.ingredient_code', 'like', '%' . $paramIngredientCode . '%');
             }
 
             if ($request->input('ingredientName')) {
                 $paramIngredientName = $request->input('ingredientName', null);
-                $query->where('i.ingredent_name', 'like', '%' . $paramIngredientName . '%');
+                $query->where('ingredients.ingredent_name', 'like', '%' . $paramIngredientName . '%');
             }
 
             $ingredients = $query->paginate(10); // Paginate the results

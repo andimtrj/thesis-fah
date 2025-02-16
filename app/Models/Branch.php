@@ -11,10 +11,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Branch extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'branch_code',
@@ -34,12 +36,19 @@ class Branch extends Model
         return $this->hasMany(User::class);
     }
 
-    public function creator() {
+    public function creator() : BelongsTo
+    {
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function updater() {
+    public function updater() : BelongsTo
+    {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    public function tenant() : BelongsTo
+    {
+        return $this->belongsTo(Tenant::class);
     }
 
     protected static function boot()
@@ -73,15 +82,14 @@ class Branch extends Model
         $authTenantId = Auth::user()->tenant_id;
 
         if ($authTenantId) {
-            $query = Branch::from('branches as b')
-                ->join('tenants as t', 'b.tenant_id', '=', 't.id')
-                ->leftJoin('users as u', 'b.id', '=', 'u.branch_id')
+            $query = Branch::join('tenants as t', 'branches.tenant_id', '=', 't.id')
+                ->leftJoin('users as u', 'branches.id', '=', 'u.branch_id')
                 ->leftJoin('roles as r', 'u.role_id', '=', 'r.id')
                 // ->where('r.role_code', 'BA') // Apply the role filter here
-                ->select('b.branch_code', 'b.branch_name', DB::raw('COUNT(u.id) as branch_admin_count'), 'b.id as id') // Selecting the required fields and count
-                ->orderBy('b.created_at', 'desc')
-                ->groupBy('b.id', 'b.branch_code', 'b.branch_name')
-                ->where('b.tenant_id', '=', $authTenantId); // Grouping by the necessary fields
+                ->select('branches.branch_code', 'branches.branch_name', DB::raw('COUNT(u.id) as branch_admin_count'), 'branches.id as id') // Selecting the required fields and count
+                ->orderBy('branches.created_at', 'desc')
+                ->groupBy('branches.id', 'branches.branch_code', 'branches.branch_name')
+                ->where('branches.tenant_id', '=', $authTenantId); // Grouping by the necessary fields
 
             // Apply filters if branchCode or branchName is provided
             if ($request->input('branchCode')) {

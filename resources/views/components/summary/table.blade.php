@@ -22,44 +22,33 @@
             <th scope="col" class="px-4 py-4 text-center">
               End Amount
             </th>
+            <th scope="col" class="px-4 py-4 text-center">
+                Metric Unit
+            </th>
           </tr>
         </thead>
 
         {{-- Table Body --}}
         <tbody>
-          {{-- Table Body --}}
-          <tr class="bg-white border-y text-base text-abu">
-            <th scope="row" class="px-4 py-3 font-medium text-center">Ayam</th>
-            <td class="px-4 py-3 text-center">120</td>
-            <td class="px-4 py-3 text-center">32</td>
-            <td class="px-4 py-3 text-center">10</td>
-            <td class="px-4 py-3 text-center">10</td>
-            <td class="px-4 py-3 text-center">10</td>
-          </tr>
-          <tr class="bg-white border-y text-base text-abu">
-            <th scope="row" class="px-4 py-3 font-medium text-center">Ayam</th>
-            <td class="px-4 py-3 text-center">120</td>
-            <td class="px-4 py-3 text-center">32</td>
-            <td class="px-4 py-3 text-center">10</td>
-            <td class="px-4 py-3 text-center">10</td>
-            <td class="px-4 py-3 text-center">10</td>
-          </tr>
-          <tr class="bg-white border-y text-base text-abu">
-            <th scope="row" class="px-4 py-3 font-medium text-center">Ayam</th>
-            <td class="px-4 py-3 text-center">120</td>
-            <td class="px-4 py-3 text-center">32</td>
-            <td class="px-4 py-3 text-center">10</td>
-            <td class="px-4 py-3 text-center">10</td>
-            <td class="px-4 py-3 text-center">10</td>
-          </tr>
-          <tr class="bg-white border-y text-base text-abu">
-            <th scope="row" class="px-4 py-3 font-medium text-center">Ayam</th>
-            <td class="px-4 py-3 text-center">120</td>
-            <td class="px-4 py-3 text-center">32</td>
-            <td class="px-4 py-3 text-center">10</td>
-            <td class="px-4 py-3 text-center">10</td>
-            <td class="px-4 py-3 text-center">10</td>
-          </tr>
+            @if(isset($summary))
+                @foreach ($summary as $item)
+            {{-- Table Body --}}
+                    <tr class="bg-white border-y text-base text-abu">
+                        <th scope="row" class="px-4 py-3 font-medium text-center">{{ $item->INGREDIENT_NAME }}</th>
+                        <td class="px-4 py-3 text-center">{{ $item->START_AMT }}</td>
+                        <td class="px-4 py-3 text-center">{{ $item->USAGE_AMT }}</td>
+                        <td class="px-4 py-3 text-center">{{ $item->PURCHASE_AMT }}</td>
+                        <td class="px-4 py-3 text-center">{{ $item->ADJUSTMENT_AMT }}</td>
+                        <td class="px-4 py-3 text-center">{{ $item->END_AMT }}</td>
+                        <td class="px-4 py-3 text-center">{{ $item->METRIC_UNIT }}</td>
+                    </tr>
+                @endforeach
+            @elseif ($summary->isEmpty())
+            {{-- {{ dd($request->session()->all()) }} --}}
+                <tr>
+                    <td colspan="5" class="text-center py-4">No Summary Found</td>
+                </tr>
+            @endif
         </tbody>
       </table>
     </div>

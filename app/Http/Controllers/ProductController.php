@@ -126,7 +126,7 @@ class ProductController extends Controller
                 $queryIngredient->where('branch_id', '=', Auth::user()->branch_id);
             }
             $ingredients = $queryIngredient->get();
-            $productCategories = ProductCategory::where('tenant_id', '=', $authTenantId)->get();
+            $productCategories = ProductCategory::get();
             return view('components.product.add-product', compact('productCategories', 'tenant', 'branches', 'ingredients', 'metrics'));
         } else {
             abort(500, "Invalid Tenant");
@@ -189,14 +189,14 @@ class ProductController extends Controller
             $queryIngredient = Ingredient::with('branch')
                                         ->with('metric')
                                         ->where('tenant_id', '=', $authTenantId);
-            $queryProductCategories = ProductCategory::where('tenant_id', '=', $authTenantId);
+            // $queryProductCategories = ProductCategory::where('tenant_id', '=', $authTenantId);
 
             if(Auth::user()->branch_id){
                 $queryIngredient->where('branch_id', '=', Auth::user()->branch_id);
-                $queryProductCategories->where('branch_id', '=', $product->branch_id);
+                // $queryProductCategories->where('branch_id', '=', $product->branch_id);
             }
             $ingredients = $queryIngredient->get();
-            $productCategories = $queryProductCategories->get();
+            $productCategories = ProductCategory::get();
 
             $productIngredient = ProductIngredientH::with([
                 'productIngredientD' => function ($query) {

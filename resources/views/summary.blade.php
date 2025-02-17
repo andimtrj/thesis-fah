@@ -93,22 +93,49 @@
 
 <script>
     function preventExportIfNotSearched(event) {
+        console.log("{{ Auth::user()->role->role_code  }}");
         const formSubmitted = {{ isset($formSubmitted) && $formSubmitted ? 'true' : 'false' }};
         if (!formSubmitted) {
             event.preventDefault();
             alert('Data is not Searched!');
         } else {
-            // const summary = @json($summary ?? []);
-            // Redirect to the export route with necessary data
-            event.preventDefault();
-            const exportUrl = "{{ route('export-summary') }}";
-            const queryParams = new URLSearchParams({
-                summary: JSON.stringify( @json($summary ?? [])),
-                tenant: "{{ $tenant->tenant_name }}",
-                branch: "{{ $branch->branch_name }}",
-                date: "{{ now()->format('Ymd') }}"
-            }).toString();
-            window.location.href = `${exportUrl}?${queryParams}`;
+            if("{{ Auth::user()->role->role_code }}" === "BA"){
+
+                const branchCodeSelect = document.getElementById('branchCode');
+                const branches = @json($branches ?? []);
+                const filteredBranch = branches.filter(branch => branch.branch_code ===  branchCodeSelect.value);
+                const branch = filteredBranch[0];
+                console.log(branch);
+                event.preventDefault();
+                const exportUrl = "{{ route('export-summary') }}";
+                const queryParams = new URLSearchParams({
+                    summary: JSON.stringify( @json($summary ?? [])),
+                    tenant: "{{ $tenant->tenant_name }}",
+                    branch: branch.branch_name,
+                    date: "{{ now()->format('Ymd') }}"
+                }).toString();
+                window.location.href = `${exportUrl}?${queryParams}`;
+            }else{
+                // Get the selected option
+                const branchCodeSelect = document.getElementById('branchCode');
+                const selectedOption = branchCodeSelect.options[branchCodeSelect.selectedIndex];
+
+                // Extract the branch_name from the selected option
+                const branchName = selectedOption.textContent; // or selectedOption.innerText
+
+                // const summary = @json($summary ?? []);
+                // Redirect to the export route with necessary data
+                event.preventDefault();
+                const exportUrl = "{{ route('export-summary') }}";
+                const queryParams = new URLSearchParams({
+                    summary: JSON.stringify( @json($summary ?? [])),
+                    tenant: "{{ $tenant->tenant_name }}",
+                    branch: branchName,
+                    date: "{{ now()->format('Ymd') }}"
+                }).toString();
+                window.location.href = `${exportUrl}?${queryParams}`;
+
+            }
         }
     }
 </script>

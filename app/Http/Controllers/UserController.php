@@ -83,7 +83,7 @@ class UserController extends Controller
             });
             $this->authController->Authenticate($request);
 
-            return redirect()->intended('/dashbord')->with([
+            return redirect()->intended('/dashboard')->with([
                 'status' => $response->statusCode,
                 'message' => $response->message,
             ]);

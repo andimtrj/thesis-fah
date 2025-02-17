@@ -20,11 +20,10 @@ class SummaryPageController extends Controller
                         $request->has('endDate');
 
         $authTenantId = Auth::user()->tenant_id;
-
+        $branches = Branch::where('tenant_id', '=', $authTenantId)->get();
         if ($authTenantId) {
             // Ambil tenant berdasarkan tenant_id user untuk display tenant_name
             $tenant = Tenant::find($authTenantId);
-            $branches = Branch::where('tenant_id', '=', $authTenantId)->get();
             if($formSubmitted){
 
                 if(!$request->input('startDate'))
@@ -57,6 +56,7 @@ class SummaryPageController extends Controller
                     $endDate,
                     $branch->id
                 ]);
+
                 return view('summary', compact('tenant', 'branches', 'formSubmitted', 'summary', 'branch')); // Pass tenant variable to view
 
             }
@@ -64,7 +64,7 @@ class SummaryPageController extends Controller
             abort(500, "Invalid Tenant");
         }
 
-        return view('summary', compact('tenant', 'branches', 'formSubmitted')); // Pass tenant variable to view
+        return view('summary', compact('tenant', 'branches',  'formSubmitted')); // Pass tenant variable to view
 
     }
 

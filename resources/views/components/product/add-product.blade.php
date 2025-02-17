@@ -140,12 +140,12 @@
             const selectedBranchCode = branchDropdown.value;
             console.log(allProductCategories);
             const branches = @json($branches ?? []);
-            const selectedBranch = branches.filter(branch => branch.branch_code == selectedBranchCode);
-            console.log('selected branch', selectedBranch);
-            const filteredProductCategories = allProductCategories.filter(productCategory => productCategory.branch_id == selectedBranch[0].id);
-            console.log('Filtered Product Categories', filteredProductCategories);
-            if(filteredProductCategories.length > 0){
-                filteredProductCategories.forEach(function (product_category) {
+            // const selectedBranch = branches.filter(branch => branch.branch_code == selectedBranchCode);
+            // console.log('selected branch', selectedBranch);
+            // const filteredProductCategories = allProductCategories.filter(productCategory => productCategory.branch_id == selectedBranch[0].id);
+            // console.log('Filtered Product Categories', filteredProductCategories);
+            if(allProductCategories.length > 0){
+                allProductCategories.forEach(function (product_category) {
                     const option = document.createElement('option');
                     option.value = product_category.prod_category_code;
                     option.textContent = product_category.prod_category_name;
@@ -259,12 +259,12 @@
 
         console.log(allProductCategories);
         const branches = @json($branches ?? []);
-        const selectedBranch = branches.filter(branch => branch.branch_code == selectedBranchCode);
-        console.log('selected branch', selectedBranch);
-        const filteredProductCategories = allProductCategories.filter(productCategory => productCategory.branch_id == selectedBranch[0].id);
-        console.log('Filtered Product Categories', filteredProductCategories);
-        if(filteredProductCategories.length > 0){
-            filteredProductCategories.forEach(function (product_category) {
+        // const selectedBranch = branches.filter(branch => branch.branch_code == selectedBranchCode);
+        // console.log('selected branch', selectedBranch);
+        // const filteredProductCategories = allProductCategories.filter(productCategory => productCategory.branch_id == selectedBranch[0].id);
+        // console.log('Filtered Product Categories', filteredProductCategories);
+        if(allProductCategories.length > 0){
+            allProductCategories.forEach(function (product_category) {
                 const option = document.createElement('option');
                 option.value = product_category.prod_category_code;
                 option.textContent = product_category.prod_category_name;
